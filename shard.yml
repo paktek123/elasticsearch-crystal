@@ -1,0 +1,13 @@
+name: elasticsearch-crystal
+version: 0.1
+authors:
+  - Neeran Gul <paktek123@gmail.com>
+
+description: |
+  Elasticsearch API wrapper for Crystal Lang
+
+development_dependencies:
+  crake:
+    github: MakeNowJust/crake
+
+license: MIT

@@ -1,0 +1,3 @@
+install:
+	shards install
+
