@@ -1,0 +1,47 @@
+cce050146a1907ac42611b0f3d83bb060cfbb031	not-for-merge	branch 'feature/code-level-focus' of https://github.com/waterlink/spec2.cr
+e47c3a4ddc889cdbb45dae7b49dea38ac3c32041	not-for-merge	branch 'fix-travis' of https://github.com/waterlink/spec2.cr
+f3d8aca8165d8a6ec7681b4355b5ee8b1d597a68	not-for-merge	branch 'master' of https://github.com/waterlink/spec2.cr
+7cec0216cf3df51e821dbe45e56aaabf52f3ac05	not-for-merge	'refs/pull/10/head' of https://github.com/waterlink/spec2.cr
+bd66e2b41a4ee3f858f9cde3699b5922e09d5a5e	not-for-merge	'refs/pull/11/head' of https://github.com/waterlink/spec2.cr
+d9a0399fd55765883ee2414bf9e3dc3a28dac886	not-for-merge	'refs/pull/12/head' of https://github.com/waterlink/spec2.cr
+ca01a187d5806c4af656413e60ba7768eade2823	not-for-merge	'refs/pull/13/head' of https://github.com/waterlink/spec2.cr
+c9449f97393489a1eb07ca15cb8ca06099848bb3	not-for-merge	'refs/pull/14/head' of https://github.com/waterlink/spec2.cr
+3c754cac5a33b4d5edfd5048464f7947bbdbec00	not-for-merge	'refs/pull/15/head' of https://github.com/waterlink/spec2.cr
+ad65393673a5933891e7e6a1ad16e84bbf0c3db8	not-for-merge	'refs/pull/16/head' of https://github.com/waterlink/spec2.cr
+7e88737c3436ca571a6ba5d0ccccfadc02baea6f	not-for-merge	'refs/pull/17/head' of https://github.com/waterlink/spec2.cr
+5bc0daa1095fc4eaafd2022541d66486df4ebe96	not-for-merge	'refs/pull/18/head' of https://github.com/waterlink/spec2.cr
+5c0b2d5be0945b9cb4072d4b5a82c3cbf5b3bbd8	not-for-merge	'refs/pull/21/head' of https://github.com/waterlink/spec2.cr
+a96b50b19687609f84ac02d52a00541b32f95fb0	not-for-merge	'refs/pull/26/head' of https://github.com/waterlink/spec2.cr
+ca59012f69ef428ec5e8a404c762738b912db1df	not-for-merge	'refs/pull/27/head' of https://github.com/waterlink/spec2.cr
+bb79a3bf07f91c44952dec7a4b242ffabda4c7d8	not-for-merge	'refs/pull/28/head' of https://github.com/waterlink/spec2.cr
+ed08d0a9fcd7ef0c1b032033202d8e6f2c777ae2	not-for-merge	'refs/pull/29/head' of https://github.com/waterlink/spec2.cr
+a30323e15fe936693cb60e5364c0c6a0691301da	not-for-merge	'refs/pull/33/head' of https://github.com/waterlink/spec2.cr
+c217b4bbc8c4af79f8e1c087b4232cc1d972983d	not-for-merge	'refs/pull/35/head' of https://github.com/waterlink/spec2.cr
+a19e91b75af7bc17313212d3bf35b3a448a91bee	not-for-merge	'refs/pull/37/head' of https://github.com/waterlink/spec2.cr
+64c16678ef884e696e768920d83fbf30db265eec	not-for-merge	'refs/pull/4/head' of https://github.com/waterlink/spec2.cr
+bc95c483cce70a04962b2a2a121dc54677ac33c5	not-for-merge	'refs/pull/40/head' of https://github.com/waterlink/spec2.cr
+f8c86e4c016b0854d381ca1500e429d830f17551	not-for-merge	'refs/pull/42/head' of https://github.com/waterlink/spec2.cr
+e7ba0209f2f9f9de341f3b503672c769fed05099	not-for-merge	'refs/pull/45/head' of https://github.com/waterlink/spec2.cr
+d9ac1b925f46ead7450941fdb561837689f96e84	not-for-merge	'refs/pull/47/head' of https://github.com/waterlink/spec2.cr
+88ae18e46856c8f75f70646ac8795744b7a5a31e	not-for-merge	'refs/pull/49/head' of https://github.com/waterlink/spec2.cr
+26a525800e89daa0ddd13c92c5b1f4a0edc4102c	not-for-merge	'refs/pull/49/merge' of https://github.com/waterlink/spec2.cr
+d8ebb450421f09777e96085eb31204d3c6916a02	not-for-merge	'refs/pull/5/head' of https://github.com/waterlink/spec2.cr
+f9f3c0383791408a30e136188b5292a425be1f1a	not-for-merge	'refs/pull/51/head' of https://github.com/waterlink/spec2.cr
+f144115b6dd675525eaeecc16f1ae8c8c27aff65	not-for-merge	'refs/pull/53/head' of https://github.com/waterlink/spec2.cr
+c2f73e2fd6be04b5e39c140c44f17f453c230505	not-for-merge	'refs/pull/7/head' of https://github.com/waterlink/spec2.cr
+0dca291dddff49d4bfb106ed7f8971246c6cfcb7	not-for-merge	'refs/pull/8/head' of https://github.com/waterlink/spec2.cr
+bf026f25882e33f5acaa45351960be6d3350b392	not-for-merge	'refs/pull/9/head' of https://github.com/waterlink/spec2.cr
+a181a7d6dffebc648c26380b0797bcb63596a698	not-for-merge	tag 'v0.10.0' of https://github.com/waterlink/spec2.cr
+f3d8aca8165d8a6ec7681b4355b5ee8b1d597a68	not-for-merge	tag 'v0.11.0' of https://github.com/waterlink/spec2.cr
+f494c9ee6c68f4b127f0fa6198a42f81ca1ba058	not-for-merge	tag 'v0.4.0' of https://github.com/waterlink/spec2.cr
+e7ff86662ae147d090f4508ace3d580fbff0d0a6	not-for-merge	tag 'v0.4.1' of https://github.com/waterlink/spec2.cr
+af673bcdbc6d9133899b1e1772e4fafd26a1d669	not-for-merge	tag 'v0.4.2' of https://github.com/waterlink/spec2.cr
+f242b4442417f3c43a2704ca782179f9509b53ec	not-for-merge	tag 'v0.5.0' of https://github.com/waterlink/spec2.cr
+4e9c59af275e2e695c66800955a925e7998d36a5	not-for-merge	tag 'v0.6.0' of https://github.com/waterlink/spec2.cr
+7379434a3e60d8b2c5ecb27441f9c234a3680bed	not-for-merge	tag 'v0.7.0' of https://github.com/waterlink/spec2.cr
+40321cdb6995b1d425cb128a4025ef03c8155635	not-for-merge	tag 'v0.7.1' of https://github.com/waterlink/spec2.cr
+3d679235e4437a120f3dc51d010f5a3abb2499f2	not-for-merge	tag 'v0.8.0' of https://github.com/waterlink/spec2.cr
+949687b588f81d56ff52dfe8d659056896a91c3e	not-for-merge	tag 'v0.8.1' of https://github.com/waterlink/spec2.cr
+c30c10ba181ceb232d06aab4808411fad6f8c2d7	not-for-merge	tag 'v0.8.2' of https://github.com/waterlink/spec2.cr
+196f8f4e21e06b0b689bb73e0abe8c7848604e9b	not-for-merge	tag 'v0.9.0' of https://github.com/waterlink/spec2.cr
+ce82b409798d50eaa8f77281b814b1c903264059	not-for-merge	tag 'v0.9.2' of https://github.com/waterlink/spec2.cr

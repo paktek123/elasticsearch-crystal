@@ -1,0 +1,22 @@
+version: 1.0
+shards:
+  cossack:
+    github: greyblake/crystal-cossack
+    version: 0.1.4
+
+  mocks:
+    github: waterlink/mocks.cr
+    version: 0.9.5
+
+  singleton:
+    github: waterlink/singleton.cr
+    version: 1.0.0
+
+  spec2:
+    github: waterlink/spec2.cr
+    version: 0.11.0
+
+  spec2-mocks:
+    github: waterlink/spec2-mocks.cr
+    version: 0.4.1
+

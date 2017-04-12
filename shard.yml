@@ -7,7 +7,14 @@ description: |
   Elasticsearch API wrapper for Crystal Lang
 
 development_dependencies:
-  crake:
-    github: MakeNowJust/crake
+  mocks:
+    github: waterlink/mocks.cr
+  spec2:
+    github: waterlink/spec2.cr
+  spec2-mocks:
+    github: waterlink/spec2-mocks.cr
+  cossack:
+    github: greyblake/crystal-cossack
+    version: ~> 0.1
 
 license: MIT
