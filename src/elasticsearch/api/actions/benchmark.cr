@@ -47,10 +47,10 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-benchmark.html
       #
-      def benchmark(arguments={} of Symbol => Char)
+      def benchmark(arguments={} of Symbol => String)
         valid_params = [
           :verbose ]
-        method = HTTP_PUT
+        method = "PUT"
         path   = "_bench"
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

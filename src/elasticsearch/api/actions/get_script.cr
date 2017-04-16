@@ -9,12 +9,12 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-scripting.html#_indexed_scripts
       #
-      def get_script(arguments={})
+      def get_script(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'id' missing"   unless arguments[:id]
         raise ArgumentError, "Required argument 'lang' missing" unless arguments[:lang]
-        method = HTTP_GET
+        method = "GET"
         path   = "_scripts/#{arguments[:lang]}/#{arguments[:id]}"
-        params = {}
+        params = {} of String => String
         body   = nil
 
         perform_request(method, path, params, body).body

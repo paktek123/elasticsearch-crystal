@@ -40,7 +40,7 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-template.html
       #
-      def search_template(arguments={})
+      def search_template(arguments={} of Symbol => String)
         valid_params = [
           :ignore_unavailable,
           :allow_no_indices,
@@ -49,8 +49,8 @@ module Elasticsearch
           :routing,
           :scroll,
           :search_type ]
-        method = HTTP_GET
-        path   = Utils.__pathify( Utils.__listify(arguments[:index]), Utils.__listify(arguments[:type]), '_search/template' )
+        method = "GET"
+        path   = Utils.__pathify( Utils.__listify(arguments[:index]), Utils.__listify(arguments[:type]), "_search/template" )
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]
 

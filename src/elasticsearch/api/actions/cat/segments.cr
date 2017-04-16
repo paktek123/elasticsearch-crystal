@@ -18,7 +18,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-segments.html
         #
-        def segments(arguments={} of Symbol => Char)
+        def segments(arguments={} of Symbol => String)
           valid_params = [
             :bytes,
             :index,

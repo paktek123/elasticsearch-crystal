@@ -44,7 +44,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/multi-get/
       #
-      def mget(arguments={})
+      def mget(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
 
         valid_params = [
@@ -59,10 +59,10 @@ module Elasticsearch
           :_source_exclude,
           :stored_fields ]
 
-        method = HTTP_GET
+        method = "GET"
         path   = Utils.__pathify Utils.__escape(arguments[:index]),
                                  Utils.__escape(arguments[:type]),
-                                 '_mget'
+                                 "_mget"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

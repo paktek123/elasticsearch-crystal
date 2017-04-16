@@ -26,15 +26,15 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/search/suggest/
       #
-      def suggest(arguments={})
+      def suggest(arguments={} of Symbol => String)
         valid_params = [
           :ignore_indices,
           :preference,
           :routing,
           :source ]
 
-        method = HTTP_POST
-        path   = Utils.__pathify( Utils.__listify(arguments[:index]), '_suggest' )
+        method = "POST"
+        path   = Utils.__pathify( Utils.__listify(arguments[:index]), "_suggest" )
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

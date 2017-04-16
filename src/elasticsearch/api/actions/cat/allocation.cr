@@ -42,7 +42,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-allocation.html
         #
-        def allocation(arguments={} of Symbol => Char)
+        def allocation(arguments={} of Symbol => String)
           valid_params = [
             :bytes,
             :local,
@@ -54,7 +54,7 @@ module Elasticsearch
 
           node_id = arguments.delete(:node_id)
 
-          method = HTTP_GET
+          method = "GET"
 
           path   = Utils.__pathify "_cat/allocation", Utils.__listify(node_id)
 

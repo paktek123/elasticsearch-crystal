@@ -18,7 +18,7 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html
         #
-        def tasks(arguments={} of Symbol => Char)
+        def tasks(arguments={} of Symbol => String)
           valid_params = [
             :format,
             :node_id,

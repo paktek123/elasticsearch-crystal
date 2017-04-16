@@ -29,7 +29,7 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-percolate.html
       #
-      def mpercolate(arguments={})
+      def mpercolate(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
         valid_params = [
           :ignore_unavailable,
@@ -37,7 +37,7 @@ module Elasticsearch
           :expand_wildcards,
           :percolate_format ]
 
-        method = HTTP_GET
+        method = "GET"
         path   = "_mpercolate"
 
         params = Utils.__validate_and_extract_params arguments, valid_params

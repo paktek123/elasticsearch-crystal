@@ -9,11 +9,11 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-search-type.html#clear-scroll
       #
-      def clear_scroll(arguments={} of Symbol => Char)
+      def clear_scroll(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'scroll_id' missing" unless arguments[:scroll_id]
 
-        method = HTTP_DELETE
-        path   = Utils.__pathify '_search/scroll', Utils.__listify(arguments.delete(:scroll_id))
+        method = "DELETE"
+        path   = Utils.__pathify "_search/scroll", Utils.__listify(arguments.delete(:scroll_id))
         params = {} of Char => Char
         body   = arguments[:body]
 

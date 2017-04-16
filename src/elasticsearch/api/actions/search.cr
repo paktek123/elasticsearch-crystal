@@ -1,3 +1,5 @@
+require "html"
+
 module Elasticsearch
   module API
     module Actions
@@ -122,7 +124,7 @@ module Elasticsearch
       # @see http://www.elasticsearch.org/guide/reference/api/search/
       # @see http://www.elasticsearch.org/guide/reference/api/search/request-body/
       #
-      def search(arguments={})
+      def search(arguments={} of Symbol => String)
         arguments[:index] = UNDERSCORE_ALL if ! arguments[:index] && arguments[:type]
 
         valid_params = [
@@ -167,18 +169,18 @@ module Elasticsearch
           :version,
           :batched_reduce_size ]
 
-        method = HTTP_GET
+        method = "GET"
         path   = Utils.__pathify( Utils.__listify(arguments[:index]), Utils.__listify(arguments[:type]), UNDERSCORE_SEARCH )
 
         params = Utils.__validate_and_extract_params arguments, valid_params
 
         body   = arguments[:body]
 
-        params[:fields] = Utils.__listify(params[:fields], :escape => false) if params[:fields]
-        params[:fielddata_fields] = Utils.__listify(params[:fielddata_fields], :escape => false) if params[:fielddata_fields]
+        params[:fields] = Utils.__listify(params[:fields], {:escape => false}) if params.has_key?(:fields)
+        params[:fielddata_fields] = Utils.__listify(params[:fielddata_fields], {:escape => false}) if params.has_key?(:fielddata_fields)
 
         # FIX: Unescape the `filter_path` parameter due to __listify default behavior. Investigate.
-        params[:filter_path] =  defined?(EscapeUtils) ? EscapeUtils.unescape_url(params[:filter_path]) : CGI.unescape(params[:filter_path]) if params[:filter_path]
+        params[:filter_path] =  HTML.unescape(params[:filter_path]) if params.has_key?(:filter_path)
 
         perform_request(method, path, params, body).body
       end

@@ -63,7 +63,7 @@ module Elasticsearch
       #
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
       #
-      def bulk(arguments={} of Symbol => Char)
+      def bulk(arguments={} of Symbol => String)
         arguments = arguments.clone
 
         type      = arguments.delete(:type)
@@ -80,8 +80,8 @@ module Elasticsearch
           :_source_include,
           :pipeline ]
 
-        method = HTTP_POST
-        path   = Utils.__pathify Utils.__escape(arguments[:index]), Utils.__escape(type), '_bulk'
+        method = "POST"
+        path   = Utils.__pathify Utils.__escape(arguments[:index]), Utils.__escape(type), "_bulk"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

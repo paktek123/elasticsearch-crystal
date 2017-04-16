@@ -5,16 +5,16 @@ module Elasticsearch
 
       # Client for the "cat" namespace (includes the {Cat::Actions} methods)
       #
-      class CatClient
-        include Common::Client
+      class CatClient < Common::Client
+        #include Common::Client
         include Cat::Actions
       end
 
       # Proxy method for {CatClient}, available in the receiving object
       #
-      def cat
-        @cat ||= CatClient.new
-      end
+      #def cat
+      #  @cat ||= CatClient.new
+      #end
 
     end
   end

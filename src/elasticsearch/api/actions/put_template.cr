@@ -10,12 +10,12 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-template.html
       #
-      def put_template(arguments={})
+      def put_template(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'id' missing"   unless arguments[:id]
         raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
-        method = HTTP_PUT
+        method = "PUT"
         path   = "_search/template/#{arguments[:id]}"
-        params = {}
+        params = {} of String => String
         body   = arguments[:body]
 
         perform_request(method, path, params, body).body

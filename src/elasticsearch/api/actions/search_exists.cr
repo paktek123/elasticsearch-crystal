@@ -32,7 +32,7 @@ module Elasticsearch
       #
       # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/search-exists.html
       #
-      def search_exists(arguments={})
+      def search_exists(arguments={} of Symbol => String)
         valid_params = [
           :ignore_unavailable,
           :allow_no_indices,
@@ -47,7 +47,7 @@ module Elasticsearch
           :df,
           :lenient,
           :lowercase_expanded_terms ]
-        method = 'POST'
+        method = "POST"
         path   = "_search/exists"
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

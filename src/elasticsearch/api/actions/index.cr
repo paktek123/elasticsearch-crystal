@@ -70,7 +70,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/index_/
       #
-      def index(arguments={})
+      def index(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
         raise ArgumentError, "Required argument 'type' missing"  unless arguments[:type]
 

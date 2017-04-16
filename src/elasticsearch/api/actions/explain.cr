@@ -43,7 +43,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/explain/
       #
-      def explain(arguments={})
+      def explain(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
         raise ArgumentError, "Required argument 'type' missing"  unless arguments[:type]
         raise ArgumentError, "Required argument 'id' missing"    unless arguments[:id]
@@ -66,11 +66,11 @@ module Elasticsearch
           :_source_exclude,
           :stored_fields ]
 
-        method = HTTP_GET
+        method = "GET"
         path   = Utils.__pathify Utils.__escape(arguments[:index]),
                                  Utils.__escape(arguments[:type]),
                                  Utils.__escape(arguments[:id]),
-                                 '_explain'
+                                 "_explain"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

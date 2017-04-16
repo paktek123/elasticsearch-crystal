@@ -44,7 +44,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/count/
       #
-      def count(arguments={})
+      def count(arguments={} of Symbol => String)
         valid_params = [
           :ignore_unavailable,
           :allow_no_indices,
@@ -60,8 +60,8 @@ module Elasticsearch
           :lenient,
           :lowercase_expanded_terms ]
 
-        method = HTTP_GET
-        path   = Utils.__pathify( Utils.__listify(arguments[:index]), Utils.__listify(arguments[:type]), '_count' )
+        method = "GET"
+        path   = Utils.__pathify( Utils.__listify(arguments[:index]), Utils.__listify(arguments[:type]), "_count" )
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

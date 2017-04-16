@@ -57,7 +57,7 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/docs-termvectors.html
       #
-      def termvectors(arguments={})
+      def termvectors(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
         raise ArgumentError, "Required argument 'type' missing" unless arguments[:type]
 
@@ -73,8 +73,8 @@ module Elasticsearch
           :routing,
           :parent ]
 
-        method = HTTP_GET
-        endpoint = arguments.delete(:endpoint) || '_termvectors'
+        method = "GET"
+        endpoint = arguments.delete(:endpoint) || "_termvectors"
 
         path   = Utils.__pathify Utils.__escape(arguments[:index]),
                                  Utils.__escape(arguments[:type]),
@@ -89,8 +89,8 @@ module Elasticsearch
 
       # @deprecated Use the plural version, {#termvectors}
       #
-      def termvector(arguments={})
-        termvectors(arguments.merge :endpoint => '_termvector')
+      def termvector(arguments={} of Symbol => String)
+        termvectors(arguments.merge({:endpoint => "_termvector"}))
       end
     end
   end

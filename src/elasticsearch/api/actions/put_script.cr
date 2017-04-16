@@ -27,7 +27,7 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-scripting.html#_indexed_scripts
       #
-      def put_script(arguments={})
+      def put_script(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'id' missing"   unless arguments[:id]
         raise ArgumentError, "Required argument 'lang' missing" unless arguments[:lang]
         raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
@@ -37,7 +37,7 @@ module Elasticsearch
           :version,
           :version_type ]
 
-        method = HTTP_PUT
+        method = "PUT"
         path   = "_scripts/#{arguments.delete(:lang)}/#{arguments[:id]}"
 
         params = Utils.__validate_and_extract_params arguments, valid_params

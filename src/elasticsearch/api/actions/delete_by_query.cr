@@ -53,7 +53,7 @@ module Elasticsearch
       #
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html
       #
-      def delete_by_query(arguments={})
+      def delete_by_query(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
 
         valid_params = [
@@ -93,7 +93,7 @@ module Elasticsearch
         method = HTTP_POST
         path   = Utils.__pathify Utils.__listify(arguments[:index]),
                                  Utils.__listify(arguments[:type]),
-                                 '/_delete_by_query'
+                                 "/_delete_by_query"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

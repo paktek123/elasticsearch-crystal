@@ -14,7 +14,7 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodeattrs.html
         #
-        def nodeattrs(arguments={} of Symbol => Char)
+        def nodeattrs(arguments={} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,

@@ -18,14 +18,14 @@ module Elasticsearch
       #
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-search-template.html
       #
-      def msearch_template(arguments={})
+      def msearch_template(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
 
         valid_params = [ :search_type ]
-        method = HTTP_GET
+        method = "GET"
         path   = Utils.__pathify Utils.__listify(arguments[:index]),
                                  Utils.__listify(arguments[:type]),
-                                 '_msearch/template'
+                                 "_msearch/template"
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]
 

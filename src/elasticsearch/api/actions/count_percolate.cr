@@ -48,7 +48,7 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-percolate.html
       #
-      def count_percolate(arguments={})
+      def count_percolate(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
         raise ArgumentError, "Required argument 'type' missing"  unless arguments[:type]
         valid_params = [
@@ -62,11 +62,11 @@ module Elasticsearch
           :version,
           :version_type ]
 
-        method = HTTP_GET
+        method = "GET"
         path   = Utils.__pathify Utils.__escape(arguments[:index]),
                                  Utils.__escape(arguments[:type]),
                                  arguments[:id],
-                                 '_percolate/count'
+                                 "_percolate/count"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

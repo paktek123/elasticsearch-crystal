@@ -28,7 +28,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-master.html
         #
-        def master(arguments={} of Symbol => Char)
+        def master(arguments={} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,
@@ -37,7 +37,7 @@ module Elasticsearch
             :v,
             :s ]
 
-          method = HTTP_GET
+          method = "GET"
           path   = "_cat/master"
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil

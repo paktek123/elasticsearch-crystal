@@ -29,7 +29,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-health.html
         #
-        def health(arguments={} of Symbol => Char)
+        def health(arguments={} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,
@@ -39,7 +39,7 @@ module Elasticsearch
             :v,
             :s ]
 
-          method = HTTP_GET
+          method = "GET"
           path   = "_cat/health"
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h]) if params[:h]

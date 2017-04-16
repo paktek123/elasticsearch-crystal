@@ -34,7 +34,7 @@ module Elasticsearch
       # @see #mget
       # @see #termvector
       #
-      def mtermvectors(arguments={})
+      def mtermvectors(arguments={} of Symbol => String)
         valid_params = [
           :ids,
           :term_statistics,
@@ -50,10 +50,10 @@ module Elasticsearch
 
         ids = arguments.delete(:ids)
 
-        method = HTTP_GET
+        method = "GET"
         path   = Utils.__pathify Utils.__escape(arguments[:index]),
                                  Utils.__escape(arguments[:type]),
-                                 '_mtermvectors'
+                                 "_mtermvectors"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
 

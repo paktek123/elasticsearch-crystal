@@ -33,7 +33,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/get/
       #
-      def get(arguments={})
+      def get(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
         raise ArgumentError, "Required argument 'id' missing"    unless arguments[:id]
         arguments[:type] ||= UNDERSCORE_ALL
@@ -53,7 +53,7 @@ module Elasticsearch
           :_source_transform,
           :stored_fields ]
 
-        method = HTTP_GET
+        method = "GET"
         path   = Utils.__pathify Utils.__escape(arguments[:index]),
                                  Utils.__escape(arguments[:type]),
                                  Utils.__escape(arguments[:id])
@@ -63,7 +63,7 @@ module Elasticsearch
 
         params[:fields] = Utils.__listify(params[:fields]) if params[:fields]
 
-        if Array(arguments[:ignore]).include?(404)
+        if arguments[:ignore].include?(404)
           Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }
         else
           perform_request(method, path, params, body).body

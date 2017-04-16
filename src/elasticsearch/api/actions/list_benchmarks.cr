@@ -14,10 +14,10 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-benchmark.html
       #
-      def list_benchmarks(arguments={})
-        method = HTTP_GET
+      def list_benchmarks(arguments={} of Symbol => String)
+        method = "GET"
         path   = "_bench"
-        params = {}
+        params = {} of String => String
         body   = nil
 
         perform_request(method, path, params, body).body

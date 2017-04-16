@@ -13,14 +13,14 @@ module Elasticsearch
       #
       # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/search-field-stats.html
       #
-      def field_stats(arguments={})
+      def field_stats(arguments={} of Symbol => String)
         valid_params = [
           :fields,
           :level,
           :ignore_unavailable,
           :allow_no_indices,
           :expand_wildcards ]
-        method = 'GET'
+        method = "GET"
         path   = Utils.__pathify Utils.__escape(arguments[:index]), "_field_stats"
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

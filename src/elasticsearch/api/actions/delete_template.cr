@@ -8,10 +8,10 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-template.html
       #
-      def delete_template(arguments={})
+      def delete_template(arguments={} of Symbol => String)
         method = HTTP_DELETE
         path   = "_search/template/#{arguments[:id]}"
-        params = {}
+        params = {} of String => String
         body   = nil
 
         perform_request(method, path, params, body).body

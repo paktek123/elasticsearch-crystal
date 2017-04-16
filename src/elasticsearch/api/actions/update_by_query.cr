@@ -64,7 +64,7 @@ module Elasticsearch
       #
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html
       #
-      def update_by_query(arguments={})
+      def update_by_query(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
 
         valid_params = [
@@ -111,11 +111,11 @@ module Elasticsearch
           :wait_for_completion,
           :requests_per_second ]
 
-        method = HTTP_POST
+        method = "POST"
 
         path   = Utils.__pathify Utils.__listify(arguments[:index]),
                                  Utils.__listify(arguments[:type]),
-                                 '/_update_by_query'
+                                 "/_update_by_query"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
 

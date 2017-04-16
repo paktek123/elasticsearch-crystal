@@ -51,7 +51,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-indices.html
         #
-        def indices(arguments={} of Symbol => Char)
+        def indices(arguments={} of Symbol => String)
           valid_params = [
             :bytes,
             :h,
@@ -65,7 +65,7 @@ module Elasticsearch
 
           index = arguments.delete(:index)
 
-          method = HTTP_GET
+          method = "GET"
 
           path   = Utils.__pathify "_cat/indices", Utils.__listify(index)
 

@@ -38,7 +38,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-thread-pool.html
         #
-        def thread_pool(arguments={} of Symbol => Char)
+        def thread_pool(arguments={} of Symbol => String)
           valid_params = [
             :full_id,
             :size,
@@ -50,7 +50,7 @@ module Elasticsearch
             :v,
             :s ]
 
-          method = HTTP_GET
+          method = "GET"
           path   = "_cat/thread_pool"
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h]) if params[:h]

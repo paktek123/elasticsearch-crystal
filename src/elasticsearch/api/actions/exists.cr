@@ -26,7 +26,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/get/
       #
-      def exists(arguments={})
+      def exists(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'id' missing"    unless arguments[:id]
         raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
         arguments[:type] ||= UNDERSCORE_ALL
@@ -44,7 +44,7 @@ module Elasticsearch
           :version,
           :version_type ]
 
-        method = HTTP_HEAD
+        method = "HEAD"
         path   = Utils.__pathify Utils.__escape(arguments[:index]),
                                  Utils.__escape(arguments[:type]),
                                  Utils.__escape(arguments[:id])
@@ -57,7 +57,7 @@ module Elasticsearch
         end
       end
 
-      alias_method :exists?, :exists
+      #alias_method :exists?, :exists
     end
   end
 end

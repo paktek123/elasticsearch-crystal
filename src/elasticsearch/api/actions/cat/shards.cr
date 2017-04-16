@@ -50,7 +50,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-shards.html
         #
-        def shards(arguments={} of Symbol => Char)
+        def shards(arguments={} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,
@@ -62,7 +62,7 @@ module Elasticsearch
 
           index = arguments.delete(:index)
 
-          method = HTTP_GET
+          method = "GET"
 
           path   = Utils.__pathify "_cat/shards", Utils.__listify(index)
 

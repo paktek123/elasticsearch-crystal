@@ -37,7 +37,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-nodes.html
         #
-        def nodes(arguments={} of Symbol => Char)
+        def nodes(arguments={} of Symbol => String)
           valid_params = [
             :full_id,
             :local,
@@ -47,7 +47,7 @@ module Elasticsearch
             :v,
             :s ]
 
-          method = HTTP_GET
+          method = "GET"
           path   = "_cat/nodes"
 
           params = Utils.__validate_and_extract_params arguments, valid_params

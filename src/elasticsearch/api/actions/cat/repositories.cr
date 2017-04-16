@@ -21,7 +21,7 @@ module Elasticsearch
         #
         # @see https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-repositories.html
         #
-        def repositories(arguments={} of Symbol => Char)
+        def repositories(arguments={} of Symbol => String)
           valid_params = [
             :master_timeout,
             :h,
@@ -29,7 +29,7 @@ module Elasticsearch
             :v,
             :s ]
 
-          method = HTTP_GET
+          method = "GET"
           path   = "_cat/repositories"
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil

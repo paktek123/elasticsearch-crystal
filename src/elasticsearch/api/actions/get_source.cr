@@ -31,7 +31,7 @@ module Elasticsearch
       #
       # @since 0.90.1
       #
-      def get_source(arguments={})
+      def get_source(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
         raise ArgumentError, "Required argument 'id' missing"    unless arguments[:id]
         arguments[:type] ||= UNDERSCORE_ALL
@@ -47,11 +47,11 @@ module Elasticsearch
           :_source_include,
           :_source_exclude ]
 
-        method = HTTP_GET
+        method = "GET"
         path   = Utils.__pathify Utils.__escape(arguments[:index]),
                                  Utils.__escape(arguments[:type]),
                                  Utils.__escape(arguments[:id]),
-                                 '_source'
+                                 "_source"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = nil

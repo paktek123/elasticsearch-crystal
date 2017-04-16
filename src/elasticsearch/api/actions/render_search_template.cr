@@ -9,11 +9,11 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-template.html
       #
-      def render_search_template(arguments={})
+      def render_search_template(arguments={} of Symbol => String)
         valid_params = [
           :id
         ]
-        method = 'GET'
+        method = "GET"
         path   = "_render/template"
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

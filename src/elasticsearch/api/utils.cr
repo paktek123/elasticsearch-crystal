@@ -14,7 +14,7 @@ module Elasticsearch
       #     __escape('bar^bam') # => 'bar%5Ebam'
       #
       # @api private
-      private def __escape(string)
+      def __escape(string)
         return string if string == '*'
         HTML.escape(string.to_s)
       end
@@ -35,8 +35,9 @@ module Elasticsearch
       #
       # @api private
       def __listify(*tuple)
-        list = [] of String | Nil | Char | Bool | Array(String)
+        list = [] of String | Array(String)
         tuple.each { |e| list << e }
+
         if list.last.is_a?(Hash)
           options = {:escape => false} 
         else
@@ -51,6 +52,18 @@ module Elasticsearch
           join(',')
       end
 
+      def __sort_booleans(arg_hash)
+        new_hash = {} of Symbol => String | Bool | Array(String)
+        arg_hash.each do |k,v|
+          if !!v == v
+            new_hash[k] = ""
+          else
+            new_hash[k] = v
+          end
+        end
+        #puts "THIS IS THE NEW HASH #{new_hash}"
+        new_hash
+      end
       # Create a path (URL part) from arguments, ignoring nil values and empty strings.
       #
       # @example Create a path from array
@@ -65,7 +78,7 @@ module Elasticsearch
       # @api private
       def __pathify(*segments)
         list = [] of String
-        segments.each { |e| list << e }
+        segments.each { |e| list << e.as(String) }
         Array.new(1,list).first.flatten.
           compact.
           reject { |s| s.to_s =~ /^\s*$/ }.
@@ -165,18 +178,25 @@ module Elasticsearch
         end
       end
 
-      private def __extract_params(arguments, params=[] of Symbol, options={} of Symbol => Char)
-        result = {} of Symbol | Char => Char | String | Bool | Array(String)
+      private def __extract_params(arguments, params=[] of Symbol, options={} of Symbol => Char) #: Hash(Symbol, String | Bool)
+        #result = {} of Symbol | Char => Char | String | Bool | Array(String)
+        
+        params += Elasticsearch::API::Common::Constants::COMMON_QUERY_PARAMS + Elasticsearch::API::Common::Constants::COMMON_PARAMS
+        #puts "extract_params: args are #{arguments}, checking against #{params}"
         arguments.each do |k,v|
-          if Elasticsearch::API::Common::Constants::COMMON_QUERY_PARAMS.includes?(k) || params.includes?(k)
-            result[k] = v
+          if !params.includes? k
+            #result[k] = v
+            arguments.delete(k)
           end
         end
         #result = arguments.select { |k,v| COMMON_QUERY_PARAMS.includes?(k) || params.includes?(k) }
         # TODO
         #result = Hash[result] unless result.is_a?(Hash) # Normalize Ruby 1.8 and Ruby 1.9 Hash#select behaviour
         #result = result.map { |k,v| v.is_a?(Array) ? Hash.new(k, __listify(v, options)) : Hash.new(k,v)  }] # Listify Arrays
-        result
+        #result
+        #puts "THIS IS WHAT EXTRACT PARAMS LEFT ME #{arguments}"
+        arguments
+        #result
       end
 
       # Extracts the valid parts of the URL from the arguments
@@ -210,7 +230,7 @@ module Elasticsearch
       #
       # @api private
       #
-      private def __rescue_from_not_found(&block)
+      def __rescue_from_not_found(&block)
         yield
       rescue e : Exception
         if e.class.to_s =~ /NotFound/ || e.message =~ /Not\s*Found|404/i

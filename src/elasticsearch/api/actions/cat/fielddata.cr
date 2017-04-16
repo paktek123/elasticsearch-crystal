@@ -25,7 +25,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-fielddata.html
         #
-        def fielddata(arguments={} of Symbol => Char)
+        def fielddata(arguments={} of Symbol => String)
           valid_params = [
             :bytes,
             :local,
@@ -38,7 +38,7 @@ module Elasticsearch
 
           fields = arguments.delete(:fields)
 
-          method = HTTP_GET
+          method = "GET"
           path   = Utils.__pathify "_cat/fielddata", Utils.__listify(fields)
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil

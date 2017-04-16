@@ -16,7 +16,7 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-templates.html
         #
-        def templates(arguments={} of Symbol => Char)
+        def templates(arguments={} of Symbol => String)
           valid_params = [
             :name,
             :format,
@@ -26,7 +26,7 @@ module Elasticsearch
             :help,
             :v,
             :s ]
-          method = HTTP_GET
+          method = "GET"
           path   = "_cat/templates"
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil

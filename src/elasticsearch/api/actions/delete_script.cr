@@ -11,7 +11,7 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-scripting.html
       #
-      def delete_script(arguments={})
+      def delete_script(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'id' missing"   unless arguments[:id]
         raise ArgumentError, "Required argument 'lang' missing" unless arguments[:lang]
 

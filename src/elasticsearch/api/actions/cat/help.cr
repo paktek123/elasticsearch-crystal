@@ -9,10 +9,10 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat.html
         #
-        def help(arguments={} of Symbol => Char)
+        def help(arguments={} of Symbol => String)
           valid_params = [
             :help ]
-          method = HTTP_GET
+          method = "GET"
           path   = "_cat"
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil

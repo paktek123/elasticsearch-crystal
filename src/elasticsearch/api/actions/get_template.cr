@@ -9,14 +9,14 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-template.html
       #
-      def get_template(arguments={})
+      def get_template(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'id' missing" unless arguments[:id]
-        method = HTTP_GET
+        method = "GET"
         path   = "_search/template/#{arguments[:id]}"
-        params = {}
+        params = {} of String => String
         body   = arguments[:body]
 
-        if Array(arguments[:ignore]).include?(404)
+        if arguments[:ignore].includes?(404)
           Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }
         else
           perform_request(method, path, params, body).body

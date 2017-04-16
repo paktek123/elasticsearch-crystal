@@ -28,7 +28,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/delete/
       #
-      def delete(arguments={})
+      def delete(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
         raise ArgumentError, "Required argument 'type' missing"  unless arguments[:type]
         raise ArgumentError, "Required argument 'id' missing"    unless arguments[:id]
@@ -43,7 +43,7 @@ module Elasticsearch
           :version,
           :version_type ]
 
-        method = HTTP_DELETE
+        method = "DELETE"
         path   = Utils.__pathify Utils.__escape(arguments[:index]),
                                  Utils.__escape(arguments[:type]),
                                  Utils.__escape(arguments[:id])
@@ -51,7 +51,7 @@ module Elasticsearch
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = nil
 
-        if Array(arguments[:ignore]).include?(404)
+        if arguments[:ignore].includes?(404)
           Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }
         else
           perform_request(method, path, params, body).body

@@ -35,7 +35,7 @@ module Elasticsearch
       #
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-multi-search.html
       #
-      def msearch(arguments={})
+      def msearch(arguments={} of Symbol => String)
         raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
 
          valid_params = [
@@ -43,8 +43,8 @@ module Elasticsearch
           :max_concurrent_searches,
           :typed_keys ]
 
-        method = HTTP_GET
-        path   = Utils.__pathify( Utils.__listify(arguments[:index]), Utils.__listify(arguments[:type]), '_msearch' )
+        method = "GET"
+        path   = Utils.__pathify( Utils.__listify(arguments[:index]), Utils.__listify(arguments[:type]), "_msearch" )
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]
@@ -52,7 +52,7 @@ module Elasticsearch
         case
         when body.is_a?(Array) && body.any? { |d| d.has_key? :search }
           payload = body.
-            inject([]) do |sum, item|
+            inject([] of String) do |sum, item|
               meta = item
               data = meta.delete(:search)
 

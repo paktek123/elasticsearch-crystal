@@ -15,7 +15,7 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-plugins.html
         #
-        def plugins(arguments={} of Symbol => Char)
+        def plugins(arguments={} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,

@@ -48,8 +48,8 @@ module Elasticsearch
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/guide/current/scan-scroll.html#scan-scroll
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html
       #
-      def scroll(arguments={})
-        method = HTTP_GET
+      def scroll(arguments={} of Symbol => String)
+        method = "GET"
         path   = "_search/scroll"
         valid_params = [
           :scroll,

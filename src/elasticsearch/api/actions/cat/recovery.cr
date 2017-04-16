@@ -46,7 +46,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-recovery.html
         #
-        def recovery(arguments={} of Symbol => Char)
+        def recovery(arguments={} of Symbol => String)
           valid_params = [
             :bytes,
             :local,
@@ -58,7 +58,7 @@ module Elasticsearch
 
           index = arguments.delete(:index)
 
-          method = HTTP_GET
+          method = "GET"
 
           path   = Utils.__pathify "_cat/recovery", Utils.__listify(index)
 

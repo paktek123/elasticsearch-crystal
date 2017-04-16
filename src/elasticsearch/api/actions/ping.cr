@@ -10,15 +10,15 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/
       #
-      def ping(arguments={})
+      def ping(arguments={} of Symbol => String)
         method = HTTP_HEAD
         path   = ""
-        params = {}
+        params = {} of String => String
         body   = nil
 
         begin
           perform_request(method, path, params, body).status == 200 ? true : false
-        rescue Exception => e
+        rescue e : Exception
           if e.class.to_s =~ /NotFound|ConnectionFailed/ || e.message =~ /Not\s*Found|404|ConnectionFailed/i
             false
           else

@@ -45,7 +45,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-aliases.html
         #
-        def aliases(arguments={} of Symbol | Char => Char | String)
+        def aliases(arguments={} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,
@@ -54,17 +54,18 @@ module Elasticsearch
             :v,
             :s ]
 
-          name = arguments.delete(:name)
+          name = arguments.delete(:name) || ""
 
-          method = Elasticsearch::API::Common::Constants::HTTP_GET
-
-          path   = Utils.__pathify "_cat/aliases", Utils.__listify(name)
+          method = "GET"
+          #arguments = Utils.__sort_booleans(arguments)
+          path   = Utils.__pathify "_cat/aliases", Utils.__listify(name.as(String))
+          arguments = Utils.__sort_booleans(arguments)
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          params[:h] = Utils.__listify(params[:h]) if params.has_key? :h
-
+          params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key? :h
+          #arguments = Utils.__sort_booleans(arguments)
           body   = nil
-
+          #puts "I AM SENDING: #{method} #{path} #{params} #{body}"
           perform_request(method, path, params, body).body
         end
       end

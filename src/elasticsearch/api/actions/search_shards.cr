@@ -21,7 +21,7 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-shards.html
       #
-      def search_shards(arguments={})
+      def search_shards(arguments={} of Symbol => String)
         valid_params = [
           :preference,
           :routing,
@@ -29,8 +29,8 @@ module Elasticsearch
           :ignore_unavailable,
           :allow_no_indices,
           :expand_wildcards ]
-        method = HTTP_GET
-        path   = Utils.__pathify( Utils.__listify(arguments[:index]), Utils.__listify(arguments[:type]), '_search_shards' )
+        method = "GET"
+        path   = Utils.__pathify( Utils.__listify(arguments[:index]), Utils.__listify(arguments[:type]), "_search_shards" )
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = nil
 
