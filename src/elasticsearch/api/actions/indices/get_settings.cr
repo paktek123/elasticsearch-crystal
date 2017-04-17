@@ -53,13 +53,25 @@ module Elasticsearch
             :local
           ]
 
+          if !arguments.has_key? :type
+            arguments[:type] = ""
+          end
+
+          if !arguments.has_key? :name
+            arguments[:name] = ""
+          end
+
+          if !arguments.has_key? :prefix
+            arguments[:prefix] = ""
+          end
+
           method = "GET"
           path   = Utils.__pathify Utils.__listify(arguments[:index]),
                                    Utils.__listify(arguments[:type]),
                                    arguments.delete(:prefix),
                                    "_settings",
                                    Utils.__escape(arguments[:name])
-          params = Utils.__validate_and_extract_params arguments, valid_params
+          params = Utils.__validate_and_extract_params arguments, valid_params, [:index, :type, :name, :prefix]
           body   = nil
 
           perform_request(method, path, params, body).body

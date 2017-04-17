@@ -42,6 +42,10 @@ module Elasticsearch
             :local
           ]
 
+          if !arguments.has_key? :type
+            arguments[:type] = ""
+          end
+
           method = "GET"
           path   = Utils.__pathify Utils.__listify(arguments[:index]),
                                    "_mapping",

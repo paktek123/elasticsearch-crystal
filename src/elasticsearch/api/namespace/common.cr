@@ -35,6 +35,12 @@ module Elasticsearch
         UNDERSCORE_ALL    = "_all"
       end
 
+      class Response
+        getter :status, :body, :headers
+        def initialize(@status : Int32, @body : String | JSON::Any, @headers : HTTP::Headers)
+        end
+      end
+
       class Client
         #@settings : Hash(Symbol, String | Int32)
         def initialize(@settings : Hash(Symbol, String | Int32)) 
@@ -56,8 +62,6 @@ module Elasticsearch
           #puts new_params
           final_params = HTTP::Params.from_hash(new_params)
           #endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}?#{final_params}"
-
-          #puts "THE BODY IS #{body}"
 
           if !body.nil?
             post_data = body.to_json
@@ -82,7 +86,14 @@ module Elasticsearch
 
           #puts "#{method} #{endpoint} #{params} #{new_params} #{post_data}" 
           # return as HTTP::Client::Response otherwise it return Nil
-          response.as(HTTP::Client::Response)
+          result = response.as(HTTP::Client::Response)
+          if result.headers["Content-Type"] == "application/json"
+            final_response = Response.new result.status_code, JSON.parse(result.body), result.headers
+          else
+            final_response = Response.new result.status_code, result.body.as(String), result.headers
+          end
+          final_response
+          #response.as(HTTP::Client::Response)
         end
       end
     end

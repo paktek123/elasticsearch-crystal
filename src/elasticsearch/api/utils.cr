@@ -162,12 +162,12 @@ module Elasticsearch
       #
       # @api private
       #
-      def __validate_and_extract_params(arguments, params=[] of Symbol, options={} of Symbol => Char)
+      def __validate_and_extract_params(arguments, params=[] of Symbol, exclude=[] of Symbol)
         #if options[:skip_parameter_validation] || Elasticsearch::API.settings[:skip_parameter_validation]
         #  arguments
         #else
         __validate_params(arguments, params)
-        __extract_params(arguments, params, options.merge({:escape => false}))
+        __extract_params(arguments, params, exclude)
         #end
       end
 
@@ -178,23 +178,28 @@ module Elasticsearch
         end
       end
 
-      private def __extract_params(arguments, params=[] of Symbol, options={} of Symbol => Char) #: Hash(Symbol, String | Bool)
+      private def __extract_params(arguments, params=[] of Symbol, exclude=[] of Symbol) #: Hash(Symbol, String | Bool)
         #result = {} of Symbol | Char => Char | String | Bool | Array(String)
         
         params += Elasticsearch::API::Common::Constants::COMMON_QUERY_PARAMS + Elasticsearch::API::Common::Constants::COMMON_PARAMS
+        params -= exclude
         #puts "extract_params: args are #{arguments}, checking against #{params}"
         arguments.each do |k,v|
           if !params.includes? k
             #result[k] = v
             arguments.delete(k)
           end
+
+          #if exclude.includes?(k)
+          #  arguments.delete(k)
+          #end
         end
         #result = arguments.select { |k,v| COMMON_QUERY_PARAMS.includes?(k) || params.includes?(k) }
         # TODO
         #result = Hash[result] unless result.is_a?(Hash) # Normalize Ruby 1.8 and Ruby 1.9 Hash#select behaviour
         #result = result.map { |k,v| v.is_a?(Array) ? Hash.new(k, __listify(v, options)) : Hash.new(k,v)  }] # Listify Arrays
         #result
-        #puts "THIS IS WHAT EXTRACT PARAMS LEFT ME #{arguments}"
+        #puts "THIS IS WHAT EXTRACT PARAMS LEFT ME #{arguments}, removing #{exclude}"
         arguments
         #result
       end

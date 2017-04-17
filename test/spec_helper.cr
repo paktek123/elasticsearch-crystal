@@ -1,71 +1,53 @@
-#require "spec"
 require "../src/elasticsearch/api"
 require "spec"
-#require "spec2-mocks"
-require "cossack"
-
+require "json"
+require "yaml"
 
 module Elasticsearch
   module Test
-    class FakeClient
-      include Elasticsearch::API
-
-      def perform_request(method, path, params, body)
-        puts "PERFORMING REQUEST:", "--> #{method.to_s.upcase} #{path} #{params} #{body}"
-        FakeResponse.new(200, "FAKE", {} of Char => Char)
+    class Client < Elasticsearch::API::Client
+      def initialize(@settings : Hash(Symbol, Int32 | String))
+        super
       end
-    end
-
-    class FakeResponse
-      getter :status, :body, :headers
-
-      def initialize(status=200, body="{}", headers={} of Char => Char)
-        @status = status
-        @body = body
-        @headers = headers
-      end
-    end
-
-    class NotFound < Exception; end
-  end
-end
-
-class Response
-  getter :status, :body, :headers
-
-  def initialize(@status=200, @body="{}", @headers={} of Char => Char)
-  end
-end
-
-module Elasticsearch
-  class Client
-    def initialize(@host="localhost", @port=9200)
-    end
-
-    #def change_hash_into_http_params(params)
-    #  param_string = ""
-    #  params.each |k,v| do
-    #    param_string += "#{k}=#{v}"
-    #  param_string
-
-    def perform_request(method, path, params={} of Char => Char, body={} of Char => Char) 
-      #transform_params = change_hash_into_http_params(params)
-
-      if method == "GET"
-        response = Cossack.get("http://#{@host}:#{port}/#{path}", params=params)
-      elsif method == "POST"
-        response = Cossack.post("http://#{@host}:#{port}/#{path}", body=JSON.parse(body))
-      elsif method == "PUT"
-        response = Cossack.put("http://#{@host}:#{port}/#{path}", body=JSON.parse(body))
-      elsif method == "DELETE"
-        response = Cossack.delete("http://#{@host}:#{port}/#{path}", params=params)
-      end
-
-      response
     end
   end
 end
 
 
-        
-        
+
+#def run_test()
+c = YAML.parse_all(File.read("tmp/elasticsearch/rest-api-spec/src/main/resources/rest-api-spec/test/indices.create/10_basic.yaml"))
+  
+  #puts 
+macro generate_test(data)
+  {% for blah in data %}
+  {% for test_name, steps in blah %}
+  context {{test_name.id}} do
+    it should {{test_name.id}} do
+      {% for action, params in steps %}
+      {% if action == "do" %}
+      {% for method, args in params %}
+      result = subject.{{method.id}}({{args.id}})
+      {% end %}
+      {% end %}
+      {% if action == "match" %}
+      result.should match {{steps["match"].id}}
+      {% end %}
+      {% end %}
+    end
+  end
+  {% end %}
+  {% end %}
+end
+
+generate_test(c)
+  
+#end
+  #c.each |test| do
+  #  test.each do |test_name,steps|
+  #    steps.each do |action, params|
+  #      if action == "do"
+  #        params.each do |method, 
+  #        {% for method in params %}
+  #    }
+
