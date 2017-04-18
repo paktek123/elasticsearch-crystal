@@ -19,7 +19,9 @@ module Elasticsearch
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-templates/
         #
         def delete_template(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'name' missing" unless arguments[:name]
+          if !arguments.has_key?(:name)
+            raise ArgumentError.new("Required argument 'name' missing")
+          end
           valid_params = [ :timeout ]
 
           method = "DELETE"

@@ -50,7 +50,9 @@ module Elasticsearch
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html
       #
       def reindex(arguments={} of Symbol => String)
-        raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
+        if !arguments.has_key?(:body) 
+          raise ArgumentError.new("Required argument 'body' missing")
+        end
         valid_params = [
           :refresh,
           :timeout,

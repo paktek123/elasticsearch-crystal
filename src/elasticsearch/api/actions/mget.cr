@@ -45,7 +45,9 @@ module Elasticsearch
       # @see http://elasticsearch.org/guide/reference/api/multi-get/
       #
       def mget(arguments={} of Symbol => String)
-        raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
+        if !arguments.has_key?(:body)
+          raise ArgumentError.new("Required argument 'body' missing")
+        end
 
         valid_params = [
           :fields,

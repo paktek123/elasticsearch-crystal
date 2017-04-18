@@ -30,7 +30,9 @@ module Elasticsearch
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-percolate.html
       #
       def mpercolate(arguments={} of Symbol => String)
-        raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
+        if !arguments.has_key?(:body)
+          raise ArgumentError.new("Required argument 'body' missing")
+        end
         valid_params = [
           :ignore_unavailable,
           :allow_no_indices,

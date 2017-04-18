@@ -27,7 +27,9 @@ module Elasticsearch
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-indices-exists/
         #
         def exists(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
+          if !arguments.has_key?(:index)
+            raise ArgumentError.new("Required argument 'index' missing")
+          end
 
           valid_params = [
             :ignore_indices,

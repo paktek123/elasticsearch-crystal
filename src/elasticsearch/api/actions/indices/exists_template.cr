@@ -14,7 +14,9 @@ module Elasticsearch
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/indices-templates.html
         #
         def exists_template(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'name' missing" unless arguments[:name]
+          if !arguments.has_key?(:name)
+            raise ArgumentError.new("Required argument 'name' missing")
+          end
           valid_params = [ :local, :master_timeout ]
 
           method = "HEAD"

@@ -25,8 +25,9 @@ module Elasticsearch
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-types-exists/
         #
         def exists_type(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
-          raise ArgumentError, "Required argument 'type' missing" unless arguments[:type]
+          if !arguments.has_key?(:index) || !arguments.has_key?(:type)
+            raise ArgumentError.new("Required argument 'index' and 'type' missing")
+          end
           valid_params = [
             :ignore_indices,
             :ignore_unavailable,

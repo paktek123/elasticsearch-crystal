@@ -34,8 +34,9 @@ module Elasticsearch
       # @see http://elasticsearch.org/guide/reference/api/get/
       #
       def get(arguments={} of Symbol => String)
-        raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
-        raise ArgumentError, "Required argument 'id' missing"    unless arguments[:id]
+        if !arguments.has_key?(:id) || !arguments.has_key?(:index)
+          raise ArgumentError.new("Required argument 'id' or 'index' missing")
+        end
         arguments[:type] ||= UNDERSCORE_ALL
 
         valid_params = [

@@ -32,8 +32,9 @@ module Elasticsearch
       # @since 0.90.1
       #
       def get_source(arguments={} of Symbol => String)
-        raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
-        raise ArgumentError, "Required argument 'id' missing"    unless arguments[:id]
+        if !arguments.has_key?(:id) || !arguments.has_key?(:index)
+          raise ArgumentError.new("Required argument 'id' or 'index' missing")
+        end
         arguments[:type] ||= UNDERSCORE_ALL
 
         valid_params = [

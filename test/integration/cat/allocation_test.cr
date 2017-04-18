@@ -1,26 +1,48 @@
-require 'test_helper'
+require "../../spec_helper"
 
 module Elasticsearch
   module Test
-    class CatAllocationTest < ::Test::Unit::TestCase
+    class CatAllocationTest
+      include Spec
 
       context "Cat: Allocation" do
-        subject { FakeClient.new }
+        subject = Elasticsearch::Test::Client.new({:host => "localhost", :port => 9250})
 
-        should "perform correct request" do
-          subject.expects(:perform_request).with do |method, url, params, body|
-            assert_equal 'GET', method
-            assert_equal '_cat/allocation', url
-            assert_equal Hash.new, params
-            assert_nil   body
-            true
-          end.returns(FakeResponse.new)
-
-          subject.cat.allocation
+        Spec.after_each do
+          subject.indices.delete({:index => "test"})
         end
 
-      end
+        it "help" do
+          subject.cat.allocation({:help => true}).should match /^shards/
+        end
 
+        it "empty cluster" do
+          (subject.cat.allocation.as(String).empty?).should be_true
+        end
+
+        it "one index" do
+          subject.indices.create({:index => "test"})
+          subject.cat.allocation.as(String).should match /UNASSIGNED/
+        end
+
+        it "node id" do
+          subject.indices.create({:index => "test"})
+          subject.cat.allocation({:node_id => "_master"}).should match /UNASSIGNED/
+        end
+
+        it "all nodes" do
+          subject.indices.create({:index => "test"})
+          subject.cat.allocation({:node_id => "*"}).should match /UNASSIGNED/
+        end
+
+        it "column headers" do
+          subject.cat.allocation({:v => true}).should match /^shards/
+        end
+
+        it "select columns" do
+          subject.cat.allocation({:h => "disk.percent,node", :v => true}).should match /^disk\.percent/
+        end
+      end
     end
   end
 end

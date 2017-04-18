@@ -37,7 +37,9 @@ module Elasticsearch
           arguments = arguments.clone
 
           fields = arguments.delete(:field) || arguments.delete(:fields)
-          raise ArgumentError, "Required argument 'field' missing" unless fields
+          if !arguments.has_key?(:field)
+            raise ArgumentError.new("Required argument 'field' missing")
+          end
 
           valid_params = [
             :include_defaults,

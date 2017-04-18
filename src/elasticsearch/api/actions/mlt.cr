@@ -82,9 +82,9 @@ module Elasticsearch
       # @see http://elasticsearch.org/guide/reference/api/more-like-this/
       #
       def mlt(arguments={} of Symbol => String)
-        raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
-        raise ArgumentError, "Required argument 'type' missing"  unless arguments[:type]
-        raise ArgumentError, "Required argument 'id' missing"    unless arguments[:id]
+        if !arguments.has_key?(:index) || !arguments.has_key?(:type) || !arguments.has_key?(:id)
+          raise ArgumentError.new("Required argument 'index' or 'type' or 'id' missing")
+        end
 
         valid_params = [
           :boost_terms,

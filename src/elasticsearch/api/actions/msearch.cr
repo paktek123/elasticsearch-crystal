@@ -36,7 +36,9 @@ module Elasticsearch
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-multi-search.html
       #
       def msearch(arguments={} of Symbol => String)
-        raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
+        if !arguments.has_key?(:body)
+          raise ArgumentError.new("Required argument 'body' missing")
+        end
 
          valid_params = [
           :search_type,

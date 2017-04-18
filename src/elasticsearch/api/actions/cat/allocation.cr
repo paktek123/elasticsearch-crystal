@@ -52,14 +52,16 @@ module Elasticsearch
             :v,
             :s ]
 
-          node_id = arguments.delete(:node_id)
+          
+          node_id = arguments.delete(:node_id) || ""
 
           method = "GET"
 
-          path   = Utils.__pathify "_cat/allocation", Utils.__listify(node_id)
+          arguments = Utils.__sort_booleans(arguments)
+          path   = Utils.__pathify "_cat/allocation", Utils.__listify(node_id.as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          params[:h] = Utils.__listify(params[:h]) if params[:h]
+          params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key? :h
 
           body   = nil
 

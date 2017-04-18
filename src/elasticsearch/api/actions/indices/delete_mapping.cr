@@ -11,8 +11,9 @@ module Elasticsearch
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-delete-mapping/
         #
         def delete_mapping(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
-          raise ArgumentError, "Required argument 'type' missing"  unless arguments[:type]
+          if !arguments.has_key?(:index) || !arguments.has_key?(:type)
+            raise ArgumentError.new("Required argument 'index' and 'type' missing")
+          end
           method = "DELETE"
           path   = Utils.__pathify Utils.__listify(arguments[:index]), Utils.__escape(arguments[:type])
           params = {} of String => String

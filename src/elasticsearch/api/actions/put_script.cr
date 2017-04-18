@@ -28,9 +28,9 @@ module Elasticsearch
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-scripting.html#_indexed_scripts
       #
       def put_script(arguments={} of Symbol => String)
-        raise ArgumentError, "Required argument 'id' missing"   unless arguments[:id]
-        raise ArgumentError, "Required argument 'lang' missing" unless arguments[:lang]
-        raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
+        if !arguments.has_key?(:body) || !arguments.has_key?(:lang) || !arguments.has_key?(:id)
+          raise ArgumentError.new("Required argument 'body' or 'lang' or 'id' missing")
+        end
 
         valid_params = [
           :op_type,

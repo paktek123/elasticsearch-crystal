@@ -24,7 +24,9 @@ module Elasticsearch
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/indices-get-index.html
         #
         def get(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
+          if !arguments.has_key?(:index)
+            raise ArgumentError.new("Required argument 'index' missing")
+          end
 
           valid_params = [
             :local,

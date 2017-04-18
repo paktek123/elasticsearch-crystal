@@ -16,7 +16,9 @@ module Elasticsearch
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html
         #
         def rollover(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'alias' missing" unless arguments[:alias]
+          if !arguments.has_key?(:alias)
+            raise ArgumentError.new("Required argument 'alias' missing")
+          end
 
           valid_params = [
             :wait_for_active_shards,

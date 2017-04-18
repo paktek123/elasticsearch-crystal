@@ -17,8 +17,9 @@ module Elasticsearch
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shrink-index.html
         #
         def shrink(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
-          raise ArgumentError, "Required argument 'target' missing" unless arguments[:target]
+          if !arguments.has_key?(:index) || !arguments.has_key?(:target)
+            raise ArgumentError.new("Required argument 'index' and 'target' missing")
+          end
 
           valid_params = [
             :wait_for_active_shards,

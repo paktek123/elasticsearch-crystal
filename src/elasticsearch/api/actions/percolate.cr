@@ -75,8 +75,9 @@ module Elasticsearch
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-percolate.html
       #
       def percolate(arguments={} of Symbol => String)
-        raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
-        raise ArgumentError, "Required argument 'type' missing"  unless arguments[:type]
+        if !arguments.has_key?(:type) || !arguments.has_key?(:index)
+          raise ArgumentError.new("Required argument 'type' or 'index' missing")
+        end
 
         valid_params = [
           :routing,

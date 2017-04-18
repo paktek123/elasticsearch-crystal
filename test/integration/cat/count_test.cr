@@ -1,26 +1,25 @@
-require 'test_helper'
+require "../../spec_helper"
 
 module Elasticsearch
   module Test
-    class CatCountTest < ::Test::Unit::TestCase
+    class CatCountTest
+      include Spec
 
-      context "Cat: Count" do
-        subject { FakeClient.new }
+      context "Cat: Count: " do
+        subject = Elasticsearch::Test::Client.new({:host => "localhost", :port => 9250})
 
-        should "perform correct request" do
-          subject.expects(:perform_request).with do |method, url, params, body|
-            assert_equal 'GET', method
-            assert_equal '_cat/count', url
-            assert_equal Hash.new, params
-            assert_nil   body
-            true
-          end.returns(FakeResponse.new)
-
-          subject.cat.count
+        Spec.after_each do
+          #subject.indices.delete({:index => "test"})
         end
 
-      end
+        it "help" do
+          subject.cat.count({:help => true}).should match /^epoch/
+        end
 
+        it "test count" do
+          subject.cat.count.should match /.*0/
+        end
+      end
     end
   end
 end

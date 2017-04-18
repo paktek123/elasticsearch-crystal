@@ -31,7 +31,9 @@ module Elasticsearch
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-aliases/
         #
         def update_aliases(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'body' missing" unless arguments[:body]
+          if !arguments.has_key?(:body)
+            raise ArgumentError.new("Required argument 'body' missing")
+          end
           valid_params = [ :timeout ]
 
           method = "POST"

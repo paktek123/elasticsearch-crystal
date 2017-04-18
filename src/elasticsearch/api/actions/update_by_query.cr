@@ -65,7 +65,9 @@ module Elasticsearch
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html
       #
       def update_by_query(arguments={} of Symbol => String)
-        raise ArgumentError, "Required argument 'index' missing" unless arguments[:index]
+        if !arguments.has_key?(:index)
+          raise ArgumentError.new("Required argument 'index' missing")
+        end
 
         valid_params = [
           :analyzer,

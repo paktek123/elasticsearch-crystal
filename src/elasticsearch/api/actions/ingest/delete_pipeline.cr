@@ -12,7 +12,9 @@ module Elasticsearch
         # @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/ingest.html
         #
         def delete_pipeline(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'id' missing" unless arguments[:id]
+          if !arguments.has_key?(:id)
+            raise ArgumentError.new("Required argument 'id' missing")
+          end
           valid_params = [
             :master_timeout,
             :timeout ]

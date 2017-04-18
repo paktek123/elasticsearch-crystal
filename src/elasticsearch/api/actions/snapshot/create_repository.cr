@@ -21,8 +21,9 @@ module Elasticsearch
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html#_repositories
         #
         def create_repository(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'repository' missing" unless arguments[:repository]
-          raise ArgumentError, "Required argument 'body' missing"       unless arguments[:body]
+          if !arguments.has_key?(:repository) || !arguments.has_key?(:body)
+            raise ArgumentError.new("Required argument 'body' or 'repository' missing")
+          end
           valid_params = [
             :repository,
             :master_timeout,

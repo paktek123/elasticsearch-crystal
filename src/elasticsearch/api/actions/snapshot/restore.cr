@@ -29,8 +29,9 @@ module Elasticsearch
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html
         #
         def restore(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'repository' missing" unless arguments[:repository]
-          raise ArgumentError, "Required argument 'snapshot' missing"   unless arguments[:snapshot]
+          if !arguments.has_key?(:repository) || !arguments.has_key?(:snapshot)
+            raise ArgumentError.new("Required argument 'snapshot' or 'repository' missing")
+          end
 
           valid_params = [
             :master_timeout,

@@ -80,7 +80,7 @@ module Elasticsearch
           ]
 
           method = "PUT"
-          #puts "THESE ARE THE ARGS #{arguments[:index]}"
+          
           path   = Utils.__pathify Utils.__escape(arguments[:index])
           
           if arguments.has_key? :body

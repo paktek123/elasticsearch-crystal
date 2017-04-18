@@ -12,8 +12,9 @@ module Elasticsearch
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html
         #
         def verify_repository(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'repository' missing" unless arguments[:repository]
-
+          if !arguments.has_key?(:repository)
+            raise ArgumentError.new("Required argument 'repository' missing")
+          end
           valid_params = [
             :repository,
             :master_timeout,
