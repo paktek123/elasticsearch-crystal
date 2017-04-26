@@ -36,10 +36,11 @@ module Elasticsearch
             :s,
             :fields ]
 
-          fields = arguments.delete(:fields)
+          fields = arguments.delete(:fields) || ""
 
           method = "GET"
-          path   = Utils.__pathify "_cat/fielddata", Utils.__listify(fields)
+          path   = Utils.__pathify "_cat/fielddata", Utils.__listify(fields.as(String))
+          arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 

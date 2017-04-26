@@ -1,26 +1,33 @@
-require 'test_helper'
+require "../../spec_helper"
 
 module Elasticsearch
   module Test
-    class CatIndicesTest < ::Test::Unit::TestCase
+    class CatIndicesTest
+      include Spec
 
-      context "Cat: Indices" do
-        subject { FakeClient.new }
+      context "Cat: Indices: " do
+        subject = Elasticsearch::Test::Client.new({:host => "localhost", :port => 9250})
 
-        should "perform correct request" do
-          subject.expects(:perform_request).with do |method, url, params, body|
-            assert_equal 'GET', method
-            assert_equal '_cat/indices', url
-            assert_equal Hash.new, params
-            assert_nil   body
-            true
-          end.returns(FakeResponse.new)
-
-          subject.cat.indices
+        Spec.after_each do
+          #subject.indices.delete({:index => "index1"})
         end
 
-      end
+        it "help" do
+          (subject.cat.indices.as(String).empty?).should be_true
+        end
 
+        it "test indices output" do
+          (subject.cat.indices.as(String).empty?).should be_true
+          subject.indices.create({:index => "index1", :body => {"settings" => {"number_of_shards" => "1", 
+                                                                               "number_of_shards" => "0"}}})
+          subject.cat.indices.should match /index1/
+        end
+
+        it "test indices output with wildcards" do
+          #subject.indices.create({:index => "index1"})
+          #subject.cat.indices({:index => "in*"}).should match /index1/
+        end
+      end
     end
   end
 end

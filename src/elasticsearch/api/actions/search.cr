@@ -125,7 +125,7 @@ module Elasticsearch
       # @see http://www.elasticsearch.org/guide/reference/api/search/request-body/
       #
       def search(arguments={} of Symbol => String)
-        arguments[:index] = UNDERSCORE_ALL if ! arguments[:index] && arguments[:type]
+        arguments[:index] = "_all" if !(arguments.has_key?(:index) && arguments.has_key?(:type))
 
         valid_params = [
           :analyzer,
@@ -170,17 +170,22 @@ module Elasticsearch
           :batched_reduce_size ]
 
         method = "GET"
-        path   = Utils.__pathify( Utils.__listify(arguments[:index]), Utils.__listify(arguments[:type]), UNDERSCORE_SEARCH )
 
+        if !arguments.has_key? :type
+          arguments[:type] = ""
+        end
+
+        path   = Utils.__pathify( Utils.__listify(arguments[:index].as(String)), Utils.__listify(arguments[:type].as(String)), "_all" )
+        #arguments = Utils.__sort_booleans(arguments)
         params = Utils.__validate_and_extract_params arguments, valid_params
 
         body   = arguments[:body]
 
-        params[:fields] = Utils.__listify(params[:fields], {:escape => false}) if params.has_key?(:fields)
-        params[:fielddata_fields] = Utils.__listify(params[:fielddata_fields], {:escape => false}) if params.has_key?(:fielddata_fields)
+        params[:fields] = Utils.__listify(params[:fields].as(String), {:escape => false}) if params.has_key?(:fields)
+        params[:fielddata_fields] = Utils.__listify(params[:fielddata_fields].as(String), {:escape => false}) if params.has_key?(:fielddata_fields)
 
         # FIX: Unescape the `filter_path` parameter due to __listify default behavior. Investigate.
-        params[:filter_path] =  HTML.unescape(params[:filter_path]) if params.has_key?(:filter_path)
+        params[:filter_path] =  HTML.unescape(params[:filter_path].as(String)) if params.has_key?(:filter_path)
 
         perform_request(method, path, params, body).body
       end

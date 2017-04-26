@@ -1,26 +1,21 @@
-require 'test_helper'
+require "../../spec_helper"
 
 module Elasticsearch
   module Test
-    class CatHealthTest < ::Test::Unit::TestCase
+    class CatHealthTest
+      include Spec
 
-      context "Cat: Health" do
-        subject { FakeClient.new }
+      context "Cat: Health: " do
+        subject = Elasticsearch::Test::Client.new({:host => "localhost", :port => 9250})
 
-        should "perform correct request" do
-          subject.expects(:perform_request).with do |method, url, params, body|
-            assert_equal 'GET', method
-            assert_equal '_cat/health', url
-            assert_equal Hash.new, params
-            assert_nil   body
-            true
-          end.returns(FakeResponse.new)
-
-          subject.cat.health
+        it "help" do
+          subject.cat.health({:help => true}).should match /status/
         end
 
+        it "test field data output" do
+          subject.cat.health.should match /(green|yellow)/
+        end
       end
-
     end
   end
 end

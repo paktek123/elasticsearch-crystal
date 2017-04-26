@@ -12,7 +12,7 @@ module Elasticsearch
       def get_template(arguments={} of Symbol => String)
         if !arguments.has_key?(:id)
           raise ArgumentError.new("Required argument 'id' missing")
-        end]
+        end
         method = "GET"
         path   = "_search/template/#{arguments[:id]}"
         params = {} of String => String

@@ -7,17 +7,14 @@ require "./api/namespace/common"
 require "./api/utils"
 
 require "./api/actions/**"
-#require "./api/actions/cat/**"
-#require "./api/actions/indices/**"
-#require "./api/namespace/**/*.cr"
 require "./api/namespace/**"
 
 module Elasticsearch
   module API
-    class Client
+    class Client < Elasticsearch::API::Common::Client
       
       include Elasticsearch::API::Common
-      #include Elasticsearch::API::Actions
+      include Elasticsearch::API::Actions
       include Elasticsearch::API::Cluster
       include Elasticsearch::API::Nodes
       include Elasticsearch::API::Indices
