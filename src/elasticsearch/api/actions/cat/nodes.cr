@@ -49,9 +49,9 @@ module Elasticsearch
 
           method = "GET"
           path   = "_cat/nodes"
-
+          arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
-          params[:h] = Utils.__listify(params[:h], {:escape => false}) if params[:h]
+          params[:h] = Utils.__listify(params[:h].as(String), {:escape => false}) if params.has_key?(:h)
 
           body   = nil
 

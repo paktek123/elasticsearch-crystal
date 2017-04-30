@@ -34,8 +34,7 @@ module Elasticsearch
         # @see http://elasticsearch.org/guide/reference/api/admin-cluster-health/
         #
         def health(arguments={} of Symbol => String)
-          arguments = arguments.clone
-          index     = arguments.delete(:index)
+          index     = arguments.delete(:index) || ""
 
           valid_params = [
             :level,
@@ -50,8 +49,8 @@ module Elasticsearch
             :wait_for_events ]
 
           method = "GET"
-          path   = Utils.__pathify "_cluster/health", Utils.__listify(index)
-
+          path   = Utils.__pathify "_cluster/health", Utils.__listify(index.as(String))
+          arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
 

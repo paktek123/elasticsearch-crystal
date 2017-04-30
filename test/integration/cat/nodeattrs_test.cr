@@ -1,26 +1,25 @@
-require 'test_helper'
+require "../../spec_helper"
 
 module Elasticsearch
   module Test
-    class CatNodeattrsTest < ::Test::Unit::TestCase
+    class CatNodeAttrsTest
+      include Spec
 
-      context "Cat: Nodeattrs" do
-        subject { FakeClient.new }
+      context "Cat: NodeAttrs: " do
+        subject = Elasticsearch::Test::Client.new({:host => "localhost", :port => 9250})
 
-        should "perform correct request" do
-          subject.expects(:perform_request).with do |method, url, params, body|
-            assert_equal 'GET', method
-            assert_equal '_cat/nodeattrs', url
-            assert_equal Hash.new, params
-            assert_nil   body
-            true
-          end.returns(FakeResponse.new)
-
-          subject.cat.nodeattrs
+        it "help" do
+          subject.cat.nodeattrs({:help => true}).as(String).should match /node/
         end
 
-      end
+        it "check attrs are not empty" do
+          (subject.cat.nodeattrs.as(String).empty?).should be_false
+        end
 
+        it "check attrs are not empty with columns" do
+          subject.cat.nodeattrs({:v => true}).as(String).should match /^node/
+        end
+      end
     end
   end
 end

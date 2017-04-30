@@ -29,7 +29,7 @@ module Elasticsearch
             :master_timeout,
             :timeout ]
 
-          repository = arguments.delete(:repository)
+          repository = arguments.delete(:repository) || ""
 
           method = "PUT"
           path   = Utils.__pathify( "_snapshot", Utils.__escape(repository) )

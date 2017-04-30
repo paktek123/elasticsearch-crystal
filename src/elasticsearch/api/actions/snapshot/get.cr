@@ -38,8 +38,8 @@ module Elasticsearch
           snapshot   = arguments.delete(:snapshot)
 
           method = "GET"
-          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository), Utils.__listify(snapshot) )
-
+          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository.as(String)), Utils.__listify(snapshot.as(String)) )
+          arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 

@@ -28,14 +28,15 @@ module Elasticsearch
             :local ]
 
           repository = arguments.delete(:repository)
+          ignore = arguments.delete(:ignore) || ""
 
           method = "GET"
-          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository) )
+          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository.as(String)) )
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 
-          if arguments[:ignore].includes?(404)
+          if ignore.includes?("404")
             Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }
           else
             perform_request(method, path, params, body).body

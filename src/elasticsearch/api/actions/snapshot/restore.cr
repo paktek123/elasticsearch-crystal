@@ -41,10 +41,14 @@ module Elasticsearch
           snapshot   = arguments.delete(:snapshot)
 
           method = "POST"
-          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository), Utils.__escape(snapshot), "_restore" )
+          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository.as(String)), Utils.__escape(snapshot.as(String)), "_restore" )
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body]
+          if arguments.has_key? :body
+            body = arguments[:body]
+          else
+            body = nil
+          end
 
           perform_request(method, path, params, body).body
         end

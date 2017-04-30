@@ -60,14 +60,14 @@ module Elasticsearch
             :v,
             :s ]
 
-          index = arguments.delete(:index)
+          index = arguments.delete(:index) || ""
 
           method = "GET"
 
-          path   = Utils.__pathify "_cat/shards", Utils.__listify(index)
-
+          path   = Utils.__pathify "_cat/shards", Utils.__listify(index.as(String))
+          arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
-          params[:h] = Utils.__listify(params[:h]) if params[:h]
+          params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key?(:h)
 
           body   = nil
 

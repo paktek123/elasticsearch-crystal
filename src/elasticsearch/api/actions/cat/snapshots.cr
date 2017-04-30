@@ -22,7 +22,9 @@ module Elasticsearch
         # @see https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-snapshots.html
         #
         def snapshots(arguments={} of Symbol => String)
-          raise ArgumentError, "Required argument 'repository' missing" if !arguments[:repository] && !arguments[:help]
+          if !arguments.has_key?(:repository)
+            raise ArgumentError.new("Required argument 'repository' missing") 
+          end
 
           valid_params = [
             :master_timeout,
@@ -31,10 +33,11 @@ module Elasticsearch
             :v,
             :s ]
 
-          repository = arguments.delete(:repository)
+          repository = arguments.delete(:repository) || ""
 
           method = "GET"
-          path   = Utils.__pathify "_cat/snapshots", Utils.__escape(repository)
+          arguments = Utils.__sort_booleans(arguments)
+          path   = Utils.__pathify "_cat/snapshots", Utils.__escape(repository.as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 

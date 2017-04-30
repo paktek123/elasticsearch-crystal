@@ -28,14 +28,16 @@ module Elasticsearch
 
           repository = arguments.delete(:repository)
           snapshot   = arguments.delete(:snapshot)
+          ignore = arguments.delete(:ignore) || ""
 
           method = "GET"
 
-          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository), Utils.__escape(snapshot), "_status")
+          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository.as(String)), Utils.__escape(snapshot.as(String)), "_status")
+          arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 
-          if arguments[:ignore].includes?(404)
+          if ignore.includes?("404")
             Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }
           else
             perform_request(method, path, params, body).body
