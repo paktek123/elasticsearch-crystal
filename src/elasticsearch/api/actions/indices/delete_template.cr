@@ -25,16 +25,12 @@ module Elasticsearch
           valid_params = [ :timeout ]
 
           method = "DELETE"
-          path   = Utils.__pathify "_template", Utils.__escape(arguments[:name])
+          path   = Utils.__pathify "_template", Utils.__escape(arguments[:name].as(String))
 
-          params = Utils.__validate_and_extract_params arguments, valid_params
+          #params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
 
-          if arguments[:ignore].includes?(404)
-            Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }
-          else
-            perform_request(method, path, params, body).body
-          end
+          perform_request(method, path, {} of String => String, body).body
         end
       end
     end

@@ -27,11 +27,11 @@ module Elasticsearch
           valid_params = [ :flat_settings, :local, :master_timeout ]
 
           method = "GET"
-          path   = Utils.__pathify "_template", Utils.__escape(arguments[:name])
+          path   = Utils.__pathify "_template", Utils.__escape(arguments[:name].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = arguments[:body]
-
+          
           perform_request(method, path, params, body).body
         end
       end

@@ -92,6 +92,7 @@ module Elasticsearch
           else
             final_response = Response.new result.status_code, result.body.as(String), result.headers
           end
+          #puts final_response.body
           final_response
           #response.as(HTTP::Client::Response)
         end

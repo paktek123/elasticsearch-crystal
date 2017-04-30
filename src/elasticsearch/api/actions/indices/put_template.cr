@@ -27,13 +27,20 @@ module Elasticsearch
           end
           valid_params = [ :create, :order, :timeout ]
 
+          if arguments.has_key? :create
+            arguments[:create] = ""
+          end
+
+          if arguments.has_key? :flat_settings
+            arguments[:flat_settings] = ""
+          end
+
           method = "PUT"
-          path   = Utils.__pathify "_template", Utils.__escape(arguments[:name])
+          path   = Utils.__pathify "_template", Utils.__escape(arguments[:name].as(String))
+          body = arguments[:body]
 
-          params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body]
-
-          perform_request(method, path, params, body).body
+          #puts "path : #{path} -- params are:  -- body is: #{body}"
+          perform_request(method, path, {} of String => String, body).body
         end
       end
     end
