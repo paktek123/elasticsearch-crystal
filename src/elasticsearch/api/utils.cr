@@ -35,7 +35,7 @@ module Elasticsearch
       #
       # @api private
       def __listify(*tuple)
-        list = [] of String | Array(String) | Hash(Symbol, Bool)
+        list = [] of String | Array(String) #| Hash(Symbol, Bool)
         tuple.each { |e| list << e }
 
         if list.last.is_a?(Hash)

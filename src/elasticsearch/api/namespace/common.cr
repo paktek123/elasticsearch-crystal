@@ -37,7 +37,13 @@ module Elasticsearch
 
       class Response
         getter :status, :body, :headers
-        def initialize(@status : Int32, @body : String | JSON::Any, @headers : HTTP::Headers)
+        def initialize(@status : Int32, @body : String, @headers : HTTP::Headers)
+        end
+      end
+
+      class JsonResponse
+        getter :status, :body, :headers
+        def initialize(@status : Int32, @body : JSON::Any, @headers : HTTP::Headers)
         end
       end
 
@@ -72,7 +78,7 @@ module Elasticsearch
            
           if method == "GET"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}?#{final_params}"
-            response = HTTP::Client.get(endpoint)
+            response = HTTP::Client.get(endpoint, body: post_data, headers: HTTP::Headers{"Content-Type" => "application/json"})
           elsif method == "POST"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
             response = HTTP::Client.post(url: endpoint, body: post_data)
@@ -87,8 +93,9 @@ module Elasticsearch
           #puts "#{method} #{endpoint} #{params} #{new_params} #{post_data}" 
           # return as HTTP::Client::Response otherwise it return Nil
           result = response.as(HTTP::Client::Response)
-          if result.headers["Content-Type"] == "application/json"
-            final_response = Response.new result.status_code, JSON.parse(result.body), result.headers
+          #puts result.headers["Content-Type"]
+          if result.headers["Content-Type"].includes? "application/json"
+            final_response = JsonResponse.new result.status_code, JSON.parse(result.body), result.headers
           else
             final_response = Response.new result.status_code, result.body.as(String), result.headers
           end

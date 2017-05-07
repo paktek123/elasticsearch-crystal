@@ -64,13 +64,23 @@ module Elasticsearch
             :token_filters,
             :format ]
 
+          if arguments.has_key? :filters
+            filters = arguments.delete(:filters)
+          else
+            filters = ""
+          end
+          
+          token_filters = arguments.delete(:token_filters) || ""
+          index = arguments.delete(:index) || ""
+
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_analyze"
-
+          path   = Utils.__pathify Utils.__listify(index.as(String)), "_analyze"
+          #arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
-          params[:filters] = Utils.__listify(params[:filters]) if params.has_key?(:filters)
-          body   = arguments[:body]
+          #params[:filters] = Utils.__listify(filters.as(String))
+          body   = arguments.delete(:body) || ""
 
+          #puts "Path : #{path}, Params: #{params}, body: #{body}"
           perform_request(method, path, params, body).body
         end
       end
