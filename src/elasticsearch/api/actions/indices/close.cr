@@ -40,8 +40,8 @@ module Elasticsearch
           ]
 
           method = "POST"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_close"
-
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_close"
+          arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 
