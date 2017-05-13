@@ -51,13 +51,20 @@ module Elasticsearch
             :request_cache,
             :request ]
 
+          if arguments.has_key? :index
+            index = arguments.delete(:index)
+          else
+            index = ""
+          end
+
           method = "POST"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_cache/clear"
+          path   = Utils.__pathify Utils.__listify(index.as(String)), "_cache/clear"
+          arguments = Utils.__sort_booleans(arguments)
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 
-          params[:fields] = Utils.__listify(params[:fields]) if params.has_key?(:fields)
+          params[:fields] = Utils.__listify(params[:fields].as(String)) if params.has_key?(:fields)
 
           perform_request(method, path, params, body).body
         end
