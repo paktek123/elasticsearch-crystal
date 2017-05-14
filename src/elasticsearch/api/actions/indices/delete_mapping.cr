@@ -15,7 +15,7 @@ module Elasticsearch
             raise ArgumentError.new("Required argument 'index' and 'type' missing")
           end
           method = "DELETE"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), Utils.__escape(arguments[:type])
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), Utils.__escape(arguments[:type].as(String))
           params = {} of String => String
           body   = nil
 

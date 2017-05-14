@@ -49,11 +49,23 @@ module Elasticsearch
             :expand_wildcards
           ]
 
+          if arguments.has_key? :index
+            index = arguments.delete(:index)
+          else
+            index = ""
+          end
+
+          if arguments.has_key? :type
+            type = arguments.delete(:type)
+          else
+            type = ""
+          end
+
           method = "PUT"
-          path   = Utils.__pathify( Utils.__listify(arguments[:index]),
-                                    Utils.__listify(arguments[:type]),
+          path   = Utils.__pathify( Utils.__listify(index.as(String)),
+                                    Utils.__listify(type.as(String)),
                                     "_warmer",
-                                    Utils.__listify(arguments[:name]) )
+                                    Utils.__listify(arguments[:name].as(String)) )
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = arguments[:body]
 

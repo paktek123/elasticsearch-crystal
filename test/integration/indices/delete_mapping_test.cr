@@ -12,12 +12,9 @@ module Elasticsearch
           subject.indices.delete({:index => "test"})
         end
 
-        it "delete an alias" do
-          subject.indices.create({:index => "testind"})
-          subject.indices.put_alias({:index => "testind", :name => "testali"})
-          subject.cat.aliases.as(String).should match /testali/
-          subject.indices.delete_alias({:index => "testind", :name => "testali"})
-          (subject.cat.aliases.as(String).empty?).should be_true 
+        it "delete a mapping" do
+          subject.indices.create({:index => "test", :body => {"mappings" => {"type_1" => {} of String => String}}})
+          subject.indices.delete_mapping({:index => "test", :type => "type_1"})
         end
       end
     end
