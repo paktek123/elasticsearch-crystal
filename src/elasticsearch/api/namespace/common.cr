@@ -82,6 +82,7 @@ module Elasticsearch
           elsif method == "POST"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
             response = HTTP::Client.post(url: endpoint, body: post_data)
+            puts "THIS IS IT #{response.status_code}"
           elsif method == "PUT"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
             response = HTTP::Client.put(url: endpoint, body: post_data)
@@ -92,7 +93,11 @@ module Elasticsearch
 
           #puts "#{method} #{endpoint} #{params} #{new_params} #{post_data}" 
           # return as HTTP::Client::Response otherwise it return Nil
-          result = response.as(HTTP::Client::Response)
+          if response 
+            result = response.as(HTTP::Client::Response)
+          else
+            result = Response.new 404, nil, nil
+          end
           #puts result.headers["Content-Type"]
           if result.headers["Content-Type"].includes? "application/json"
             final_response = JsonResponse.new result.status_code, JSON.parse(result.body), result.headers
