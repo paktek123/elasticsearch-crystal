@@ -66,7 +66,7 @@ module Elasticsearch
             end
           end
           #puts new_params
-          final_params = HTTP::Params.from_hash(new_params)
+          final_params = HTTP::Params.encode(new_params)
           #endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}?#{final_params}"
 
           if !body.nil?
@@ -93,11 +93,11 @@ module Elasticsearch
 
           #puts "#{method} #{endpoint} #{params} #{new_params} #{post_data}" 
           # return as HTTP::Client::Response otherwise it return Nil
-          if response 
-            result = response.as(HTTP::Client::Response)
-          else
-            result = Response.new 404, nil, nil
-          end
+          #if response 
+          result = response.as(HTTP::Client::Response)
+          #else
+          #  result = Response.new 404, nil, nil
+          #end
           #puts result.headers["Content-Type"]
           if result.headers["Content-Type"].includes? "application/json"
             final_response = JsonResponse.new result.status_code, JSON.parse(result.body), result.headers
