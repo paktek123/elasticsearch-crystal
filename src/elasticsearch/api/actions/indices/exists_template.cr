@@ -20,14 +20,14 @@ module Elasticsearch
           valid_params = [ :local, :master_timeout ]
 
           method = "HEAD"
-          path   = Utils.__pathify "_template", Utils.__escape(arguments[:name])
+          path   = Utils.__pathify "_template", Utils.__escape(arguments[:name].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
 
-          Utils.__rescue_from_not_found do
-            perform_request(method, path, params, body).status == 200 ? true : false
-          end
+          #Utils.__rescue_from_not_found do
+          perform_request(method, path, params, body).status == 200 ? true : false
+          #end
         end
 
         #alias_method :exists_template?, :exists_template
