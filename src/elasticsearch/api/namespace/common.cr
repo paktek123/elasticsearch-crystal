@@ -82,24 +82,23 @@ module Elasticsearch
           elsif method == "POST"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
             response = HTTP::Client.post(url: endpoint, body: post_data)
-            puts "THIS IS IT #{response.status_code}"
+            #puts "THIS IS IT #{response.status_code}"
           elsif method == "PUT"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
             response = HTTP::Client.put(url: endpoint, body: post_data)
           elsif method == "DELETE"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}?#{final_params}"
             response = HTTP::Client.delete(url: endpoint)
+          elsif method == "HEAD"
+            endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
+            response = HTTP::Client.head(url: endpoint)
           end
 
           #puts "#{method} #{endpoint} #{params} #{new_params} #{post_data}" 
-          # return as HTTP::Client::Response otherwise it return Nil
-          #if response 
           result = response.as(HTTP::Client::Response)
-          #else
-          #  result = Response.new 404, nil, nil
-          #end
-          #puts result.headers["Content-Type"]
-          if result.headers["Content-Type"].includes? "application/json"
+         
+          #puts "I AM BEING EXECUTED #{result.status_code} #{result.body} #{result.headers}"
+          if result.headers["Content-Type"].includes?("application/json") && method != "HEAD"
             final_response = JsonResponse.new result.status_code, JSON.parse(result.body), result.headers
           else
             final_response = Response.new result.status_code, result.body.as(String), result.headers
