@@ -18,16 +18,16 @@ module Elasticsearch
           ]
 
           method = "POST"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_flush/synced"
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_flush/synced"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 
-          if arguments[:ignore].includes?(404)
-            Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }
-          else
-            perform_request(method, path, params, body).body
-          end
+          #if arguments[:ignore].includes?(404)
+          #  Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }
+          #else
+          perform_request(method, path, params, body).body
+          #end
         end
       end
     end
