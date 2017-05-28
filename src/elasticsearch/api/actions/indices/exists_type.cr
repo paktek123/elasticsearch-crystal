@@ -37,14 +37,14 @@ module Elasticsearch
           ]
 
           method = "HEAD"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), Utils.__escape(arguments[:type])
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_mapping", Utils.__escape(arguments[:type].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
 
-          Utils.__rescue_from_not_found do
-            perform_request(method, path, params, body).status == 200 ? true : false
-          end
+          #Utils.__rescue_from_not_found do
+          perform_request(method, path, params, body).status == 200 ? true : false
+          #end
         end
 
         #alias_method :exists_type?, :exists_type
