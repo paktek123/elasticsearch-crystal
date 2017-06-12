@@ -36,10 +36,11 @@ module Elasticsearch
         def get_field_mapping(arguments={} of Symbol => String)
           arguments = arguments.clone
 
-          fields = arguments.delete(:field) || arguments.delete(:fields)
-          if !arguments.has_key?(:field)
-            raise ArgumentError.new("Required argument 'field' missing")
+          if !arguments.has_key?(:field) || !arguments.has_key?(:index)
+            raise ArgumentError.new("Required argument 'field' or 'index' missing")
           end
+
+          field = arguments.delete(:field) || arguments.delete(:fields)
 
           valid_params = [
             :include_defaults,
@@ -49,13 +50,17 @@ module Elasticsearch
             :expand_wildcards
           ]
 
+          if !arguments.has_key? :type
+            type = ""
+          end
+
           method = "GET"
           path   = Utils.__pathify(
-                     Utils.__listify(arguments[:index]),
+                     Utils.__listify(arguments[:index].as(String)),
                      "_mapping",
-                     Utils.__listify(arguments[:type]),
+                     Utils.__listify(type.as(String)),
                      "field",
-                     Utils.__listify(fields)
+                     Utils.__listify(field.as(Array(String)))
                    )
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil

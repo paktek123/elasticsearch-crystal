@@ -21,7 +21,7 @@ module Elasticsearch
           valid_params = [ :timeout, :local ]
 
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_aliases", Utils.__listify(arguments[:name])
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_aliases", Utils.__listify(arguments[:name].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil

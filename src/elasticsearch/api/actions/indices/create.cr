@@ -89,7 +89,7 @@ module Elasticsearch
             body = nil
           end
 
-          params = Utils.__validate_and_extract_params arguments, valid_params
+          params = Utils.__validate_and_extract_params arguments, valid_params, [:index]
 
           perform_request(method, path, params, body).body
         end

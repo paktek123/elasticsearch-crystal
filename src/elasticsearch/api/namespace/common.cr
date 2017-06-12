@@ -94,7 +94,7 @@ module Elasticsearch
             response = HTTP::Client.head(url: endpoint)
           end
 
-          #puts "#{method} #{endpoint} #{params} #{new_params} #{post_data}" 
+          puts "#{method} #{endpoint} #{params} #{new_params} #{post_data}" 
           result = response.as(HTTP::Client::Response)
          
           #puts "I AM BEING EXECUTED #{result.status_code} #{result.body} #{result.headers}"
