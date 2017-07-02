@@ -12,7 +12,7 @@ module Elasticsearch
         #
         def seal(arguments={} of Symbol => String)
           method = "POST"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_seal"
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_seal"
           params = {} of String => String
           body   = nil
 

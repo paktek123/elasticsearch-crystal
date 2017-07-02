@@ -22,7 +22,7 @@ module Elasticsearch
             :expand_wildcards,
             :operation_threading ]
           method = "GET"
-          path   = Utils.__pathify Utils.__escape(arguments[:index]), "_shard_stores"
+          path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)), "_shard_stores"
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 

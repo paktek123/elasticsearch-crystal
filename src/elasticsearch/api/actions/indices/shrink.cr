@@ -28,13 +28,11 @@ module Elasticsearch
             :master_timeout
           ]
 
-          arguments = arguments.clone
-
           source = arguments.delete(:index)
           target = arguments.delete(:target)
 
           method = "PUT"
-          path   = Utils.__pathify(source, "_shrink", target)
+          path   = Utils.__pathify(source.as(String), "_shrink", target.as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = arguments[:body]
 

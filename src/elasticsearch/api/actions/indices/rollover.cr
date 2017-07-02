@@ -16,8 +16,8 @@ module Elasticsearch
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html
         #
         def rollover(arguments={} of Symbol => String)
-          if !arguments.has_key?(:alias)
-            raise ArgumentError.new("Required argument 'alias' missing")
+          if !arguments.has_key?(:alias) || !arguments.has_key?(:body)
+            raise ArgumentError.new("Required argument 'alias' or 'body' missing")
           end
 
           valid_params = [
@@ -28,10 +28,10 @@ module Elasticsearch
           arguments = arguments.clone
 
           source = arguments.delete(:alias)
-          target = arguments.delete(:new_index)
+          target = arguments.delete(:new_index) || ""
 
           method = "POST"
-          path   = Utils.__pathify source, "_rollover", target
+          path   = Utils.__pathify source.as(String), "_rollover", target
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = arguments[:body]
 
