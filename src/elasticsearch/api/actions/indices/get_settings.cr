@@ -66,11 +66,11 @@ module Elasticsearch
           end
 
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]),
-                                   Utils.__listify(arguments[:type]),
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
+                                   Utils.__listify(arguments[:type].as(String)),
                                    arguments.delete(:prefix),
                                    "_settings",
-                                   Utils.__escape(arguments[:name])
+                                   Utils.__escape(arguments[:name].as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params, [:index, :type, :name, :prefix]
           body   = nil
 

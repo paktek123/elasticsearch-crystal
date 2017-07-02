@@ -38,7 +38,7 @@ module Elasticsearch
           ]
 
           method = "POST"
-          path   = Utils.__pathify Utils.__escape(arguments[:index]), "_open"
+          path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)), "_open"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil

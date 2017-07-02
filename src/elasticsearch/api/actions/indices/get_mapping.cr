@@ -47,9 +47,9 @@ module Elasticsearch
           end
 
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]),
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
                                    "_mapping",
-                                   Utils.__listify(arguments[:type])
+                                   Utils.__listify(arguments[:type].as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
 

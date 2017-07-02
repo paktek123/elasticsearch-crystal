@@ -39,7 +39,9 @@ module Elasticsearch
 
           method = "GET"
 
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), Utils.__listify(arguments.delete(:feature))
+          feature = arguments.delete(:feature) || ""
+
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), Utils.__listify(feature.as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil

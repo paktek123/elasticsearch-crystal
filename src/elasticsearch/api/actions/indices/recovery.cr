@@ -30,7 +30,7 @@ module Elasticsearch
             :active_only,
             :human ]
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_recovery"
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_recovery"
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 

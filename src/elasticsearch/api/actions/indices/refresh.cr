@@ -41,7 +41,7 @@ module Elasticsearch
           ]
 
           method = "POST"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_refresh"
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_refresh"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil

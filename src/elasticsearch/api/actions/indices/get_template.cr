@@ -30,7 +30,12 @@ module Elasticsearch
           path   = Utils.__pathify "_template", Utils.__escape(arguments[:name].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body]
+
+          if arguments.has_key? :body
+            body = arguments.delete(:body)
+          else
+            body = nil
+          end
           
           perform_request(method, path, params, body).body
         end
