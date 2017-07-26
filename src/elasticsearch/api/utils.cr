@@ -220,11 +220,11 @@ module Elasticsearch
       #
       # @api private
       #
-      private def __extract_parts(arguments, valid_parts=[] of String)
-        parts = Hash[arguments.select { |k,v| valid_parts.include?(k) }]
+      def __extract_parts(arguments, valid_parts=[] of String)
+        parts = Hash[arguments.select { |k,v| valid_parts.includes?(k) }]
         parts = parts.reduce([] of String) { |sum, item| k, v = item; v.is_a?(TrueClass) ? sum << k.to_s : sum << v  }
 
-        arguments.delete_if { |k,v| valid_parts.include? k }
+        arguments.delete_if { |k,v| valid_parts.includes? k }
         return parts
       end
 

@@ -43,16 +43,12 @@ module Elasticsearch
             :snapshot ]
 
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_status"
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_status"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 
-          if arguments[:ignore].includes?(404)
-            Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }
-          else
-            perform_request(method, path, params, body).body
-          end
+          perform_request(method, path, params, body).body
         end
       end
     end

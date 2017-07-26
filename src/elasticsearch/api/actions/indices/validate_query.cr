@@ -81,13 +81,21 @@ module Elasticsearch
             :lenient,
             :lowercase_expanded_terms ]
 
+          if arguments.has_key? :body
+            arg_body = arguments.delete(:body)
+          else
+            arg_body = nil
+          end
+
+          type = arguments.delete(:type) || ""
+
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]),
-                                   Utils.__listify(arguments[:type]),
+          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
+                                   Utils.__listify(type),
                                    "_validate/query"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body]
+          body   = arg_body
 
           perform_request(method, path, params, body).body
         end

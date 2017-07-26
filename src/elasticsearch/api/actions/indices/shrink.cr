@@ -18,7 +18,7 @@ module Elasticsearch
         #
         def shrink(arguments={} of Symbol => String)
           if !arguments.has_key?(:index) || !arguments.has_key?(:target)
-            raise ArgumentError.new("Required argument 'index' and 'target' missing")
+            raise ArgumentError.new("Required argument 'index' or 'target' missing")
           end
 
           valid_params = [
@@ -31,10 +31,16 @@ module Elasticsearch
           source = arguments.delete(:index)
           target = arguments.delete(:target)
 
+          if arguments.has_key? :body
+            arg_body = arguments.delete(:body)
+          else
+            arg_body = nil
+          end
+
           method = "PUT"
           path   = Utils.__pathify(source.as(String), "_shrink", target.as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body]
+          body   = arg_body
 
           perform_request(method, path, params, body).body
         end
