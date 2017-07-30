@@ -19,7 +19,7 @@ module Elasticsearch
           valid_params = [
             :verbose ]
           method = "GET"
-          path   = Utils.__pathify "_ingest/pipeline", Utils.__escape(arguments[:id]), "_simulate"
+          path   = Utils.__pathify "_ingest/pipeline", Utils.__escape(arguments[:id].as(String)), "_simulate"
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = arguments[:body]
 

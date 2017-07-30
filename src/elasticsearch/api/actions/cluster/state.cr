@@ -27,9 +27,8 @@ module Elasticsearch
         # @see http://elasticsearch.org/guide/reference/api/admin-cluster-state/
         #
         def state(arguments={} of Symbol => String)
-          arguments = arguments.clone
-          index     = arguments.delete(:index)
-          metric    = arguments.delete(:metric)
+          index     = arguments.delete(:index) || ""
+          metric    = arguments.delete(:metric) || ""
 
           valid_params = [
             :metric,
@@ -44,13 +43,13 @@ module Elasticsearch
           path   = "_cluster/state"
 
           path   = Utils.__pathify "_cluster/state",
-                                   Utils.__listify(metric),
-                                   Utils.__listify(index)
+                                   Utils.__listify(metric.as(String)),
+                                   Utils.__listify(index.as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
 
           [:index_templates].each do |key|
-            params[key] = Utils.__listify(params[key]) if params[key]
+            params[key] = Utils.__listify(params[key]) if params.has_key?(key)
           end
 
           body = nil

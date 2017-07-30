@@ -11,10 +11,13 @@ module Elasticsearch
         # @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/ingest.html
         #
         def get_pipeline(arguments={} of Symbol => String)
+          if !arguments.has_key?(:id)
+            raise ArgumentError.new("Required argument 'id' missing")
+          end
           valid_params = [
             :master_timeout ]
           method = "GET"
-          path   = Utils.__pathify "_ingest/pipeline", Utils.__escape(arguments[:id])
+          path   = Utils.__pathify "_ingest/pipeline", Utils.__escape(arguments[:id].as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 

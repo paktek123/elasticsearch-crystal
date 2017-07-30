@@ -20,7 +20,7 @@ module Elasticsearch
           method = "PUT"
           path   = "_cluster/settings"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body] || {} of String => String
+          body   = arguments[:body] || ""
 
           perform_request(method, path, params, body).body
         end

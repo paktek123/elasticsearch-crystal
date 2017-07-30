@@ -19,7 +19,7 @@ module Elasticsearch
             :master_timeout,
             :timeout ]
           method = "DELETE"
-          path   = Utils.__pathify "_ingest/pipeline", Utils.__escape(arguments[:id])
+          path   = Utils.__pathify "_ingest/pipeline", Utils.__escape(arguments[:id].as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 
