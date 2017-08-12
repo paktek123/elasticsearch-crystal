@@ -41,8 +41,6 @@ module Elasticsearch
         # @see http://elasticsearch.org/guide/reference/api/admin-cluster-nodes-info/
         #
         def info(arguments={} of Symbol => String)
-          arguments = arguments.clone
-          metric    = arguments.delete(:metric)
 
           valid_parts = [
             :_all,
@@ -57,17 +55,29 @@ module Elasticsearch
             :transport,
             :timeout ]
 
-          valid_params = [ :flat_settings, :timeout ]
+          valid_params = [ :flat_settings, :timeout, :metric ] + valid_parts
 
           method = "GET"
 
-          if metric
-            parts = metric
+          if arguments.has_key? :node_id
+            node_id = arguments[:node_id]
           else
-            parts = Utils.__extract_parts arguments, valid_parts
+            node_id = ""
           end
 
-          path   = Utils.__pathify "_nodes", Utils.__listify(arguments[:node_id]), Utils.__listify(parts)
+          if arguments.has_key? :metric
+            metric = arguments[:metric]
+          else
+            metric = ""
+          end
+
+          #if metric
+          #  parts = metric
+          #else
+          #  parts = Utils.__extract_parts arguments, valid_parts
+          #end
+
+          path   = Utils.__pathify "_nodes", Utils.__listify(node_id), Utils.__listify(metric)
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil

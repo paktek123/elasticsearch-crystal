@@ -43,7 +43,6 @@ module Elasticsearch
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cluster-nodes-stats.html
         #
         def stats(arguments={} of Symbol => String)
-          arguments = arguments.clone
 
           valid_params = [
             :metric,
@@ -59,13 +58,31 @@ module Elasticsearch
             :types,
             :timeout ]
 
-          method = HTTP_GET
+          method = "GET"
+
+          if arguments.has_key? :node_id
+            node_id = arguments[:node_id]
+          else
+            node_id = ""
+          end
+
+          if arguments.has_key? :metric
+            metric = arguments[:metric]
+          else
+            metric = ""
+          end
+
+          if arguments.has_key? :index_metric
+            index_metric = arguments[:index_metric]
+          else
+            index_metric = ""
+          end
 
           path   = Utils.__pathify "_nodes",
-                                   Utils.__listify(arguments[:node_id]),
+                                   Utils.__listify(node_id),
                                    "stats",
-                                   Utils.__listify(arguments.delete(:metric)),
-                                   Utils.__listify(arguments.delete(:index_metric))
+                                   Utils.__listify(metric),
+                                   Utils.__listify(index_metric)
 
           params = Utils.__validate_and_extract_params arguments, valid_params
 

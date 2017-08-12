@@ -22,8 +22,14 @@ module Elasticsearch
             :delay,
             :exit ]
 
+          if arguments.has_key? :node_id
+            node_id = arguments[:node_id]
+          else
+            node_id = ""
+          end
+
           method = "POST"
-          path   = Utils.__pathify "_cluster/nodes", Utils.__listify(arguments[:node_id]), "_shutdown"
+          path   = Utils.__pathify "_cluster/nodes", Utils.__listify(node_id), "_shutdown"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil

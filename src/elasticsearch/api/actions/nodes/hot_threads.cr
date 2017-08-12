@@ -34,8 +34,14 @@ module Elasticsearch
             :type,
             :timeout ]
 
+          if arguments.has_key? :node_id
+            node_id = arguments[:node_id]
+          else
+            node_id = ""
+          end
+
           method = "GET"
-          path   = Utils.__pathify "_nodes", Utils.__listify(arguments[:node_id]), "hot_threads"
+          path   = Utils.__pathify "_nodes", Utils.__listify(node_id), "hot_threads"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
