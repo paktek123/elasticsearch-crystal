@@ -63,14 +63,22 @@ module Elasticsearch
           :version,
           :version_type ]
 
+        id = arguments[:id] || ""
+
+        if arguments.has_key? :body
+            arg_body = arguments.delete(:body)
+          else
+            arg_body = nil
+          end
+
         method = "GET"
-        path   = Utils.__pathify Utils.__escape(arguments[:index]),
-                                 Utils.__escape(arguments[:type]),
-                                 arguments[:id],
+        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+                                 Utils.__escape(arguments[:type].as(String)),
+                                 id.as(String),
                                  "_percolate/count"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = arguments[:body]
+        body   = arg_body
 
         perform_request(method, path, params, body).body
       end

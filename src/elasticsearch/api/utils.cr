@@ -102,13 +102,13 @@ module Elasticsearch
       #     # => {"update":{"_index":"myindexB","_type":"mytype","_id":"2"}}
       #     # => {"doc":{"title":"Update"}}
       #
-      private def __bulkify(payload)
+      def __bulkify(payload)
         operations = %w[index create delete update]
 
         case
 
         # Hashes with `:data`
-        when payload.any? { |d| d.is_a?(Hash) && d.values.first.is_a?(Hash) && operations.include?(d.keys.first.to_s) && (d.values.first[:data] || d.values.first["data"]) }
+        when payload.any? { |d| d.is_a?(Hash) && d.values.first.is_a?(Hash) && operations.includes?(d.keys.first.to_s) && (d.values.first[:data] || d.values.first["data"]) }
           payload = payload.
             inject([] of String) do |sum, item|
               operation, meta = item.to_a.first

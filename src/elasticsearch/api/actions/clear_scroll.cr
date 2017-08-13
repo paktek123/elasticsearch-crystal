@@ -14,9 +14,11 @@ module Elasticsearch
           raise ArgumentError.new("Required argument 'scroll_id' missing")
         end
 
+        scroll_id = arguments.delete(:scroll_id)
+
         method = "DELETE"
-        path   = Utils.__pathify "_search/scroll", Utils.__listify(arguments.delete(:scroll_id))
-        params = {} of Char => Char
+        path   = Utils.__pathify "_search/scroll", Utils.__listify(scroll_id.as(String))
+        params = {} of String => String
         body   = arguments[:body]
 
         perform_request(method, path, params, body).body

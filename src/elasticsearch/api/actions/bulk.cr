@@ -10,15 +10,7 @@ module Elasticsearch
       #
       # @example Perform three operations in a single request, passing actions and data as an array of hashes
       #
-      #     client.bulk body: [
-      #       { index: { _index: 'myindex', _type: 'mytype', _id: 1 } },
-      #       { title: 'foo' },
-      #
-      #       { index: { _index: 'myindex', _type: 'mytype', _id: 2 } },
-      #       { title: 'foo' },
-      #
-      #       { delete: { _index: 'myindex', _type: 'mytype', _id: 3  } }
-      #     ]
+     #
       # @example Perform three operations in a single request, passing data in the `:data` option
       #
       #     client.bulk body: [
@@ -66,7 +58,8 @@ module Elasticsearch
       def bulk(arguments={} of Symbol => String)
         arguments = arguments.clone
 
-        type      = arguments.delete(:type)
+        type      = arguments.delete(:type) || ""
+        index      = arguments.delete(:index) || ""
 
         valid_params = [
           :wait_for_active_shards,
@@ -81,18 +74,18 @@ module Elasticsearch
           :pipeline ]
 
         method = "POST"
-        path   = Utils.__pathify Utils.__escape(arguments[:index]), Utils.__escape(type), "_bulk"
+        path   = Utils.__pathify Utils.__escape(index), Utils.__escape(type), "_bulk"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]
 
-        if body.is_a? Array
-          payload = Utils.__bulkify(body)
-        else
-          payload = body
-        end
+        #if body.is_a? Array
+        #  payload = Utils.__bulkify(body)
+        #else
+        #  payload = body
+        #end
 
-        perform_request(method, path, params, payload).body
+        perform_request(method, path, params, body).body
       end
     end
   end
