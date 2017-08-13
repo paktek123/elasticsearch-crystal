@@ -33,10 +33,10 @@ module Elasticsearch
 
           arguments = arguments.clone
 
-          task_id = arguments.delete(:task_id)
+          task_id = arguments.delete(:task_id) || ""
 
           method = "GET"
-          path   = Utils.__pathify( "_tasks", Utils.__escape(task_id) )
+          path   = Utils.__pathify( "_tasks", Utils.__escape(task_id.as(String)) )
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 

@@ -26,7 +26,7 @@ module Elasticsearch
         #
         def create(arguments={} of Symbol => String)
           if !arguments.has_key?(:repository) || !arguments.has_key?(:snapshot)
-            raise ArgumentError.new("Required argument 'body' missing")
+            raise ArgumentError.new("Required argument 'repository' or 'snapshot' missing")
           end
           valid_params = [
             :master_timeout,

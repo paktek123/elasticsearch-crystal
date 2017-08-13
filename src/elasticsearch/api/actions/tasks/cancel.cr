@@ -26,10 +26,10 @@ module Elasticsearch
 
           arguments = arguments.clone
 
-          task_id = arguments.delete(:task_id)
+          task_id = arguments.delete(:task_id) || ""
 
           method = "POST"
-          path   = Utils.__pathify( "_tasks", Utils.__escape(task_id), "_cancel" )
+          path   = Utils.__pathify( "_tasks", Utils.__escape(task_id.as(String)), "_cancel" )
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 

@@ -22,7 +22,7 @@ module Elasticsearch
 
           repository = arguments.delete(:repository) 
           method = "POST"
-          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository), "_verify" )
+          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository.as(String)), "_verify" )
           params = Utils.__validate_and_extract_params arguments, valid_params
           body   = nil
 
