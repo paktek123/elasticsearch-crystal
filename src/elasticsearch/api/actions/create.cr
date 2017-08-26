@@ -27,7 +27,7 @@ module Elasticsearch
       # @see http://elasticsearch.org/guide/reference/api/index_/
       #
       def create(arguments={} of Symbol => String)
-        index arguments.update({:op_type => "create"})
+        index arguments
       end
     end
   end

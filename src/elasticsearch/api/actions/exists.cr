@@ -27,10 +27,10 @@ module Elasticsearch
       # @see http://elasticsearch.org/guide/reference/api/get/
       #
       def exists(arguments={} of Symbol => String)
-        if !arguments.has_key?(:id) || !arguments.has_key?(:index)
-          raise ArgumentError.new("Required argument 'id' or 'index' missing")
+        if !arguments.has_key?(:id) || !arguments.has_key?(:index) || !arguments.has_key?(:type)
+          raise ArgumentError.new("Required argument 'id' or 'index' or 'type' missing")
         end
-        arguments[:type] ||= UNDERSCORE_ALL
+        arguments[:type] ||= "_all"
 
         valid_params = [
           :stored_fields,
@@ -46,16 +46,14 @@ module Elasticsearch
           :version_type ]
 
         method = "HEAD"
-        path   = Utils.__pathify Utils.__escape(arguments[:index]),
-                                 Utils.__escape(arguments[:type]),
-                                 Utils.__escape(arguments[:id])
+        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+                                 Utils.__escape(arguments[:type].as(String)),
+                                 Utils.__escape(arguments[:id].as(String))
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = nil
-
-        Utils.__rescue_from_not_found do
-          perform_request(method, path, params, body).status == 200 ? true : false
-        end
+        
+        perform_request(method, path, params, body).status == 200 ? true : false
       end
 
       #alias_method :exists?, :exists

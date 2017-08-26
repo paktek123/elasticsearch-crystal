@@ -36,13 +36,15 @@ module Elasticsearch
       # @api private
       def __listify(*tuple)
         list = [] of String | Array(String) #| Hash(Symbol, Bool)
-        tuple.each { |e| list << e }
-
-        if list.last.is_a?(Hash)
+        if tuple.last.is_a?(Hash)
           options = {:escape => false} 
         else
           options = {:escape => true}
         end
+        #tuple.delete(:escape)
+        tuple.each { |e| list << e if e.is_a?(String) || e.is_a?(Array(String))}
+
+        
 
         Array.new(1,list).first.flatten.
           map { |e| e.responds_to?(:split) ? e.split(',') : e }.

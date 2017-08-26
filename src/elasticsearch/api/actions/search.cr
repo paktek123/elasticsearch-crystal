@@ -175,14 +175,30 @@ module Elasticsearch
           arguments[:type] = ""
         end
 
+        if arguments.has_key? :body
+          body = arguments[:body]
+        else
+          body = nil
+        end
+
+        if arguments.has_key? :fields
+          fields = arguments[:fields]
+        else
+          fields = ""
+        end
+
+        if arguments.has_key? :fielddata_fields
+          fielddata_fields = arguments[:fielddata_fields]
+        else
+          fielddata_fields = ""
+        end
+
         path   = Utils.__pathify( Utils.__listify(arguments[:index].as(String)), Utils.__listify(arguments[:type].as(String)), "_all" )
         #arguments = Utils.__sort_booleans(arguments)
         params = Utils.__validate_and_extract_params arguments, valid_params
 
-        body   = arguments[:body]
-
-        params[:fields] = Utils.__listify(params[:fields].as(String), {:escape => false}) if params.has_key?(:fields)
-        params[:fielddata_fields] = Utils.__listify(params[:fielddata_fields].as(String), {:escape => false}) if params.has_key?(:fielddata_fields)
+        params[:fields] = Utils.__listify(fields.as(String), {:escape => false})
+        params[:fielddata_fields] = Utils.__listify(fielddata_fields.as(String), {:escape => false})
 
         # FIX: Unescape the `filter_path` parameter due to __listify default behavior. Investigate.
         params[:filter_path] =  HTML.unescape(params[:filter_path].as(String)) if params.has_key?(:filter_path)

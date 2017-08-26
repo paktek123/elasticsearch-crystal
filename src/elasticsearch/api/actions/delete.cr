@@ -44,18 +44,14 @@ module Elasticsearch
           :version_type ]
 
         method = "DELETE"
-        path   = Utils.__pathify Utils.__escape(arguments[:index]),
-                                 Utils.__escape(arguments[:type]),
-                                 Utils.__escape(arguments[:id])
+        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+                                 Utils.__escape(arguments[:type].as(String)),
+                                 Utils.__escape(arguments[:id].as(String))
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = nil
 
-        if arguments[:ignore].includes?(404)
-          Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }
-        else
-          perform_request(method, path, params, body).body
-        end
+        perform_request(method, path, params, body).body
       end
     end
   end

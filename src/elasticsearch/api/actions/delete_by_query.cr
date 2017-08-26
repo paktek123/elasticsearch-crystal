@@ -92,13 +92,23 @@ module Elasticsearch
           :requests_per_second,
           :slices ]
 
-        method = HTTP_POST
-        path   = Utils.__pathify Utils.__listify(arguments[:index]),
-                                 Utils.__listify(arguments[:type]),
+        method = "POST"
+        if arguments.has_key? :type
+          type = arguments[:type]
+        else
+          type = ""
+        end
+
+        path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
+                                 Utils.__listify(type.as(String)),
                                  "/_delete_by_query"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = arguments[:body]
+        if arguments.has_key? :body
+          body = arguments[:body]
+        else
+          body = nil
+        end
 
         perform_request(method, path, params, body).body
       end

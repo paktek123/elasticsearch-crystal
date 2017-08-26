@@ -34,10 +34,10 @@ module Elasticsearch
       # @see http://elasticsearch.org/guide/reference/api/get/
       #
       def get(arguments={} of Symbol => String)
-        if !arguments.has_key?(:id) || !arguments.has_key?(:index)
-          raise ArgumentError.new("Required argument 'id' or 'index' missing")
+        if !arguments.has_key?(:id) || !arguments.has_key?(:index) || !arguments.has_key?(:id) 
+          raise ArgumentError.new("Required argument 'id' or 'index' or 'id' missing")
         end
-        arguments[:type] ||= UNDERSCORE_ALL
+        arguments[:type] ||= "_all"
 
         valid_params = [
           :fields,
@@ -55,20 +55,15 @@ module Elasticsearch
           :stored_fields ]
 
         method = "GET"
-        path   = Utils.__pathify Utils.__escape(arguments[:index]),
-                                 Utils.__escape(arguments[:type]),
-                                 Utils.__escape(arguments[:id])
+        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+                                 Utils.__escape(arguments[:type].as(String)),
+                                 Utils.__escape(arguments[:id].as(String))
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = nil
 
-        params[:fields] = Utils.__listify(params[:fields]) if params[:fields]
+        perform_request(method, path, params, body).body
 
-        if arguments[:ignore].include?(404)
-          Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }
-        else
-          perform_request(method, path, params, body).body
-        end
       end
     end
   end

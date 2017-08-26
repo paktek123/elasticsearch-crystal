@@ -61,10 +61,17 @@ module Elasticsearch
           :lowercase_expanded_terms ]
 
         method = "GET"
-        path   = Utils.__pathify( Utils.__listify(arguments[:index]), Utils.__listify(arguments[:type]), "_count" )
+        index_param = arguments.delete(:index) || ""
+        type_param = arguments.delete(:type) || ""
+        if arguments.has_key? :body
+          body = arguments[:body]
+        else
+          body = nil
+        end
+
+        path   = Utils.__pathify( Utils.__listify(index_param.as(String)), Utils.__listify(type_param.as(String)), "_count" )
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = arguments[:body]
 
         perform_request(method, path, params, body).body
       end

@@ -62,14 +62,12 @@ module Elasticsearch
           :stored_fields ]
 
         method = "GET"
-        path   = Utils.__pathify Utils.__escape(arguments[:index]),
-                                 Utils.__escape(arguments[:type]),
+        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+                                 Utils.__escape(arguments[:type].as(String)),
                                  "_mget"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]
-
-        params[:fields] = Utils.__listify(params[:fields]) if params[:fields]
 
         perform_request(method, path, params, body).body
       end
