@@ -51,8 +51,8 @@ module Elasticsearch
         ids = arguments.delete(:ids)
 
         method = "GET"
-        path   = Utils.__pathify Utils.__escape(arguments[:index]),
-                                 Utils.__escape(arguments[:type]),
+        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+                                 Utils.__escape(arguments[:type].as(String)),
                                  "_mtermvectors"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
@@ -60,7 +60,7 @@ module Elasticsearch
         if ids
           body = { :ids => ids }
         else
-          body = arguments[:body]
+          body = arguments[:body] || nil
         end
 
         perform_request(method, path, params, body).body

@@ -115,13 +115,23 @@ module Elasticsearch
 
         method = "POST"
 
-        path   = Utils.__pathify Utils.__listify(arguments[:index]),
-                                 Utils.__listify(arguments[:type]),
+        if arguments.has_key? :type
+          type = arguments[:type]
+        else
+          type = ""
+        end
+
+        if arguments.has_key? :body
+          body = arguments[:body]
+        else
+          body = nil
+        end
+
+        path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
+                                 Utils.__listify(type),
                                  "/_update_by_query"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-
-        body   = arguments[:body]
 
         perform_request(method, path, params, body).body
       end

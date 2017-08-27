@@ -77,13 +77,17 @@ module Elasticsearch
         method = "GET"
         endpoint = arguments.delete(:endpoint) || "_termvectors"
 
-        path   = Utils.__pathify Utils.__escape(arguments[:index]),
-                                 Utils.__escape(arguments[:type]),
+        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+                                 Utils.__escape(arguments[:type].as(String)),
                                  arguments[:id],
                                  endpoint
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = arguments[:body]
+        if arguments.has_key? :body
+          body = arguments[:body]
+        else
+          body = nil
+        end
 
         perform_request(method, path, params, body).body
       end
