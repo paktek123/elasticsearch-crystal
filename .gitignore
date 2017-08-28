@@ -1,2 +1,3 @@
-.shards/*
+.shards
 shard.lock
+
