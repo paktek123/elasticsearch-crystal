@@ -1,6 +1,6 @@
 install:
 	shards install
-test:
+run-test:
 	crystal spec test/integration/actions/*
 	crystal spec test/integration/cat/*
 	crystal spec test/integration/cluster/*

@@ -7,6 +7,6 @@ before_install:
   - docker run -d -p 9250:9200 elasticsearch:5.2
 
 script:
-  # wait for docker to start up
+  # wait for elasticsearch to start up
   - sleep 10
-  - make test
+  - make run-test
