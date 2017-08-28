@@ -1,3 +1,5 @@
+![Travis](https://travis-ci.org/paktek123/elasticsearch-crystal.svg?branch=master)
+
 # Elasticsearch-crystal
 
 Elasticsearch Library for Crystal Lang. Heavily inspired by Ruby Elasticsearch Library.
