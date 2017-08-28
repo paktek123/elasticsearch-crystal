@@ -41,4 +41,6 @@ Contributions are welcome!
 
 - Run the test suite interested in `crystal spec test/integation/cat/*`
 
+- Fork the repo and work on your feature in a branch
 
+- Make a PR
