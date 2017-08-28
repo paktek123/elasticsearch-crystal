@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-crystal unit && crystal spec

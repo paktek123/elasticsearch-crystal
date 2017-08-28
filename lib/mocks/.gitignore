@@ -1,9 +1,0 @@
-/.deps/
-/.crystal/
-/.deps.lock
-/lib/
-
-/.watch.out
-
-/.shards/
-/shard.lock

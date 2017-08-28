@@ -1,3 +1,0 @@
-#!/usr/bin/env crystal
-# ex: set filetype=ruby :
-require "./unit_spec/*"
