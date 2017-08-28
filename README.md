@@ -14,7 +14,7 @@ dependencies:
 ## Usage
 
 ```
-require "elasticsearch/api"
+require "elasticsearch-crystal/elasticsearch/api"
 
 client = Elasticsearch::API::Client.new({:host => "localhost", :port => 9250})
 
@@ -32,6 +32,13 @@ For more example see under the `test` folder
 ## Roadmap
 
 Right now this although covers most of the Elasticsearch API, still lacks certain functionality. The next features will be driven by community demand.
+- Make the repo more 'Crystal' Lang style, it follows ruby conventions or no conventions at all right now
+- Code is a bit repetitive in places
+- Same functionality as the Ruby Elasticsearch Library
+
+## Issues and Bugs
+
+Although there is a test suite of Elasticsearch there are bound to be many bugs. Please raise an issue with steps to reproduce and any stack traces. Contributions are welcome to fix.
 
 ## Contribute
 
