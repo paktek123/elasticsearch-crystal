@@ -27,7 +27,6 @@ module Elasticsearch
           method = "DELETE"
           path   = Utils.__pathify "_template", Utils.__escape(arguments[:name].as(String))
 
-          #params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
 
           perform_request(method, path, {} of String => String, body).body

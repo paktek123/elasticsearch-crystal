@@ -71,12 +71,6 @@ module Elasticsearch
             metric = ""
           end
 
-          #if metric
-          #  parts = metric
-          #else
-          #  parts = Utils.__extract_parts arguments, valid_parts
-          #end
-
           path   = Utils.__pathify "_nodes", Utils.__listify(node_id), Utils.__listify(metric)
 
           params = Utils.__validate_and_extract_params arguments, valid_params

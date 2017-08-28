@@ -79,12 +79,6 @@ module Elasticsearch
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]
 
-        #if body.is_a? Array
-        #  payload = Utils.__bulkify(body)
-        #else
-        #  payload = body
-        #end
-
         perform_request(method, path, params, body).body
       end
     end

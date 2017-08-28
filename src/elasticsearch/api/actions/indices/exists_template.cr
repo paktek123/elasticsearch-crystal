@@ -25,12 +25,9 @@ module Elasticsearch
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
 
-          #Utils.__rescue_from_not_found do
           perform_request(method, path, params, body).status == 200 ? true : false
-          #end
+          
         end
-
-        #alias_method :exists_template?, :exists_template
       end
     end
   end

@@ -55,8 +55,6 @@ module Elasticsearch
         
         perform_request(method, path, params, body).status == 200 ? true : false
       end
-
-      #alias_method :exists?, :exists
     end
   end
 end

@@ -30,7 +30,7 @@ module Elasticsearch
           valid_params = [ :timeout ]
 
           method = "PUT"
-          #puts "This is arguments #{arguments}"
+          
           path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_alias", Utils.__escape(arguments[:name].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
@@ -39,7 +39,7 @@ module Elasticsearch
           else
             body = nil
           end
-          #puts "I AM SENDING: #{method} #{path} #{params} #{body}"
+          
           perform_request(method, path, params, body).body
         end
       end

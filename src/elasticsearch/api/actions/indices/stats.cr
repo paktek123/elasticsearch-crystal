@@ -106,12 +106,10 @@ module Elasticsearch
 
           method = "GET"
 
-          #parts  = Utils.__extract_parts arguments, valid_parts
+          
           path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_stats"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          #params[:fields] = Utils.__listify(params[:fields].as(String), {:escape => false}) if params.has_key?(:fields)
-          #params[:groups] = Utils.__listify(params[:groups].as(String), {:escape => false}) if params.has_key?(:groups)
 
           body   = nil
 

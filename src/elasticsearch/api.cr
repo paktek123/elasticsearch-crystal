@@ -1,6 +1,5 @@
-#require "cgi" # ---> does not exist in crystal, we have html instead
 require "html"
-require "json" #----> JSON parsing library instead of multijson
+require "json"
 
 require "./api/version"
 require "./api/namespace/common"
@@ -23,12 +22,9 @@ module Elasticsearch
       include Elasticsearch::API::Tasks
       include Elasticsearch::API::Cat
 
-      #@settings : Hash(Symbol, String | Int32)
-
       property :settings
 
       def initialize(@settings : Hash(Symbol, String | Int32))
-        #@settings = settings
       end
 
       # The serializer class
@@ -64,10 +60,6 @@ module Elasticsearch
       def tasks
         @tasks ||= Elasticsearch::API::Tasks::TasksClient.new @settings
       end
-
-      #def settings
-      #  @settings || {} of Symbol => String | Int32
-      #end
     end
   end
 end

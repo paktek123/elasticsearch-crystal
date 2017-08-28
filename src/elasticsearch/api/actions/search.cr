@@ -194,7 +194,7 @@ module Elasticsearch
         end
 
         path   = Utils.__pathify( Utils.__listify(arguments[:index].as(String)), Utils.__listify(arguments[:type].as(String)), "_all" )
-        #arguments = Utils.__sort_booleans(arguments)
+        
         params = Utils.__validate_and_extract_params arguments, valid_params
 
         params[:fields] = Utils.__listify(fields.as(String), {:escape => false})

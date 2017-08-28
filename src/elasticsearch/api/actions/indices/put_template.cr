@@ -39,7 +39,6 @@ module Elasticsearch
           path   = Utils.__pathify "_template", Utils.__escape(arguments[:name].as(String))
           body = arguments[:body]
 
-          #puts "path : #{path} -- params are:  -- body is: #{body}"
           perform_request(method, path, {} of String => String, body).body
         end
       end

@@ -57,15 +57,13 @@ module Elasticsearch
           name = arguments.delete(:name) || ""
 
           method = "GET"
-          #arguments = Utils.__sort_booleans(arguments)
           path   = Utils.__pathify "_cat/aliases", Utils.__listify(name.as(String))
           arguments = Utils.__sort_booleans(arguments)
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key? :h
-          #arguments = Utils.__sort_booleans(arguments)
+          
           body   = nil
-          #puts "I AM SENDING: #{method} #{path} #{params} #{body}"
           perform_request(method, path, params, body).body
         end
       end
