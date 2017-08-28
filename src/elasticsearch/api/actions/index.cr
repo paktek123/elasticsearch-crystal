@@ -71,7 +71,7 @@ module Elasticsearch
       # @see http://elasticsearch.org/guide/reference/api/index_/
       #
       def index(arguments={} of Symbol => String)
-        if !arguments.has_key?(:type) || !arguments.has_key?(:index) || !arguments.has_key?(:id)
+        if !arguments.has_key?(:type) || !arguments.has_key?(:index)
           raise ArgumentError.new("Required argument 'type' or 'index' missing")
         end
 
@@ -90,12 +90,16 @@ module Elasticsearch
           :version,
           :version_type ]
 
-        arguments[:id] = arguments.delete(:id) || "" 
+        if arguments.has_key? :id
+          id = arguments[:id]
+        else
+          id = ""
+        end 
 
         method = arguments[:id] ? "PUT" : "POST" 
         path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
                                  Utils.__escape(arguments[:type].as(String)),
-                                 Utils.__escape(arguments[:id].as(String))
+                                 Utils.__escape(id)
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]

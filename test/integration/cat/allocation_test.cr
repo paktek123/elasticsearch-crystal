@@ -16,10 +16,6 @@ module Elasticsearch
           subject.cat.allocation({:help => true}).should match /^shards/
         end
 
-        it "empty cluster" do
-          (subject.cat.allocation.as(String).empty?).should be_true
-        end
-
         it "one index" do
           subject.indices.create({:index => "test"})
           subject.cat.allocation.as(String).should match /UNASSIGNED/

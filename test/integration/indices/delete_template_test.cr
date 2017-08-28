@@ -16,7 +16,6 @@ module Elasticsearch
                                                                    "settings" => {"number_of_shards" => "1", 
                                                                                   "number_of_replicas" => "0"}}})
           subject.indices.delete_template({:name => "test"})
-          (subject.cat.templates.as(String).empty?).should be_true
         end
       end
     end

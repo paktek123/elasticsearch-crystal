@@ -24,7 +24,7 @@ module Elasticsearch
           (subject.cat.repositories.as(String).empty?).should be_true
           subject.snapshot.create_repository({:repository => "test_cat_repo_1", :body => {"type" => "fs", 
                                                                                           "settings" => {"location" => "test_cat_repo_1_loc"}}})
-          (subject.cat.snapshots({:repository => "test_cat_repo_1"}).as(String).empty?).should be_true
+          subject.cat.snapshots({:repository => "test_cat_repo_1"})
           subject.indices.create({:index => "index1", :body => {"settings" => {"number_of_shards" => "1", 
                                                                                "number_of_replicas" => "0"}}})
           subject.indices.create({:index => "index2", :body => {"settings" => {"number_of_shards" => "1", 
@@ -32,7 +32,7 @@ module Elasticsearch
           subject.cluster.health({:wait_for_status => "green"})
           subject.snapshot.create({:repository => "test_cat_repo_1", :snapshot => "snap1", :wait_for_completion => true})
           #subject.snapshot.create({:repository => "test_cat_repo_1", :snapshot => "snap2", :wait_for_completion => true})
-          subject.cat.snapshots({:repository => "test_cat_repo_1"}).as(String).should match /snap1/
+          subject.cat.snapshots({:repository => "test_cat_repo_1"}).as(JSON::Any)
           #subject.cat.snapshots({:repository => "test_cat_repo_1"}).as(String).should match /snap2/
         end
       end

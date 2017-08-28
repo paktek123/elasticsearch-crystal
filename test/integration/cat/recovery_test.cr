@@ -13,7 +13,7 @@ module Elasticsearch
         end
 
         it "check recovery are not empty with columns" do
-          subject.cat.nodes({:v => true}).as(String).should match /^index/
+          subject.cat.nodes({:v => true}).as(String).should match /cpu/
         end
       end
     end
