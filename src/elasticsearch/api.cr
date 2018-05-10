@@ -1,7 +1,6 @@
 require "html"
 require "json"
 
-require "./api/version"
 require "./api/namespace/common"
 require "./api/utils"
 
