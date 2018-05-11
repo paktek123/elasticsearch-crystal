@@ -10,7 +10,7 @@ Elasticsearch Library for Crystal Lang. Heavily inspired by Ruby Elasticsearch L
 dependencies:
   elasticsearch-crystal:
     github: paktek123/elasticsearch-crystal
-    version: ~> 0.11
+    version: ~> 0.13
 ```
 
 ## Usage
