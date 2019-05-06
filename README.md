@@ -1,4 +1,6 @@
-![Travis](https://travis-ci.org/paktek123/elasticsearch-crystal.svg?branch=master)
+![Travis](https://travis-ci.org/paktek123/elasticsearch-crystal.svg?branch=master) 
+
+<a href="https://www.buymeacoffee.com/neeran" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
 
 # Elasticsearch-crystal
 
