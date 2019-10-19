@@ -125,7 +125,7 @@ module Elasticsearch
       # @see http://www.elasticsearch.org/guide/reference/api/search/request-body/
       #
       def search(arguments={} of Symbol => String)
-        arguments[:index] = "_all" if !(arguments.has_key?(:index) && arguments.has_key?(:type))
+        arguments[:index] = "_all" if !(arguments.has_key?(:index))
 
         valid_params = [
           :analyzer,
@@ -193,7 +193,7 @@ module Elasticsearch
           fielddata_fields = ""
         end
 
-        path   = Utils.__pathify( Utils.__listify(arguments[:index].as(String)), Utils.__listify(arguments[:type].as(String)), "_all" )
+        path   = Utils.__pathify( Utils.__listify(arguments[:index].as(String)), "_search", Utils.__listify(arguments[:q].as(String)))
         
         params = Utils.__validate_and_extract_params arguments, valid_params
 
@@ -202,7 +202,7 @@ module Elasticsearch
 
         # FIX: Unescape the `filter_path` parameter due to __listify default behavior. Investigate.
         params[:filter_path] =  HTML.unescape(params[:filter_path].as(String)) if params.has_key?(:filter_path)
-
+        puts path
         perform_request(method, path, params, body).body
       end
     end
