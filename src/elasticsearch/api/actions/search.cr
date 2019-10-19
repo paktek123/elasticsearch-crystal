@@ -202,7 +202,7 @@ module Elasticsearch
 
         # FIX: Unescape the `filter_path` parameter due to __listify default behavior. Investigate.
         params[:filter_path] =  HTML.unescape(params[:filter_path].as(String)) if params.has_key?(:filter_path)
-        puts path
+
         perform_request(method, path, params, body).body
       end
     end
