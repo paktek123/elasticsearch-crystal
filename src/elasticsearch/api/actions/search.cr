@@ -125,7 +125,7 @@ module Elasticsearch
       # @see http://www.elasticsearch.org/guide/reference/api/search/request-body/
       #
       def search(arguments={} of Symbol => String)
-        arguments[:index] = "_all" if !(arguments.has_key?(:index) && arguments.has_key?(:type))
+        arguments[:index] = "_all" if !(arguments.has_key?(:index))
 
         valid_params = [
           :analyzer,
@@ -193,7 +193,7 @@ module Elasticsearch
           fielddata_fields = ""
         end
 
-        path   = Utils.__pathify( Utils.__listify(arguments[:index].as(String)), Utils.__listify(arguments[:type].as(String)), "_all" )
+        path   = Utils.__pathify( Utils.__listify(arguments[:index].as(String)), "_search", Utils.__listify(arguments[:q].as(String)))
         
         params = Utils.__validate_and_extract_params arguments, valid_params
 
