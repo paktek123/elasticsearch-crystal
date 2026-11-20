@@ -14,9 +14,7 @@ module Elasticsearch
 
         it "put a mapping" do
           subject.indices.create({:index => "test"})
-          subject.indices.put_mapping({:index => "test", :type => "type_1", :body => {"type_1" => {} of String => String}})
-          subject.indices.delete_mapping({:index => "test", :type => "type_1"})
-        end
+          subject.indices.put_mapping({:index => "test", :type => "type_1", :body => {"type_1" => {} of String => String}})        end
       end
     end
   end

@@ -6,7 +6,7 @@ module Elasticsearch
         # Return information about segments for one or more indices.
         #
         # The response contains information about segment size, number of documents, deleted documents, etc.
-        # See also {Indices::Actions#optimize}.
+        # See also {Indices::Actions#forcemerge}.
         #
         # @option arguments [List] :index A comma-separated list of index names; use `_all` or empty string
         #                                 to perform the operation on all indices
