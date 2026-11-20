@@ -22,6 +22,8 @@ jobs:
       - name: Install dependencies
         run: shards install
       - name: Check formatting
+        # Formatter output differs between Crystal versions; check with latest only.
+        if: matrix.crystal == 'latest'
         run: crystal tool format --check src test
       - name: Compile library
         run: crystal build --no-codegen src/elasticsearch/api.cr
