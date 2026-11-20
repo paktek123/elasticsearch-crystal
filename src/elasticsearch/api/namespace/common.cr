@@ -8,24 +8,24 @@ module Elasticsearch
 
       module Constants
         DEFAULT_SERIALIZER = JSON
-  
+
         COMMON_PARAMS = [
-          :ignore,                        # Client specific parameters
-          :index, :type, :id,             # :index/:type/:id
-          :body,                          # Request body
-          :node_id,                       # Cluster
-          :name,                          # Alias, template, settings, warmer, ...
-          :field                          # Get field mapping
+          :ignore,            # Client specific parameters
+          :index, :type, :id, # :index/:type/:id
+          :body,              # Request body
+          :node_id,           # Cluster
+          :name,              # Alias, template, settings, warmer, ...
+          :field,             # Get field mapping
         ]
-    
+
         COMMON_QUERY_PARAMS = [
-          :ignore,                        # Client specific parameters
-          :format,                        # Search, Cat, ...
-          :pretty,                        # Pretty-print the response
-          :human,                         # Return numeric values in human readable format
-          :filter_path                    # Filter the JSON response
+          :ignore,      # Client specific parameters
+          :format,      # Search, Cat, ...
+          :pretty,      # Pretty-print the response
+          :human,       # Return numeric values in human readable format
+          :filter_path, # Filter the JSON response
         ]
-  
+
         HTTP_GET          = "GET"
         HTTP_HEAD         = "HEAD"
         HTTP_POST         = "POST"
@@ -37,67 +37,63 @@ module Elasticsearch
 
       class Response
         getter :status, :body, :headers
+
         def initialize(@status : Int32, @body : String, @headers : HTTP::Headers)
         end
       end
 
       class JsonResponse
         getter :status, :body, :headers
+
         def initialize(@status : Int32, @body : JSON::Any, @headers : HTTP::Headers)
         end
       end
 
       class Client
-        def initialize(@settings : Hash(Symbol, String | Int32)) 
+        def initialize(@settings : Hash(Symbol, String | Int32))
         end
 
-        def perform_request(method, path, params={} of String => String, body={} of String => String | Nil) 
-
-          # normalize params to string
+        # Normalizes params to a URL-encoded query string. Booleans become
+        # "true"/"false"; nil becomes an empty value.
+        def self.build_query(params) : String
           new_params = {} of String => String
-          params.each do |k,v|
-            if !!v == v
-              new_params[k.to_s] = ""
-            else
-              new_params[k.to_s] = v.to_s
-            end
-          end
-          
-          final_params = HTTP::Params.encode(new_params)
-
-          if !body.nil?
-            post_data = body.to_json
-          else
-            post_data = nil
-          end
-           
-          if method == "GET"
-            endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}?#{final_params}"
-            response = HTTP::Client.get(endpoint, body: post_data, headers: HTTP::Headers{"Content-Type" => "application/json"})
-          elsif method == "POST"
-            endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
-            response = HTTP::Client.post(url: endpoint, body: post_data)
-          elsif method == "PUT"
-            endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
-            response = HTTP::Client.put(url: endpoint, body: post_data)
-          elsif method == "DELETE"
-            endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}?#{final_params}"
-            response = HTTP::Client.delete(url: endpoint)
-          elsif method == "HEAD"
-            endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
-            response = HTTP::Client.head(url: endpoint)
+          params.each do |k, v|
+            new_params[k.to_s] = v.to_s
           end
 
-          result = response.as(HTTP::Client::Response)
-         
-          if result.headers["Content-Type"].includes?("application/json") && method != "HEAD"
-            final_response = JsonResponse.new result.status_code, JSON.parse(result.body), result.headers
+          HTTP::Params.encode(new_params)
+        end
+
+        # Builds "path" or "path?query" (no trailing "?" when params are empty).
+        def self.build_url(path, params) : String
+          query = build_query(params)
+          query.empty? ? path.to_s : "#{path}?#{query}"
+        end
+
+        # Wraps an HTTP response; a missing Content-Type is treated as non-JSON.
+        def self.parse_response(result : HTTP::Client::Response, method = "GET")
+          content_type = result.headers["Content-Type"]?
+          if content_type && content_type.includes?("application/json") && method != "HEAD"
+            JsonResponse.new result.status_code, JSON.parse(result.body), result.headers
           else
-            final_response = Response.new result.status_code, result.body.as(String), result.headers
+            Response.new result.status_code, result.body.to_s, result.headers
           end
-          
-          final_response
-          
+        end
+
+        def perform_request(method, path, params = {} of String => String, body = {} of String => String | Nil)
+          post_data = body.nil? ? nil : body.to_json
+          url = "http://#{@settings[:host]}:#{@settings[:port]}/#{Client.build_url(path, params)}"
+
+          case method
+          when "GET"
+            response = HTTP::Client.exec("GET", url, headers: HTTP::Headers{"Content-Type" => "application/json"}, body: post_data)
+          when "POST", "PUT"
+            response = HTTP::Client.exec(method, url, body: post_data)
+          else
+            response = HTTP::Client.exec(method, url)
+          end
+
+          Client.parse_response(response, method)
         end
       end
     end
