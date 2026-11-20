@@ -33,6 +33,10 @@ client.cat.indices({:format => "json"}).as(JSON::Any)
 
 For more example see under the `test` folder
 
+## Removed APIs
+
+Endpoints that no longer exist in Elasticsearch 8/9 (benchmark, warmers, `optimize`, `get_aliases`, `flush_synced`, `upgrade`, `exists_type`, and others) have been removed. See [CHANGELOG.md](CHANGELOG.md) for the full list and replacements.
+
 ## Roadmap
 
 Right now this although covers most of the Elasticsearch API, still lacks certain functionality. The next features will be driven by community demand.
