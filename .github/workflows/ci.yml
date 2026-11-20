@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Build (Crystal ${{ matrix.crystal }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # "1.0.0" is the minimum supported version and must track the
+        # `crystal:` constraint in shard.yml.
+        crystal: [latest, "1.0.0"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: ${{ matrix.crystal }}
+      - name: Install dependencies
+        run: shards install
+      - name: Check formatting
+        run: crystal tool format --check src test
+      - name: Compile library
+        run: crystal build --no-codegen src/elasticsearch/api.cr
+
+  integration:
+    name: Integration (ES ${{ matrix.es }})
+    runs-on: ubuntu-latest
+    # The spec suite still targets the ES 5 API, so failures are non-blocking.
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        es: ["8.19.25", "9.5.6"]
+    services:
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:${{ matrix.es }}
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: "false"
+          ES_JAVA_OPTS: -Xms512m -Xmx512m
+        ports:
+          - 9250:9200
+    steps:
+      - uses: actions/checkout@v4
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: latest
+      - name: Install dependencies
+        run: shards install
+      - name: Wait for Elasticsearch
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS "localhost:9250/_cluster/health?wait_for_status=yellow&timeout=10s"; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Elasticsearch did not become healthy" >&2
+          exit 1
+      - name: Run integration specs
+        run: make run-test
