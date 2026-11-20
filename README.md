@@ -52,6 +52,8 @@ Contributions are welcome!
 
 - Run the test suite interested in `crystal spec test/integation/cat/*`
 
+- Unit specs (request building, response handling) need no Elasticsearch: `crystal spec test/unit` or `make unit-test`
+
 - Fork the repo and work on your feature in a branch
 
 - Make a PR
