@@ -1,1 +1,1 @@
-require "elasticsearch-crystal/elasticsearch/api"
+require "./elasticsearch/api"
