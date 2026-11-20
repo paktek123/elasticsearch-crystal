@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Display custom node attributes
         #
         # @option arguments [Boolean] :local Return local information, do not retrieve the state from master node (default: false)
@@ -14,18 +13,19 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodeattrs.html
         #
-        def nodeattrs(arguments={} of Symbol => String)
+        def nodeattrs(arguments = {} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
           method = "GET"
-          path   = "_cat/nodeattrs"
+          path = "_cat/nodeattrs"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

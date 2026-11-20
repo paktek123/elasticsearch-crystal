@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Delete one or more warmers for a list of indices.
         #
         # @example Delete a warmer named _mywarmer_ for index named _myindex_
@@ -17,12 +16,12 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-warmers/
         #
-        def delete_warmer(arguments={} of Symbol => String)
+        def delete_warmer(arguments = {} of Symbol => String)
           if !arguments.has_key?(:index)
             raise ArgumentError.new("Required argument 'index' missing")
           end
           method = "DELETE"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_warmer", Utils.__listify(arguments[:name])
+          path = Utils.__pathify Utils.__listify(arguments[:index]), "_warmer", Utils.__listify(arguments[:name])
           params = {} of String => String
           body = nil
 

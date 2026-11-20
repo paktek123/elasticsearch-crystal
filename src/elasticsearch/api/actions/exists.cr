@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Return true if the specified document exists, false otherwise.
       #
       # @example
@@ -26,7 +25,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/get/
       #
-      def exists(arguments={} of Symbol => String)
+      def exists(arguments = {} of Symbol => String)
         if !arguments.has_key?(:id) || !arguments.has_key?(:index) || !arguments.has_key?(:type)
           raise ArgumentError.new("Required argument 'id' or 'index' or 'type' missing")
         end
@@ -43,16 +42,17 @@ module Elasticsearch
           :_source_exclude,
           :_source_include,
           :version,
-          :version_type ]
+          :version_type,
+        ]
 
         method = "HEAD"
-        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
-                                 Utils.__escape(arguments[:type].as(String)),
-                                 Utils.__escape(arguments[:id].as(String))
+        path = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+          Utils.__escape(arguments[:type].as(String)),
+          Utils.__escape(arguments[:id].as(String))
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = nil
-        
+        body = nil
+
         perform_request(method, path, params, body).status == 200 ? true : false
       end
     end

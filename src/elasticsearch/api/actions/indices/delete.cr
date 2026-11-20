@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Delete an index, list of indices, or all indices in the cluster.
         #
         # @example Delete an index
@@ -29,17 +28,16 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-delete-index/
         #
-        def delete(arguments={} of Symbol => String)
-          valid_params = [ :timeout ]
+        def delete(arguments = {} of Symbol => String)
+          valid_params = [:timeout]
 
           method = "DELETE"
-          path   = Utils.__pathify Utils.__listify(arguments[:index])
+          path = Utils.__pathify Utils.__listify(arguments[:index])
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
-          
         end
       end
     end

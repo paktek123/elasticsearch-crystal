@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Refresh the index and to make the changes (creates, updates, deletes) searchable.
         #
         # By default, Elasticsearch has a delay of 1 second until changes to an index are
@@ -32,19 +31,19 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-refresh/
         #
-        def refresh(arguments={} of Symbol => String)
+        def refresh(arguments = {} of Symbol => String)
           valid_params = [
             :ignore_indices,
             :ignore_unavailable,
             :allow_no_indices,
-            :expand_wildcards
+            :expand_wildcards,
           ]
 
           method = "POST"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_refresh"
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_refresh"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

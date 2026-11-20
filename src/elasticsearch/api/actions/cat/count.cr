@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Return document counts for the entire cluster or specific indices
         #
         # @example Display number of documents in the cluster
@@ -37,26 +36,27 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-count.html
         #
-        def count(arguments={} of Symbol => String)
+        def count(arguments = {} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
 
           index = arguments.delete(:index) || ""
 
           method = "GET"
 
           arguments = Utils.__sort_booleans(arguments)
-          path   = Utils.__pathify "_cat/count", Utils.__listify(index.as(String))
+          path = Utils.__pathify "_cat/count", Utils.__listify(index.as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key? :h
 
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

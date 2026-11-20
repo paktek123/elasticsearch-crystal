@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Delete documents which match specified query.
       #
       # Provide the query either as a "query string" query in the `:q` argument, or using the Elasticsearch's
@@ -53,7 +52,7 @@ module Elasticsearch
       #
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html
       #
-      def delete_by_query(arguments={} of Symbol => String)
+      def delete_by_query(arguments = {} of Symbol => String)
         if !arguments.has_key?(:index)
           raise ArgumentError.new("Required argument 'index' missing")
         end
@@ -90,7 +89,8 @@ module Elasticsearch
           :scroll_size,
           :wait_for_completion,
           :requests_per_second,
-          :slices ]
+          :slices,
+        ]
 
         method = "POST"
         if arguments.has_key? :type
@@ -99,9 +99,9 @@ module Elasticsearch
           type = ""
         end
 
-        path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
-                                 Utils.__listify(type.as(String)),
-                                 "/_delete_by_query"
+        path = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
+          Utils.__listify(type.as(String)),
+          "/_delete_by_query"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         if arguments.has_key? :body

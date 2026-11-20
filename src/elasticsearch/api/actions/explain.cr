@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Return information if and how well a document matches a query.
       #
       # The returned information contains a `_score` and its explanation, if the document matches the query.
@@ -43,7 +42,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/explain/
       #
-      def explain(arguments={} of Symbol => String)
+      def explain(arguments = {} of Symbol => String)
         if !arguments.has_key?(:index) || !arguments.has_key?(:type) || !arguments.has_key?(:id)
           raise ArgumentError.new("Required argument 'index' or 'type' or 'id' missing")
         end
@@ -64,13 +63,14 @@ module Elasticsearch
           :_source,
           :_source_include,
           :_source_exclude,
-          :stored_fields ]
+          :stored_fields,
+        ]
 
         method = "GET"
-        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
-                                 Utils.__escape(arguments[:type].as(String)),
-                                 Utils.__escape(arguments[:id].as(String)),
-                                 "_explain"
+        path = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+          Utils.__escape(arguments[:type].as(String)),
+          Utils.__escape(arguments[:id].as(String)),
+          "_explain"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         if arguments.has_key? :body

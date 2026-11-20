@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Display basic information about the master node
         #
         # @example
@@ -28,19 +27,20 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-master.html
         #
-        def master(arguments={} of Symbol => String)
+        def master(arguments = {} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
 
           method = "GET"
-          path   = "_cat/master"
+          path = "_cat/master"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

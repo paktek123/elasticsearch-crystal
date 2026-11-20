@@ -12,7 +12,7 @@ module Elasticsearch
           subject.indices.delete({:index => "test_index"})
         end
 
-        it "should get an index with settings" do 
+        it "should get an index with settings" do
           subject.indices.create({:index => "test_index", :body => {"settings" => {"number_of_replicas" => "0"}}})
           subject.indices.get({:index => "test_index"})
         end

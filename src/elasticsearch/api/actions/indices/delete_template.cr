@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Delete an index template.
         #
         # @example Delete a template named _mytemplate_
@@ -18,14 +17,14 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-templates/
         #
-        def delete_template(arguments={} of Symbol => String)
+        def delete_template(arguments = {} of Symbol => String)
           if !arguments.has_key?(:name)
             raise ArgumentError.new("Required argument 'name' missing")
           end
-          valid_params = [ :timeout ]
+          valid_params = [:timeout]
 
           method = "DELETE"
-          path   = Utils.__pathify "_template", Utils.__escape(arguments[:name].as(String))
+          path = Utils.__pathify "_template", Utils.__escape(arguments[:name].as(String))
 
           body = nil
 

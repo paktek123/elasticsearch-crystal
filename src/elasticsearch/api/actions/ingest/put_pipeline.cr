@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Ingest
       module Actions
-
         # Add or update a specified pipeline
         #
         # @option arguments [String] :id Pipeline ID (*Required*)
@@ -12,18 +11,19 @@ module Elasticsearch
         #
         # @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/ingest.html
         #
-        def put_pipeline(arguments={} of Symbol => String)
+        def put_pipeline(arguments = {} of Symbol => String)
           if !arguments.has_key?(:id) || !arguments.has_key?(:body)
             raise ArgumentError.new("Required argument 'body' missing")
           end
           valid_params = [
             :master_timeout,
-            :timeout ]
+            :timeout,
+          ]
           method = "PUT"
-          path   = Utils.__pathify "_ingest/pipeline", Utils.__escape(arguments[:id].as(String))
+          path = Utils.__pathify "_ingest/pipeline", Utils.__escape(arguments[:id].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body]
+          body = arguments[:body]
 
           perform_request(method, path, params, body).body
         end

@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Returns true if the cluster returns a successful HTTP response, false otherwise.
       #
       # @example
@@ -10,11 +9,11 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/
       #
-      def ping(arguments={} of Symbol => String)
+      def ping(arguments = {} of Symbol => String)
         method = "HEAD"
-        path   = ""
+        path = ""
         params = {} of String => String
-        body   = nil
+        body = nil
 
         begin
           perform_request(method, path, params, body).status == 200 ? true : false

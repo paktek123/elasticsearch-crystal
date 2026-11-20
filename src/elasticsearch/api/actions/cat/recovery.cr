@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Display information about the recovery process (allocating shards)
         #
         # @example Display information for all indices
@@ -46,7 +45,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-recovery.html
         #
-        def recovery(arguments={} of Symbol => String)
+        def recovery(arguments = {} of Symbol => String)
           valid_params = [
             :bytes,
             :local,
@@ -54,18 +53,19 @@ module Elasticsearch
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
 
           index = arguments.delete(:index) || ""
 
           method = "GET"
 
-          path   = Utils.__pathify "_cat/recovery", Utils.__listify(index)
+          path = Utils.__pathify "_cat/recovery", Utils.__listify(index)
           arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key?(:h)
 
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

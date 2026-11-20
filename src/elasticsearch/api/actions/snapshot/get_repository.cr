@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Snapshot
       module Actions
-
         # Get information about snapshot repositories or a specific repository
         #
         # @example Get all repositories
@@ -22,19 +21,20 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html
         #
-        def get_repository(arguments={} of Symbol => String)
+        def get_repository(arguments = {} of Symbol => String)
           valid_params = [
             :master_timeout,
-            :local ]
+            :local,
+          ]
 
           repository = arguments.delete(:repository) || ""
           ignore = arguments.delete(:ignore) || ""
 
           method = "GET"
-          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository.as(String)) )
+          path = Utils.__pathify("_snapshot", Utils.__escape(repository.as(String)))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

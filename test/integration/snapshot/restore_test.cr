@@ -13,7 +13,7 @@ module Elasticsearch
         end
 
         it "Restore snapshot" do
-          subject.snapshot.create_repository({:repository => "test_cat_repo_1", :body => {"type" => "fs", 
+          subject.snapshot.create_repository({:repository => "test_cat_repo_1", :body => {"type" => "fs",
                                                                                           "settings" => {"location" => "test_cat_repo_1_loc"}}})
           subject.snapshot.create({:repository => "test_cat_repo_1", :snapshot => "snap1", :wait_for_completion => true})
           subject.snapshot.restore({:repository => "test_cat_repo_1", :snapshot => "snap1"})

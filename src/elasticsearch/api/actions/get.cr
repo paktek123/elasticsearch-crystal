@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Return a specified document.
       #
       # The response contains full document, as stored in Elasticsearch, incl. `_source`, `_version`, etc.
@@ -33,8 +32,8 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/get/
       #
-      def get(arguments={} of Symbol => String)
-        if !arguments.has_key?(:id) || !arguments.has_key?(:index) || !arguments.has_key?(:id) 
+      def get(arguments = {} of Symbol => String)
+        if !arguments.has_key?(:id) || !arguments.has_key?(:index) || !arguments.has_key?(:id)
           raise ArgumentError.new("Required argument 'id' or 'index' or 'id' missing")
         end
         arguments[:type] ||= "_all"
@@ -52,18 +51,18 @@ module Elasticsearch
           :_source_include,
           :_source_exclude,
           :_source_transform,
-          :stored_fields ]
+          :stored_fields,
+        ]
 
         method = "GET"
-        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
-                                 Utils.__escape(arguments[:type].as(String)),
-                                 Utils.__escape(arguments[:id].as(String))
+        path = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+          Utils.__escape(arguments[:type].as(String)),
+          Utils.__escape(arguments[:id].as(String))
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = nil
+        body = nil
 
         perform_request(method, path, params, body).body
-
       end
     end
   end

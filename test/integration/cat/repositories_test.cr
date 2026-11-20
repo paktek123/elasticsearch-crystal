@@ -19,12 +19,12 @@ module Elasticsearch
 
         it "should return repositories when created" do
           (subject.cat.repositories.as(String).empty?).should be_true
-          subject.snapshot.create_repository({:repository => "test_cat_repo_1", :body => {"type" => "fs", 
+          subject.snapshot.create_repository({:repository => "test_cat_repo_1", :body => {"type" => "fs",
                                                                                           "settings" => {"location" => "test_cat_repo_1_loc"}}})
-          subject.snapshot.create_repository({:repository => "test_cat_repo_2", :body => {"type" => "fs", 
+          subject.snapshot.create_repository({:repository => "test_cat_repo_2", :body => {"type" => "fs",
                                                                                           "settings" => {"location" => "test_cat_repo_2_loc"}}})
-          #subject.cat.repositories.should match /test_cat_repo_1/
-          #subject.cat.repositories.should match /test_cat_repo_2/
+          # subject.cat.repositories.should match /test_cat_repo_1/
+          # subject.cat.repositories.should match /test_cat_repo_2/
         end
       end
     end

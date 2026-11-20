@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Return true if the specified alias exists, false otherwise.
         #
         # @example Check whether index alias named _myalias_ exists
@@ -25,17 +24,17 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-aliases/
         #
-        def exists_alias(arguments={} of Symbol => String)
+        def exists_alias(arguments = {} of Symbol => String)
           valid_params = [
             :ignore_indices,
             :ignore_unavailable,
             :allow_no_indices,
             :expand_wildcards,
-            :local
+            :local,
           ]
 
           method = "HEAD"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_alias", Utils.__escape(arguments[:name].as(String))
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_alias", Utils.__escape(arguments[:name].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
@@ -44,7 +43,6 @@ module Elasticsearch
             return true
           end
           false
-          
         end
       end
     end

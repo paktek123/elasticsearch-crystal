@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Display information about cluster topology and nodes statistics
         #
         # @example Display basic information about nodes in the cluster (host, node name, memory usage, master, etc.)
@@ -37,7 +36,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-nodes.html
         #
-        def nodes(arguments={} of Symbol => String)
+        def nodes(arguments = {} of Symbol => String)
           valid_params = [
             :full_id,
             :local,
@@ -45,15 +44,16 @@ module Elasticsearch
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
 
           method = "GET"
-          path   = "_cat/nodes"
+          path = "_cat/nodes"
           arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h].as(String), {:escape => false}) if params.has_key?(:h)
 
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

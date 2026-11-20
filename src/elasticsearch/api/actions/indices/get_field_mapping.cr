@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Return the mapping definition for specific field (or fields)
         #
         # @example Get mapping for a specific field across all indices
@@ -33,7 +32,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-get-field-mapping.html
         #
-        def get_field_mapping(arguments={} of Symbol => String)
+        def get_field_mapping(arguments = {} of Symbol => String)
           arguments = arguments.clone
 
           if !arguments.has_key?(:field) || !arguments.has_key?(:index)
@@ -47,7 +46,7 @@ module Elasticsearch
             :ignore_indices,
             :ignore_unavailable,
             :allow_no_indices,
-            :expand_wildcards
+            :expand_wildcards,
           ]
 
           if !arguments.has_key? :type
@@ -55,15 +54,15 @@ module Elasticsearch
           end
 
           method = "GET"
-          path   = Utils.__pathify(
-                     Utils.__listify(arguments[:index].as(String)),
-                     "_mapping",
-                     Utils.__listify(type.as(String)),
-                     "field",
-                     Utils.__listify(field.as(Array(String)))
-                   )
+          path = Utils.__pathify(
+            Utils.__listify(arguments[:index].as(String)),
+            "_mapping",
+            Utils.__listify(type.as(String)),
+            "field",
+            Utils.__listify(field.as(Array(String)))
+          )
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

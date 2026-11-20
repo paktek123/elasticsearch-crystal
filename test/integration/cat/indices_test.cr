@@ -18,7 +18,7 @@ module Elasticsearch
 
         it "test indices output" do
           (subject.cat.indices.as(String).empty?).should be_true
-          subject.indices.create({:index => "index1", :body => {"settings" => {"number_of_shards" => "1", 
+          subject.indices.create({:index => "index1", :body => {"settings" => {"number_of_shards" => "1",
                                                                                "number_of_replicas" => "0"}}})
           subject.cat.indices.should match /index1/
         end

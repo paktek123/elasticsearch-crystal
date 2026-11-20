@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Shows all snapshots that belong to a specific repository
         #
         # @example Return snapshots for 'my_repository'
@@ -21,9 +20,9 @@ module Elasticsearch
         #
         # @see https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-snapshots.html
         #
-        def snapshots(arguments={} of Symbol => String)
+        def snapshots(arguments = {} of Symbol => String)
           if !arguments.has_key?(:repository)
-            raise ArgumentError.new("Required argument 'repository' missing") 
+            raise ArgumentError.new("Required argument 'repository' missing")
           end
 
           valid_params = [
@@ -31,15 +30,16 @@ module Elasticsearch
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
 
           repository = arguments.delete(:repository) || ""
 
           method = "GET"
           arguments = Utils.__sort_booleans(arguments)
-          path   = Utils.__pathify "_cat/snapshots", Utils.__escape(repository.as(String))
+          path = Utils.__pathify "_cat/snapshots", Utils.__escape(repository.as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end
@@ -47,4 +47,3 @@ module Elasticsearch
     end
   end
 end
-

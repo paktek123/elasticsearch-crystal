@@ -12,7 +12,7 @@ module Elasticsearch
           subject.indices.delete({:index => "test_index"})
         end
 
-        it "should create an index with settings" do 
+        it "should create an index with settings" do
           subject.indices.create({:index => "test_index", :body => {"settings" => {"number_of_replicas" => "0"}}})
           subject.indices.get_settings({:index => "test_index"}).to_json.should match /(?=.*settings)(?=.*0)(?=.*test_index)(?=.*replicas)/
         end

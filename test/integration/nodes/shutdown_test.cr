@@ -10,7 +10,7 @@ module Elasticsearch
 
         it "Shutdown a node" do
           # not going to do this test, need to first spin up a new node and then shut it down
-          #subject.nodes.shutdown({:node_id => "TestNode"})
+          # subject.nodes.shutdown({:node_id => "TestNode"})
         end
       end
     end

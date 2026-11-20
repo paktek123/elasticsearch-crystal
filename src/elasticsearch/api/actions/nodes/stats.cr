@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Nodes
       module Actions
-
         # Returns statistical information about nodes in the cluster.
         #
         # @example Return statistics about JVM
@@ -42,8 +41,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cluster-nodes-stats.html
         #
-        def stats(arguments={} of Symbol => String)
-
+        def stats(arguments = {} of Symbol => String)
           valid_params = [
             :metric,
             :index_metric,
@@ -56,7 +54,8 @@ module Elasticsearch
             :human,
             :level,
             :types,
-            :timeout ]
+            :timeout,
+          ]
 
           method = "GET"
 
@@ -78,11 +77,11 @@ module Elasticsearch
             index_metric = ""
           end
 
-          path   = Utils.__pathify "_nodes",
-                                   Utils.__listify(node_id),
-                                   "stats",
-                                   Utils.__listify(metric),
-                                   Utils.__listify(index_metric)
+          path = Utils.__pathify "_nodes",
+            Utils.__listify(node_id),
+            "stats",
+            Utils.__listify(metric),
+            Utils.__listify(index_metric)
 
           params = Utils.__validate_and_extract_params arguments, valid_params
 
@@ -90,7 +89,7 @@ module Elasticsearch
             params[key] = Utils.__listify(params[key]) if params.has_key?(key)
           end
 
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

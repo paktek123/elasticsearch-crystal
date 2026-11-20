@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Return currently running tasks
         #
         # @option arguments [String] :format a short version of the Accept header, e.g. json, yaml
@@ -18,7 +17,7 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html
         #
-        def tasks(arguments={} of Symbol => String)
+        def tasks(arguments = {} of Symbol => String)
           valid_params = [
             :format,
             :node_id,
@@ -29,11 +28,12 @@ module Elasticsearch
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
           method = "GET"
-          path   = "_cat/tasks"
+          path = "_cat/tasks"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Return information about field data usage across the cluster
         #
         # @example Return the total size of field data
@@ -25,7 +24,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-fielddata.html
         #
-        def fielddata(arguments={} of Symbol => String)
+        def fielddata(arguments = {} of Symbol => String)
           valid_params = [
             :bytes,
             :local,
@@ -34,15 +33,16 @@ module Elasticsearch
             :help,
             :v,
             :s,
-            :fields ]
+            :fields,
+          ]
 
           fields = arguments.delete(:fields) || ""
 
           method = "GET"
-          path   = Utils.__pathify "_cat/fielddata", Utils.__listify(fields.as(String))
+          path = Utils.__pathify "_cat/fielddata", Utils.__listify(fields.as(String))
           arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

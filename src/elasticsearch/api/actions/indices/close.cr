@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Close an index (keep the data on disk, but deny operations with the index).
         #
         # A closed index can be opened again with the {Indices::Actions#close} API.
@@ -26,7 +25,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-open-close/
         #
-        def close(arguments={} of Symbol => String)
+        def close(arguments = {} of Symbol => String)
           if !arguments.has_key?(:index)
             raise ArgumentError.new("Required argument 'index' missing")
           end
@@ -36,14 +35,14 @@ module Elasticsearch
             :ignore_unavailable,
             :allow_no_indices,
             :expand_wildcards,
-            :timeout
+            :timeout,
           ]
 
           method = "POST"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_close"
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_close"
           arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

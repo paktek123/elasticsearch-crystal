@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Return shard allocation information
         #
         # @example Display allocation for all nodes in the cluster
@@ -42,7 +41,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-allocation.html
         #
-        def allocation(arguments={} of Symbol => String)
+        def allocation(arguments = {} of Symbol => String)
           valid_params = [
             :bytes,
             :local,
@@ -50,20 +49,20 @@ module Elasticsearch
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
 
-          
           node_id = arguments.delete(:node_id) || ""
 
           method = "GET"
 
           arguments = Utils.__sort_booleans(arguments)
-          path   = Utils.__pathify "_cat/allocation", Utils.__listify(node_id.as(String))
+          path = Utils.__pathify "_cat/allocation", Utils.__listify(node_id.as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key? :h
 
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

@@ -22,7 +22,7 @@ module Elasticsearch
 
         it "check for empty aliases" do
           (subject.cat.aliases.as(String).empty?).should be_true
-        end 
+        end
 
         it "should create new alias" do
           subject.indices.create({:index => "test"})
@@ -30,25 +30,24 @@ module Elasticsearch
           subject.cat.aliases.should match /^test_alias/
         end
 
-        it "should create a complex alias" do 
+        it "should create a complex alias" do
           subject.indices.create({:index => "test", :body => {"mappings" => {
-                                                                "type1" => {
-                                                                  "properties" => {
-                                                                    "foo" => {
-                                                                      "type" => "text"
-                                                                      }
-                                                                    }
-                                                                  } 
-                                                                }
-                                                              }})
-          subject.indices.put_alias({:index => "test", :name => "test_alias", :body => {"index_routing" => "ir", 
-                                                                                "search_routing" => "sr1,sr2",
-                                                                                "filter" => {
-                                                                                  "term" => {
-                                                                                    "foo" => "bar"
-                                                                                    }
-                                                                                  }
-                                                                                }})
+            "type1" => {
+              "properties" => {
+                "foo" => {
+                  "type" => "text",
+                },
+              },
+            },
+          }}})
+          subject.indices.put_alias({:index => "test", :name => "test_alias", :body => {"index_routing" => "ir",
+                                                                                        "search_routing" => "sr1,sr2",
+                                                                                        "filter" => {
+                                                                                          "term" => {
+                                                                                            "foo" => "bar",
+                                                                                          },
+                                                                                        },
+          }})
           subject.cat.aliases.should match /sr1,sr2/
         end
 

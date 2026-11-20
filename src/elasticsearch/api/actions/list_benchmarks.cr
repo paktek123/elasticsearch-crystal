@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Return a list of running benchmarks
       #
       # @example
@@ -14,11 +13,11 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-benchmark.html
       #
-      def list_benchmarks(arguments={} of Symbol => String)
+      def list_benchmarks(arguments = {} of Symbol => String)
         method = "GET"
-        path   = "_bench"
+        path = "_bench"
         params = {} of String => String
-        body   = nil
+        body = nil
 
         perform_request(method, path, params, body).body
       end

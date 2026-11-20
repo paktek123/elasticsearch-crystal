@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Return true if the specified type exists, false otherwise.
         #
         #     client.indices.exists_type? index: 'myindex', type: 'mytype'
@@ -24,7 +23,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-types-exists/
         #
-        def exists_type(arguments={} of Symbol => String)
+        def exists_type(arguments = {} of Symbol => String)
           if !arguments.has_key?(:index) || !arguments.has_key?(:type)
             raise ArgumentError.new("Required argument 'index' and 'type' missing")
           end
@@ -33,17 +32,16 @@ module Elasticsearch
             :ignore_unavailable,
             :allow_no_indices,
             :expand_wildcards,
-            :local
+            :local,
           ]
 
           method = "HEAD"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_mapping", Utils.__escape(arguments[:type].as(String))
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_mapping", Utils.__escape(arguments[:type].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
 
           perform_request(method, path, params, body).status == 200 ? true : false
-          
         end
       end
     end

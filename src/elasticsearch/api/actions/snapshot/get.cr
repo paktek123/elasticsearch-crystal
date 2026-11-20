@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Snapshot
       module Actions
-
         # Return information about specific (or all) snapshots
         #
         # @example Return information about the `snapshot-2` snapshot
@@ -25,23 +24,24 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html
         #
-        def get(arguments={} of Symbol => String)
+        def get(arguments = {} of Symbol => String)
           if !arguments.has_key?(:repository) || !arguments.has_key?(:snapshot)
             raise ArgumentError.new("Required argument 'snapshot' or 'repository' missing")
           end
 
           valid_params = [
             :ignore_unavailable,
-            :master_timeout ]
+            :master_timeout,
+          ]
 
           repository = arguments.delete(:repository)
-          snapshot   = arguments.delete(:snapshot)
+          snapshot = arguments.delete(:snapshot)
 
           method = "GET"
-          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository.as(String)), Utils.__listify(snapshot.as(String)) )
+          path = Utils.__pathify("_snapshot", Utils.__escape(repository.as(String)), Utils.__listify(snapshot.as(String)))
           arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

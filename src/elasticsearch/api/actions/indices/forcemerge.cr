@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Force merge an index, list of indices, or all indices in the cluster.
         #
         # @example Fully force merge an index
@@ -41,15 +40,15 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-forcemerge.html
         #
-        def forcemerge(arguments={} of Symbol => String)
+        def forcemerge(arguments = {} of Symbol => String)
           valid_params = [
             :max_num_segments,
             :only_expunge_deletes,
-            :flush
+            :flush,
           ]
 
           method = "POST"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_forcemerge"
+          path = Utils.__pathify Utils.__listify(arguments[:index]), "_forcemerge"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil

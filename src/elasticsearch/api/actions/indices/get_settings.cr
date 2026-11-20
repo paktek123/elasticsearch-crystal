@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Return the settings for all indices, or a list of indices.
         #
         # @example Get settings for all indices
@@ -41,7 +40,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-get-settings/
         #
-        def get_settings(arguments={} of Symbol => String)
+        def get_settings(arguments = {} of Symbol => String)
           valid_params = [
             :prefix,
             :ignore_indices,
@@ -50,7 +49,7 @@ module Elasticsearch
             :allow_no_indices,
             :expand_wildcards,
             :flat_settings,
-            :local
+            :local,
           ]
 
           if !arguments.has_key? :type
@@ -66,13 +65,13 @@ module Elasticsearch
           end
 
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
-                                   Utils.__listify(arguments[:type].as(String)),
-                                   arguments.delete(:prefix),
-                                   "_settings",
-                                   Utils.__escape(arguments[:name].as(String))
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
+            Utils.__listify(arguments[:type].as(String)),
+            arguments.delete(:prefix),
+            "_settings",
+            Utils.__escape(arguments[:name].as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params, [:index, :type, :name, :prefix]
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

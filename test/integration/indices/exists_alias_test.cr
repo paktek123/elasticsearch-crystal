@@ -15,7 +15,7 @@ module Elasticsearch
         it " check if alias exists" do
           subject.indices.create({:index => "test"})
           subject.indices.put_alias({:index => "test", :name => "testali"})
-          subject.indices.exists_alias({:index => "test", :name => "testali"}).should be_true 
+          subject.indices.exists_alias({:index => "test", :name => "testali"}).should be_true
         end
       end
     end

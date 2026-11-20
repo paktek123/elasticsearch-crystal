@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Shows all repositories registered in a cluster
         #
         # @example Return list of repositories
@@ -21,18 +20,19 @@ module Elasticsearch
         #
         # @see https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-repositories.html
         #
-        def repositories(arguments={} of Symbol => String)
+        def repositories(arguments = {} of Symbol => String)
           valid_params = [
             :master_timeout,
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
 
           method = "GET"
-          path   = "_cat/repositories"
+          path = "_cat/repositories"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

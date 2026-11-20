@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # When using the shared storage gateway, manually trigger the snapshot operation.
         #
         # @deprecated The shared gateway has been deprecated [https://github.com/elasticsearch/elasticsearch/issues/2458]
@@ -21,19 +20,19 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-gateway-snapshot/
         #
-        def snapshot_index(arguments={} of Symbol => String)
+        def snapshot_index(arguments = {} of Symbol => String)
           valid_params = [
             :ignore_indices,
             :ignore_unavailable,
             :allow_no_indices,
-            :expand_wildcards
+            :expand_wildcards,
           ]
 
           method = "POST"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_gateway/snapshot"
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_gateway/snapshot"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

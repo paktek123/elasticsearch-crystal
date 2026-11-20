@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cluster
       module Actions
-
         # Get the cluster settings (previously set with {Cluster::Actions#put_settings})
         #
         # @example Get cluster settings
@@ -15,16 +14,16 @@ module Elasticsearch
         #
         # @see http://elasticsearch.org/guide/reference/api/admin-cluster-update-settings/
         #
-        def get_settings(arguments={} of Symbol => String)
+        def get_settings(arguments = {} of Symbol => String)
           valid_params = [
             :flat_settings,
-            :include_defaults
+            :include_defaults,
           ]
 
           method = "GET"
-          path   = "_cluster/settings"
+          path = "_cluster/settings"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

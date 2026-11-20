@@ -11,10 +11,10 @@ module Elasticsearch
         it "Bulk" do
           subject.indices.create({:index => "test"})
           subject.bulk({:body => [
-                         { "index" => { "_index" => "test", "_type" => "mytype", "_id" => "1"}},
-                         { "title" => "foo" },
-                         { "delete" => { "_index" => "test", "_type" => "mytype", "_id" => "2"}},    
-            ]}
+            {"index" => {"_index" => "test", "_type" => "mytype", "_id" => "1"}},
+            {"title" => "foo"},
+            {"delete" => {"_index" => "test", "_type" => "mytype", "_id" => "2"}},
+          ]}
           )
         end
       end

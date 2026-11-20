@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Perform multiple index, delete or update operations in a single request.
       #
       # Supports various different formats of the payload: Array of Strings, Header/Data pairs,
@@ -10,7 +9,7 @@ module Elasticsearch
       #
       # @example Perform three operations in a single request, passing actions and data as an array of hashes
       #
-     #
+      #
       # @example Perform three operations in a single request, passing data in the `:data` option
       #
       #     client.bulk body: [
@@ -55,11 +54,11 @@ module Elasticsearch
       #
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
       #
-      def bulk(arguments={} of Symbol => String)
+      def bulk(arguments = {} of Symbol => String)
         arguments = arguments.clone
 
-        type      = arguments.delete(:type) || ""
-        index      = arguments.delete(:index) || ""
+        type = arguments.delete(:type) || ""
+        index = arguments.delete(:index) || ""
 
         valid_params = [
           :wait_for_active_shards,
@@ -71,13 +70,14 @@ module Elasticsearch
           :_source,
           :_source_exclude,
           :_source_include,
-          :pipeline ]
+          :pipeline,
+        ]
 
         method = "POST"
-        path   = Utils.__pathify Utils.__escape(index), Utils.__escape(type), "_bulk"
+        path = Utils.__pathify Utils.__escape(index), Utils.__escape(type), "_bulk"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = arguments[:body]
+        body = arguments[:body]
 
         perform_request(method, path, params, body).body
       end

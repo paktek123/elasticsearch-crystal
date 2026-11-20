@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Return statistical information about one or more indices.
         #
         # The response contains comprehensive statistical information about metrics related to index:
@@ -75,7 +74,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-stats.html
         #
-        def stats(arguments={} of Symbol => String)
+        def stats(arguments = {} of Symbol => String)
           valid_parts = [
             :docs,
             :fielddata,
@@ -89,7 +88,8 @@ module Elasticsearch
             :search,
             :suggest,
             :store,
-            :warmer ]
+            :warmer,
+          ]
 
           valid_params = [
             :fields,
@@ -102,16 +102,16 @@ module Elasticsearch
             :ignore_unavailable,
             :allow_no_indices,
             :expand_wildcards,
-            :include_segment_file_sizes ]
+            :include_segment_file_sizes,
+          ]
 
           method = "GET"
 
-          
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_stats"
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_stats"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
 
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

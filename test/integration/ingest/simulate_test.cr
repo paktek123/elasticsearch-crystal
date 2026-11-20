@@ -13,8 +13,8 @@ module Elasticsearch
         end
 
         it "Delete a pipeline" do
-          subject.ingest.simulate({:id => "test", :body => {"description" => "describe pipeline", 
-                                                            "processors" => [{"set" => {"field"=>"foo","value"=>"bar"}}]}})
+          subject.ingest.simulate({:id => "test", :body => {"description" => "describe pipeline",
+                                                            "processors" => [{"set" => {"field" => "foo", "value" => "bar"}}]}})
         end
       end
     end

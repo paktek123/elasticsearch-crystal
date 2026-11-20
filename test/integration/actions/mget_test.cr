@@ -14,14 +14,14 @@ module Elasticsearch
 
         it "should get a document" do
           subject.indices.create({:index => "test_index", :body => {"mappings" => {"type_1" => {} of String => String}}})
-          subject.create({:index => "test_index", 
-                         :type => "type_1", 
-                         :id => "1",
-                         :body => {
+          subject.create({:index => "test_index",
+                          :type  => "type_1",
+                          :id    => "1",
+                          :body  => {
                             "title" => "Test 1",
-                            "tags" => ["y", "z"]
+                            "tags"  => ["y", "z"],
                           }})
-          subject.mget({:index => "test_index", :type => "type_id", :body => { "ids" => ["1", "2", "3"] }})
+          subject.mget({:index => "test_index", :type => "type_id", :body => {"ids" => ["1", "2", "3"]}})
         end
       end
     end

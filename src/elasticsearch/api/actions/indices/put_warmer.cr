@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Create or update an index warmer.
         #
         # An index warmer will run before an index is refreshed, ie. available for search.
@@ -37,7 +36,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-warmers/
         #
-        def put_warmer(arguments={} of Symbol => String)
+        def put_warmer(arguments = {} of Symbol => String)
           if !arguments.has_key?(:name) || !arguments.has_key?(:body)
             raise ArgumentError.new("Required argument 'name' or 'body' missing")
           end
@@ -46,7 +45,7 @@ module Elasticsearch
             :ignore_indices,
             :ignore_unavailable,
             :allow_no_indices,
-            :expand_wildcards
+            :expand_wildcards,
           ]
 
           if arguments.has_key? :index
@@ -62,12 +61,12 @@ module Elasticsearch
           end
 
           method = "PUT"
-          path   = Utils.__pathify( Utils.__listify(index.as(String)),
-                                    Utils.__listify(type.as(String)),
-                                    "_warmer",
-                                    Utils.__listify(arguments[:name].as(String)) )
+          path = Utils.__pathify(Utils.__listify(index.as(String)),
+            Utils.__listify(type.as(String)),
+            "_warmer",
+            Utils.__listify(arguments[:name].as(String)))
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body]
+          body = arguments[:body]
 
           perform_request(method, path, params, body).body
         end

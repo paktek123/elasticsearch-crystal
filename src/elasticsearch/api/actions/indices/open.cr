@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Open a previously closed index (see the {Indices::Actions#close} API).
         #
         # @example Open index named _myindex_
@@ -24,21 +23,21 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-open-close/
         #
-        def open(arguments={} of Symbol => String)
+        def open(arguments = {} of Symbol => String)
           if !arguments.has_key?(:index)
             raise ArgumentError.new("Required argument 'index' missing")
           end
-          
+
           valid_params = [
             :ignore_indices,
             :ignore_unavailable,
             :allow_no_indices,
             :expand_wildcards,
-            :timeout
+            :timeout,
           ]
 
           method = "POST"
-          path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)), "_open"
+          path = Utils.__pathify Utils.__escape(arguments[:index].as(String)), "_open"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil

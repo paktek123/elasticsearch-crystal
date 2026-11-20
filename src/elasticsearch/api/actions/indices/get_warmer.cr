@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Get one or more warmers for an index.
         #
         # @example Get all warmers
@@ -38,19 +37,19 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-warmers/
         #
-        def get_warmer(arguments={} of Symbol => String)
+        def get_warmer(arguments = {} of Symbol => String)
           valid_params = [
             :ignore_indices,
             :ignore_unavailable,
             :allow_no_indices,
             :expand_wildcards,
-            :local
+            :local,
           ]
 
           method = "GET"
-          path   = Utils.__pathify( Utils.__listify(arguments[:index]), "_warmer", Utils.__escape(arguments[:name]) )
+          path = Utils.__pathify(Utils.__listify(arguments[:index]), "_warmer", Utils.__escape(arguments[:name]))
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

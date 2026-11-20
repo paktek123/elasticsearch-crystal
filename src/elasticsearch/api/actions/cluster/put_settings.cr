@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cluster
       module Actions
-
         # Update cluster settings.
         #
         # @example Disable shard allocation in the cluster until restart
@@ -14,13 +13,13 @@ module Elasticsearch
         #
         # @see http://elasticsearch.org/guide/reference/api/admin-cluster-update-settings/
         #
-        def put_settings(arguments={} of Symbol => String)
-          valid_params = [ :flat_settings ]
+        def put_settings(arguments = {} of Symbol => String)
+          valid_params = [:flat_settings]
 
           method = "PUT"
-          path   = "_cluster/settings"
+          path = "_cluster/settings"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body] || ""
+          body = arguments[:body] || ""
 
           perform_request(method, path, params, body).body
         end

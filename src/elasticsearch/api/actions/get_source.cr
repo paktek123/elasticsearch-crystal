@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Return a specified document's `_source`.
       #
       # The response contains just the original document, as passed to Elasticsearch during indexing.
@@ -31,8 +30,8 @@ module Elasticsearch
       #
       # @since 0.90.1
       #
-      def get_source(arguments={} of Symbol => String)
-        if !arguments.has_key?(:id) || !arguments.has_key?(:index) || !arguments.has_key?(:id) 
+      def get_source(arguments = {} of Symbol => String)
+        if !arguments.has_key?(:id) || !arguments.has_key?(:index) || !arguments.has_key?(:id)
           raise ArgumentError.new("Required argument 'id' or 'index' or 'id' missing")
         end
         arguments[:type] ||= "_all"
@@ -46,19 +45,19 @@ module Elasticsearch
           :routing,
           :_source,
           :_source_include,
-          :_source_exclude ]
+          :_source_exclude,
+        ]
 
         method = "GET"
-        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
-                                 Utils.__escape(arguments[:type].as(String)),
-                                 Utils.__escape(arguments[:id].as(String)),
-                                 "_source"
+        path = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+          Utils.__escape(arguments[:type].as(String)),
+          Utils.__escape(arguments[:id].as(String)),
+          "_source"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = nil
+        body = nil
 
         perform_request(method, path, params, body).body
-    
       end
     end
   end

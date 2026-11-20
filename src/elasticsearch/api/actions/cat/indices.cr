@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Return the most important statistics about indices, across the cluster nodes
         #
         # Use the `help` parameter to display available statistics.
@@ -51,7 +50,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-indices.html
         #
-        def indices(arguments={} of Symbol => String)
+        def indices(arguments = {} of Symbol => String)
           valid_params = [
             :bytes,
             :h,
@@ -61,18 +60,19 @@ module Elasticsearch
             :master_timeout,
             :pri,
             :v,
-            :s ]
+            :s,
+          ]
 
           index = arguments.delete(:index) || ""
 
           method = "GET"
 
-          path   = Utils.__pathify "_cat/indices", Utils.__listify(index)
+          path = Utils.__pathify "_cat/indices", Utils.__listify(index)
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key? :h
 
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

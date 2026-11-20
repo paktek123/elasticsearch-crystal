@@ -13,7 +13,7 @@ module Elasticsearch
         end
 
         it "Verify Repository" do
-          subject.snapshot.create_repository({:repository => "test_cat_repo_1", :body => {"type" => "fs", 
+          subject.snapshot.create_repository({:repository => "test_cat_repo_1", :body => {"type" => "fs",
                                                                                           "settings" => {"location" => "test_cat_repo_1_loc"}}})
           subject.snapshot.verify_repository({:repository => "test_cat_repo_1"})
         end

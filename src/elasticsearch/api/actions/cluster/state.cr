@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cluster
       module Actions
-
         # Get information about the cluster state (indices settings, allocations, etc)
         #
         # @example
@@ -26,9 +25,9 @@ module Elasticsearch
         #
         # @see http://elasticsearch.org/guide/reference/api/admin-cluster-state/
         #
-        def state(arguments={} of Symbol => String)
-          index     = arguments.delete(:index) || ""
-          metric    = arguments.delete(:metric) || ""
+        def state(arguments = {} of Symbol => String)
+          index = arguments.delete(:index) || ""
+          metric = arguments.delete(:metric) || ""
 
           valid_params = [
             :metric,
@@ -37,14 +36,15 @@ module Elasticsearch
             :master_timeout,
             :flat_settings,
             :expand_wildcards,
-            :ignore_unavailable ]
+            :ignore_unavailable,
+          ]
 
           method = "GET"
-          path   = "_cluster/state"
+          path = "_cluster/state"
 
-          path   = Utils.__pathify "_cluster/state",
-                                   Utils.__listify(metric.as(String)),
-                                   Utils.__listify(index.as(String))
+          path = Utils.__pathify "_cluster/state",
+            Utils.__listify(metric.as(String)),
+            Utils.__listify(index.as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
 

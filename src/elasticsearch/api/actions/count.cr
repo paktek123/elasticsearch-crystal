@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Get the number of documents for the cluster, index, type, or a query.
       #
       # @example Get the number of all documents in the cluster
@@ -44,7 +43,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/count/
       #
-      def count(arguments={} of Symbol => String)
+      def count(arguments = {} of Symbol => String)
         valid_params = [
           :ignore_unavailable,
           :allow_no_indices,
@@ -58,7 +57,8 @@ module Elasticsearch
           :default_operator,
           :df,
           :lenient,
-          :lowercase_expanded_terms ]
+          :lowercase_expanded_terms,
+        ]
 
         method = "GET"
         index_param = arguments.delete(:index) || ""
@@ -69,7 +69,7 @@ module Elasticsearch
           body = nil
         end
 
-        path   = Utils.__pathify( Utils.__listify(index_param.as(String)), Utils.__listify(type_param.as(String)), "_count" )
+        path = Utils.__pathify(Utils.__listify(index_param.as(String)), Utils.__listify(type_param.as(String)), "_count")
 
         params = Utils.__validate_and_extract_params arguments, valid_params
 

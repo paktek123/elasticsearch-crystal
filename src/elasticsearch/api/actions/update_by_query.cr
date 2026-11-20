@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Process every document matching a query, potentially updating it
       #
       # @example Update all documents in the index, eg. to pick up new mappings
@@ -64,7 +63,7 @@ module Elasticsearch
       #
       # @see https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html
       #
-      def update_by_query(arguments={} of Symbol => String)
+      def update_by_query(arguments = {} of Symbol => String)
         if !arguments.has_key?(:index)
           raise ArgumentError.new("Required argument 'index' missing")
         end
@@ -111,7 +110,8 @@ module Elasticsearch
           :consistency,
           :scroll_size,
           :wait_for_completion,
-          :requests_per_second ]
+          :requests_per_second,
+        ]
 
         method = "POST"
 
@@ -127,9 +127,9 @@ module Elasticsearch
           body = nil
         end
 
-        path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
-                                 Utils.__listify(type),
-                                 "/_update_by_query"
+        path = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
+          Utils.__listify(type),
+          "/_update_by_query"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
 

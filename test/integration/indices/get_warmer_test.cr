@@ -14,15 +14,15 @@ module Elasticsearch
 
         it "get a warmer" do
           subject.indices.create({:index => "test"})
-          subject.indices.put_warmer({:index => "test", :name => "main", :body => { "query" => { 
-                                                                                      "filtered" => { 
-                                                                                        "filter" => { 
-                                                                                          "term" => { "published" => true } 
-                                                                                        } 
-                                                                                      } 
-                                                                                    },
-                                                                                    "sort" => [ "created_at" ]
-                                                                                  }})
+          subject.indices.put_warmer({:index => "test", :name => "main", :body => {"query" => {
+            "filtered" => {
+              "filter" => {
+                "term" => {"published" => true},
+              },
+            },
+          },
+                                                                                   "sort" => ["created_at"],
+          }})
           subject.indices.get_warmer({:index => "test", :name => "main"})
           subject.indices.delete_warmer({:index => "test", :name => "main"})
         end

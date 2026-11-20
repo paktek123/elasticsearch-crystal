@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Ingest
       module Actions
-
         # Return a specified pipeline
         #
         # @option arguments [String] :id Comma separated list of pipeline ids (wildcards supported).
@@ -10,16 +9,17 @@ module Elasticsearch
         #
         # @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/ingest.html
         #
-        def get_pipeline(arguments={} of Symbol => String)
+        def get_pipeline(arguments = {} of Symbol => String)
           if !arguments.has_key?(:id)
             raise ArgumentError.new("Required argument 'id' missing")
           end
           valid_params = [
-            :master_timeout ]
+            :master_timeout,
+          ]
           method = "GET"
-          path   = Utils.__pathify "_ingest/pipeline", Utils.__escape(arguments[:id].as(String))
+          path = Utils.__pathify "_ingest/pipeline", Utils.__escape(arguments[:id].as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

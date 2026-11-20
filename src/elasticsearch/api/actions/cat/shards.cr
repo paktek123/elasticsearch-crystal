@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Display shard allocation across nodes
         #
         # @example Display information for all indices
@@ -50,7 +49,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-shards.html
         #
-        def shards(arguments={} of Symbol => String)
+        def shards(arguments = {} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,
@@ -58,18 +57,19 @@ module Elasticsearch
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
 
           index = arguments.delete(:index) || ""
 
           method = "GET"
 
-          path   = Utils.__pathify "_cat/shards", Utils.__listify(index.as(String))
+          path = Utils.__pathify "_cat/shards", Utils.__listify(index.as(String))
           arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key?(:h)
 
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

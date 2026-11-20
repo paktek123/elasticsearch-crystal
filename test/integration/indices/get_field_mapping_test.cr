@@ -14,17 +14,17 @@ module Elasticsearch
 
         it "get a field mapping" do
           subject.indices.create({:index => "test", :body => {"mappings" => {
-                                                                "document" => {
-                                                                  "properties" => {
-                                                                    "title" => {
-                                                                      "type" => "text",
-                                                                      "fields" => {
-                                                                        "title" =>  { "type" => "text"},
-                                                                      }
-                                                                    }
-                                                                  }
-                                                                }
-                                                              }}})
+            "document" => {
+              "properties" => {
+                "title" => {
+                  "type"   => "text",
+                  "fields" => {
+                    "title" => {"type" => "text"},
+                  },
+                },
+              },
+            },
+          }}})
           subject.indices.get_field_mapping({:index => "test", :field => ["title"]})
         end
       end

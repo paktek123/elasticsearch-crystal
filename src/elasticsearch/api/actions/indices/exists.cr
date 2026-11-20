@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Return true if the index (or all indices in a list) exists, false otherwise.
         #
         # @example Check whether index named _myindex_ exists
@@ -26,7 +25,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-indices-exists/
         #
-        def exists(arguments={} of Symbol => String)
+        def exists(arguments = {} of Symbol => String)
           if !arguments.has_key?(:index)
             raise ArgumentError.new("Required argument 'index' missing")
           end
@@ -36,19 +35,17 @@ module Elasticsearch
             :ignore_unavailable,
             :allow_no_indices,
             :expand_wildcards,
-            :local
+            :local,
           ]
 
           method = "HEAD"
-          path   = Utils.__listify(arguments[:index].as(String))
+          path = Utils.__listify(arguments[:index].as(String))
           arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).status == 200 ? true : false
-          
         end
-
       end
     end
   end

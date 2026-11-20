@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Provides low-level information about shards (allocated nodes, exceptions, ...)
         #
         # @option arguments [List] :index A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices
@@ -14,17 +13,18 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shards-stores.html
         #
-        def shard_stores(arguments={} of Symbol => String)
+        def shard_stores(arguments = {} of Symbol => String)
           valid_params = [
             :status,
             :ignore_unavailable,
             :allow_no_indices,
             :expand_wildcards,
-            :operation_threading ]
+            :operation_threading,
+          ]
           method = "GET"
-          path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)), "_shard_stores"
+          path = Utils.__pathify Utils.__escape(arguments[:index].as(String)), "_shard_stores"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

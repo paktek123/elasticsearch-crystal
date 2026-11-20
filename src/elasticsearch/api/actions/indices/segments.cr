@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Return information about segments for one or more indices.
         #
         # The response contains information about segment size, number of documents, deleted documents, etc.
@@ -23,20 +22,20 @@ module Elasticsearch
         #
         # @see http://elasticsearch.org/guide/reference/api/admin-indices-segments/
         #
-        def segments(arguments={} of Symbol => String)
+        def segments(arguments = {} of Symbol => String)
           valid_params = [
             :ignore_indices,
             :ignore_unavailable,
             :allow_no_indices,
             :expand_wildcards,
-            :verbose
+            :verbose,
           ]
 
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_segments"
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_segments"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

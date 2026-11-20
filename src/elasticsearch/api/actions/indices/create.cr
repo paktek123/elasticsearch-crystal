@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Create an index.
         #
         # Pass the index `settings` and `mappings` in the `:body` attribute.
@@ -68,7 +67,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-create-index/
         #
-        def create(arguments={} of Symbol => String)
+        def create(arguments = {} of Symbol => String)
           if !arguments.has_key?(:index)
             raise ArgumentError.new("Required argument 'index' missing")
           end
@@ -76,13 +75,13 @@ module Elasticsearch
             :timeout,
             :master_timeout,
             :update_all_types,
-            :wait_for_active_shards
+            :wait_for_active_shards,
           ]
 
           method = "PUT"
-          
-          path   = Utils.__pathify Utils.__escape(arguments[:index])
-          
+
+          path = Utils.__pathify Utils.__escape(arguments[:index])
+
           if arguments.has_key? :body
             body = arguments.delete(:body)
           else

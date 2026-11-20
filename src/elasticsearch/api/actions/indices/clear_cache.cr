@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Clear caches and other auxiliary data structures.
         #
         # Can be performed against a specific index, or against all indices.
@@ -37,7 +36,7 @@ module Elasticsearch
         #
         # @see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-clearcache.html
         #
-        def clear_cache(arguments={} of Symbol => String)
+        def clear_cache(arguments = {} of Symbol => String)
           valid_params = [
             :field_data,
             :fielddata,
@@ -49,7 +48,8 @@ module Elasticsearch
             :index,
             :recycler,
             :request_cache,
-            :request ]
+            :request,
+          ]
 
           if arguments.has_key? :index
             index = arguments.delete(:index)
@@ -58,11 +58,11 @@ module Elasticsearch
           end
 
           method = "POST"
-          path   = Utils.__pathify Utils.__listify(index.as(String)), "_cache/clear"
+          path = Utils.__pathify Utils.__listify(index.as(String)), "_cache/clear"
           arguments = Utils.__sort_booleans(arguments)
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           params[:fields] = Utils.__listify(params[:fields].as(String)) if params.has_key?(:fields)
 

@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Create or update a single index alias.
         #
         # @example Create an alias for current month
@@ -23,15 +22,15 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-aliases/
         #
-        def put_alias(arguments={} of Symbol => String)
+        def put_alias(arguments = {} of Symbol => String)
           if !arguments.has_key?(:name)
             raise ArgumentError.new("Required argument 'name' missing")
           end
-          valid_params = [ :timeout ]
+          valid_params = [:timeout]
 
           method = "PUT"
-          
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_alias", Utils.__escape(arguments[:name].as(String))
+
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_alias", Utils.__escape(arguments[:name].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           if arguments.has_key? :body
@@ -39,7 +38,7 @@ module Elasticsearch
           else
             body = nil
           end
-          
+
           perform_request(method, path, params, body).body
         end
       end
