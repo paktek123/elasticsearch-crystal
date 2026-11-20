@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Create or update mapping.
         #
         # Pass the mapping definition(s) in the `:body` argument.
@@ -47,7 +46,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-put-mapping/
         #
-        def put_mapping(arguments={} of Symbol => String)
+        def put_mapping(arguments = {} of Symbol => String)
           if !arguments.has_key?(:type) || !arguments.has_key?(:body)
             raise ArgumentError.new("Required argument 'name' or 'body' missing")
           end
@@ -60,14 +59,14 @@ module Elasticsearch
             :expand_wildcards,
             :update_all_types,
             :master_timeout,
-            :timeout
+            :timeout,
           ]
 
           method = "PUT"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_mapping", Utils.__escape(arguments[:type].as(String))
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_mapping", Utils.__escape(arguments[:type].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body]
+          body = arguments[:body]
 
           perform_request(method, path, params, body).body
         end

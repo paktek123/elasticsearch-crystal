@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Perform an index optimization.
         #
         # The "optimize" operation merges the index segments, increasing search performance.
@@ -45,7 +44,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-optimize/
         #
-        def optimize(arguments={} of Symbol => String)
+        def optimize(arguments = {} of Symbol => String)
           valid_params = [
             :ignore_indices,
             :ignore_unavailable,
@@ -58,10 +57,11 @@ module Elasticsearch
             :only_expunge_deletes,
             :operation_threading,
             :refresh,
-            :wait_for_merge ]
+            :wait_for_merge,
+          ]
 
           method = "POST"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_optimize"
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_optimize"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil

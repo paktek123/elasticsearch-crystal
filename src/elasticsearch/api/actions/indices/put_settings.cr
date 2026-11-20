@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Update the settings for one or multiple indices.
         #
         # @example Change the number of replicas for all indices
@@ -45,7 +44,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-update-settings/
         #
-        def put_settings(arguments={} of Symbol => String)
+        def put_settings(arguments = {} of Symbol => String)
           if !arguments.has_key?(:body)
             raise ArgumentError.new("Required argument 'body' missing")
           end
@@ -58,13 +57,13 @@ module Elasticsearch
             :expand_wildcards,
             :preserve_existing,
             :master_timeout,
-            :flat_settings
+            :flat_settings,
           ]
 
           method = "PUT"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_settings"
+          path = Utils.__pathify Utils.__listify(arguments[:index]), "_settings"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body]
+          body = arguments[:body]
 
           perform_request(method, path, params, body).body
         end

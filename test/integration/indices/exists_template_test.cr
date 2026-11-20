@@ -8,12 +8,12 @@ module Elasticsearch
       context "Indices: Exists Template: " do
         subject = Elasticsearch::Test::Client.new({:host => "localhost", :port => 9250})
 
-       it "template exists" do
-          subject.indices.put_template({:name => "test", :body => {"order" => 0, 
-                                                                   "version" => 1, 
+        it "template exists" do
+          subject.indices.put_template({:name => "test", :body => {"order" => 0,
+                                                                   "version" => 1,
                                                                    "template" => "test",
                                                                    "index_patterns" => "test-*",
-                                                                   "settings" => {"number_of_shards" => "1", 
+                                                                   "settings" => {"number_of_shards" => "1",
                                                                                   "number_of_replicas" => "0"}}})
           subject.indices.exists_template({:name => "test"}).should be_true
           subject.indices.delete_template({:name => "test"})

@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Return the result of the analysis process (tokens)
         #
         # Allows to "test-drive" the Elasticsearch analysis process by performing the analysis on the
@@ -48,7 +47,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-analyze/
         #
-        def analyze(arguments={} of Symbol => String)
+        def analyze(arguments = {} of Symbol => String)
           valid_params = [
             :analyzer,
             :char_filters,
@@ -62,23 +61,24 @@ module Elasticsearch
             :text,
             :tokenizer,
             :token_filters,
-            :format ]
+            :format,
+          ]
 
           if arguments.has_key? :filters
             filters = arguments.delete(:filters)
           else
             filters = ""
           end
-          
+
           token_filters = arguments.delete(:token_filters) || ""
           index = arguments.delete(:index) || ""
 
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(index.as(String)), "_analyze"
-          
+          path = Utils.__pathify Utils.__listify(index.as(String)), "_analyze"
+
           params = Utils.__validate_and_extract_params arguments, valid_params
-          
-          body   = arguments.delete(:body) || ""
+
+          body = arguments.delete(:body) || ""
 
           perform_request(method, path, params, body).body
         end

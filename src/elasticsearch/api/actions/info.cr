@@ -1,16 +1,15 @@
 module Elasticsearch
   module API
     module Actions
-
       # Return simple information about the cluster (name, version).
       #
       # @see http://elasticsearch.org/guide/
       #
-      def info(arguments={} of Symbol => String)
+      def info(arguments = {} of Symbol => String)
         method = "GET"
-        path   = ""
+        path = ""
         params = {} of String => String
-        body   = nil
+        body = nil
 
         perform_request(method, path, params, body).body
       end

@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Return multiple documents from one or more indices in a single request.
       #
       # Pass the request definition in the `:body` argument, either as an Array of `docs` specifications,
@@ -44,7 +43,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/multi-get/
       #
-      def mget(arguments={} of Symbol => String)
+      def mget(arguments = {} of Symbol => String)
         if !arguments.has_key?(:body)
           raise ArgumentError.new("Required argument 'body' missing")
         end
@@ -59,15 +58,16 @@ module Elasticsearch
           :_source,
           :_source_include,
           :_source_exclude,
-          :stored_fields ]
+          :stored_fields,
+        ]
 
         method = "GET"
-        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
-                                 Utils.__escape(arguments[:type].as(String)),
-                                 "_mget"
+        path = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+          Utils.__escape(arguments[:type].as(String)),
+          "_mget"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = arguments[:body]
+        body = arguments[:body]
 
         perform_request(method, path, params, body).body
       end

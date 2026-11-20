@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Display a terse version of the {Elasticsearch::API::Cluster::Actions#health} API output
         #
         # @example Display cluster health
@@ -29,7 +28,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-health.html
         #
-        def health(arguments={} of Symbol => String)
+        def health(arguments = {} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,
@@ -37,14 +36,15 @@ module Elasticsearch
             :help,
             :ts,
             :v,
-            :s ]
+            :s,
+          ]
 
           method = "GET"
-          path   = "_cat/health"
+          path = "_cat/health"
           arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key?(:h)
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

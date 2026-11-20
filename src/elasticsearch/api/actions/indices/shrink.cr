@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Copy an existing index into a new index with a fewer number of primary shards
         #
         # @option arguments [String] :index The name of the source index to shrink (*Required*)
@@ -16,7 +15,7 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shrink-index.html
         #
-        def shrink(arguments={} of Symbol => String)
+        def shrink(arguments = {} of Symbol => String)
           if !arguments.has_key?(:index) || !arguments.has_key?(:target)
             raise ArgumentError.new("Required argument 'index' or 'target' missing")
           end
@@ -25,7 +24,7 @@ module Elasticsearch
             :wait_for_active_shards,
             :wait_for_no_relocating_shards,
             :timeout,
-            :master_timeout
+            :master_timeout,
           ]
 
           source = arguments.delete(:index)
@@ -38,9 +37,9 @@ module Elasticsearch
           end
 
           method = "PUT"
-          path   = Utils.__pathify(source.as(String), "_shrink", target.as(String))
+          path = Utils.__pathify(source.as(String), "_shrink", target.as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arg_body
+          body = arg_body
 
           perform_request(method, path, params, body).body
         end

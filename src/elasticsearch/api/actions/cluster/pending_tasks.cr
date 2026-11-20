@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cluster
       module Actions
-
         # Returns a list of any cluster-level changes (e.g. create index, update mapping, allocate or fail shard)
         # which have not yet been executed and are queued up.
         #
@@ -16,14 +15,15 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cluster-pending.html
         #
-        def pending_tasks(arguments={} of Symbol => String)
+        def pending_tasks(arguments = {} of Symbol => String)
           valid_params = [
             :local,
-            :master_timeout ]
+            :master_timeout,
+          ]
           method = "GET"
-          path   = "_cluster/pending_tasks"
+          path = "_cluster/pending_tasks"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

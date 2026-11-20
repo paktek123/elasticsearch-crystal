@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Display information about the segments in the shards of an index
         #
         # @example Display information for all indices
@@ -18,18 +17,19 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-segments.html
         #
-        def segments(arguments={} of Symbol => String)
+        def segments(arguments = {} of Symbol => String)
           valid_params = [
             :bytes,
             :index,
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
           method = "GET"
-          path   = "_cat/segments"
+          path = "_cat/segments"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

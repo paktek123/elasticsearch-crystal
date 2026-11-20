@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Retrieve information about one or more indices
         #
         # @option arguments [List] :index A comma-separated list of index names (*Required*)
@@ -23,7 +22,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/indices-get-index.html
         #
-        def get(arguments={} of Symbol => String)
+        def get(arguments = {} of Symbol => String)
           if !arguments.has_key?(:index)
             raise ArgumentError.new("Required argument 'index' missing")
           end
@@ -35,13 +34,14 @@ module Elasticsearch
             :expand_wildcards,
             :flat_settings,
             :human,
-            :include_defaults ]
+            :include_defaults,
+          ]
 
           method = "GET"
 
           feature = arguments.delete(:feature) || ""
 
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), Utils.__listify(feature.as(String))
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), Utils.__listify(feature.as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil

@@ -10,7 +10,6 @@ require "./api/namespace/**"
 module Elasticsearch
   module API
     class Client < Elasticsearch::API::Common::Client
-      
       include Elasticsearch::API::Common
       include Elasticsearch::API::Actions
       include Elasticsearch::API::Cluster

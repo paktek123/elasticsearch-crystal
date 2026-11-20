@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Tasks
       module Actions
-
         # Return the list of tasks
         #
         # @option arguments [Number] :task_id Return the task with specified id
@@ -21,7 +20,7 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks-list.html
         #
-        def list(arguments={} of Symbol => String)
+        def list(arguments = {} of Symbol => String)
           valid_params = [
             :node_id,
             :actions,
@@ -29,16 +28,17 @@ module Elasticsearch
             :parent_node,
             :parent_task,
             :group_by,
-            :wait_for_completion ]
+            :wait_for_completion,
+          ]
 
           arguments = arguments.clone
 
           task_id = arguments.delete(:task_id) || ""
 
           method = "GET"
-          path   = Utils.__pathify( "_tasks", Utils.__escape(task_id.as(String)) )
+          path = Utils.__pathify("_tasks", Utils.__escape(task_id.as(String)))
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Abort a running benchmark
       #
       # @example
@@ -12,11 +11,11 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-benchmark.html
       #
-      def abort_benchmark(arguments={} of Symbol => String)
+      def abort_benchmark(arguments = {} of Symbol => String)
         method = "POST"
-        path   = "_bench/abort/#{arguments[:name]}"
+        path = "_bench/abort/#{arguments[:name]}"
         params = {} of String => String
-        body   = nil
+        body = nil
 
         perform_request(method, path, params, body).body
       end

@@ -18,36 +18,36 @@ module Elasticsearch
         end
 
         it "should create a normal template" do
-          #(subject.cat.templates.as(String).empty?).should be_true
-          subject.indices.put_template({:name => "test", :body => {"order" => 0, 
-                                                                   "version" => 1, 
+          # (subject.cat.templates.as(String).empty?).should be_true
+          subject.indices.put_template({:name => "test", :body => {"order" => 0,
+                                                                   "version" => 1,
                                                                    "template" => "test",
                                                                    "index_patterns" => "test-*",
-                                                                   "settings" => {"number_of_shards" => "1", 
+                                                                   "settings" => {"number_of_shards" => "1",
                                                                                   "number_of_replicas" => "0"}}})
-          subject.indices.put_template({:name => "test_2", :body => {"order" => 1, 
-                                                                     "version" => 2, 
+          subject.indices.put_template({:name => "test_2", :body => {"order" => 1,
+                                                                     "version" => 2,
                                                                      "template" => "test_2",
                                                                      "index_patterns" => "test-2*",
-                                                                     "settings" => {"number_of_shards" => "1", 
+                                                                     "settings" => {"number_of_shards" => "1",
                                                                                     "number_of_replicas" => "0"}}})
           subject.cat.templates.as(String).should match /(?=.*test)(?=.*test_2)/
         end
 
         it "should template with no match" do
-          #(subject.cat.templates.as(String).empty?).should be_true
-          subject.indices.put_template({:name => "test", :body => {"order" => 0, 
-                                                                   "version" => 1, 
+          # (subject.cat.templates.as(String).empty?).should be_true
+          subject.indices.put_template({:name => "test", :body => {"order" => 0,
+                                                                   "version" => 1,
                                                                    "template" => "test",
                                                                    "index_patterns" => "t*",
-                                                                   "settings" => {"number_of_shards" => "1", 
+                                                                   "settings" => {"number_of_shards" => "1",
                                                                                   "number_of_replicas" => "0"}}})
-          subject.indices.put_template({:name => "nomatch", :body => {"order" => 1, 
-                                                                     "version" => 2, 
-                                                                     "template" => "test_2",
-                                                                     "index_patterns" => "tea*",
-                                                                     "settings" => {"number_of_shards" => "1", 
-                                                                                    "number_of_replicas" => "0"}}})
+          subject.indices.put_template({:name => "nomatch", :body => {"order" => 1,
+                                                                      "version" => 2,
+                                                                      "template" => "test_2",
+                                                                      "index_patterns" => "tea*",
+                                                                      "settings" => {"number_of_shards" => "1",
+                                                                                     "number_of_replicas" => "0"}}})
           subject.cat.templates({:name => "test*"}).as(String).should match /(?=.*test)/
         end
 

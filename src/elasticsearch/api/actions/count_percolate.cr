@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Return the number of queries matching a document.
       #
       # Percolator allows you to register queries and then evaluate a document against them:
@@ -48,7 +47,7 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-percolate.html
       #
-      def count_percolate(arguments={} of Symbol => String)
+      def count_percolate(arguments = {} of Symbol => String)
         if !arguments.has_key?(:index) || !arguments.has_key?(:type)
           raise ArgumentError.new("Required argument 'index' or 'type' missing")
         end
@@ -61,24 +60,25 @@ module Elasticsearch
           :percolate_index,
           :percolate_type,
           :version,
-          :version_type ]
+          :version_type,
+        ]
 
         id = arguments[:id] || ""
 
         if arguments.has_key? :body
-            arg_body = arguments.delete(:body)
-          else
-            arg_body = nil
-          end
+          arg_body = arguments.delete(:body)
+        else
+          arg_body = nil
+        end
 
         method = "GET"
-        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
-                                 Utils.__escape(arguments[:type].as(String)),
-                                 id.as(String),
-                                 "_percolate/count"
+        path = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+          Utils.__escape(arguments[:type].as(String)),
+          id.as(String),
+          "_percolate/count"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = arg_body
+        body = arg_body
 
         perform_request(method, path, params, body).body
       end

@@ -2,11 +2,9 @@ require "html"
 
 module Elasticsearch
   module API
-
     # Generic utility methods
     #
     module Utils
-
       # URL-escape a string
       #
       # @example
@@ -35,37 +33,36 @@ module Elasticsearch
       #
       # @api private
       def __listify(*tuple)
-        list = [] of String | Array(String) #| Hash(Symbol, Bool)
+        list = [] of String | Array(String) # | Hash(Symbol, Bool)
         if tuple.last.is_a?(Hash)
-          options = {:escape => false} 
+          options = {:escape => false}
         else
           options = {:escape => true}
         end
-        #tuple.delete(:escape)
-        tuple.each { |e| list << e if e.is_a?(String) || e.is_a?(Array(String))}
+        # tuple.delete(:escape)
+        tuple.each { |e| list << e if e.is_a?(String) || e.is_a?(Array(String)) }
 
-        
-
-        Array.new(1,list).first.flatten.
-          map { |e| e.responds_to?(:split) ? e.split(',') : e }.
-          flatten.
-          compact.
-          map { |e| options[:escape] == false ? e : __escape(e) }.
-          join(',')
+        Array.new(1, list).first.flatten
+          .map { |e| e.responds_to?(:split) ? e.split(',') : e }
+          .flatten
+          .compact
+          .map { |e| options[:escape] == false ? e : __escape(e) }
+          .join(',')
       end
 
       def __sort_booleans(arg_hash)
         new_hash = {} of Symbol => String | Bool | Array(String)
-        arg_hash.each do |k,v|
+        arg_hash.each do |k, v|
           if !!v == v
             new_hash[k] = ""
           else
             new_hash[k] = v
           end
         end
-        #puts "THIS IS THE NEW HASH #{new_hash}"
+        # puts "THIS IS THE NEW HASH #{new_hash}"
         new_hash
       end
+
       # Create a path (URL part) from arguments, ignoring nil values and empty strings.
       #
       # @example Create a path from array
@@ -81,11 +78,11 @@ module Elasticsearch
       def __pathify(*segments)
         list = [] of String
         segments.each { |e| list << e.as(String) }
-        Array.new(1,list).first.flatten.
-          compact.
-          reject { |s| s.to_s =~ /^\s*$/ }.
-          join('/').
-          squeeze('/')
+        Array.new(1, list).first.flatten
+          .compact
+          .reject { |s| s.to_s =~ /^\s*$/ }
+          .join('/')
+          .squeeze('/')
       end
 
       # Convert an array of payloads into Elasticsearch `header\ndata` format
@@ -108,27 +105,25 @@ module Elasticsearch
         operations = %w[index create delete update]
 
         case
-
         # Hashes with `:data`
         when payload.any? { |d| d.is_a?(Hash) && d.values.first.is_a?(Hash) && operations.includes?(d.keys.first.to_s) && (d.values.first[:data] || d.values.first["data"]) }
-          payload = payload.
-            inject([] of String) do |sum, item|
+          payload = payload
+            .inject([] of String) do |sum, item|
               operation, meta = item.to_a.first
-              meta            = meta.clone
-              data            = meta.delete(:data) || meta.delete("data")
+              meta = meta.clone
+              data = meta.delete(:data) || meta.delete("data")
 
-              sum << { operation => meta }
+              sum << {operation => meta}
               sum << data if data
               sum
-            end.
-            map { |item| Elasticsearch::API.serializer.dump(item) }
+            end
+            .map { |item| Elasticsearch::API.serializer.dump(item) }
           payload << "" unless payload.empty?
 
-        # Array of strings
+          # Array of strings
         when payload.all? { |d| d.is_a? String }
           payload << ""
-
-        # Header/Data pairs
+          # Header/Data pairs
         else
           payload = payload.map { |item| Elasticsearch::API.serializer.dump(item) }
           payload << ""
@@ -164,46 +159,46 @@ module Elasticsearch
       #
       # @api private
       #
-      def __validate_and_extract_params(arguments, params=[] of Symbol, exclude=[] of Symbol)
-        #if options[:skip_parameter_validation] || Elasticsearch::API.settings[:skip_parameter_validation]
+      def __validate_and_extract_params(arguments, params = [] of Symbol, exclude = [] of Symbol)
+        # if options[:skip_parameter_validation] || Elasticsearch::API.settings[:skip_parameter_validation]
         #  arguments
-        #else
+        # else
         __validate_params(arguments, params)
         __extract_params(arguments, params, exclude)
-        #end
+        # end
       end
 
-      private def __validate_params(arguments, valid_params=[] of Symbol)
-        arguments.each do |k,v|
+      private def __validate_params(arguments, valid_params = [] of Symbol)
+        arguments.each do |k, v|
           raise ArgumentError.new("URL parameter '#{k}' is not supported") \
             unless Elasticsearch::API::Common::Constants::COMMON_PARAMS.includes?(k) || Elasticsearch::API::Common::Constants::COMMON_QUERY_PARAMS.includes?(k) || valid_params.includes?(k)
         end
       end
 
-      private def __extract_params(arguments, params=[] of Symbol, exclude=[] of Symbol) #: Hash(Symbol, String | Bool)
-        #result = {} of Symbol | Char => Char | String | Bool | Array(String)
-        
+      private def __extract_params(arguments, params = [] of Symbol, exclude = [] of Symbol) # : Hash(Symbol, String | Bool)
+        # result = {} of Symbol | Char => Char | String | Bool | Array(String)
+
         params += Elasticsearch::API::Common::Constants::COMMON_QUERY_PARAMS + Elasticsearch::API::Common::Constants::COMMON_PARAMS
         params -= exclude
-        #puts "extract_params: args are #{arguments}, checking against #{params}"
-        arguments.each do |k,v|
+        # puts "extract_params: args are #{arguments}, checking against #{params}"
+        arguments.each do |k, v|
           if !params.includes? k
-            #result[k] = v
+            # result[k] = v
             arguments.delete(k)
           end
 
-          #if exclude.includes?(k)
+          # if exclude.includes?(k)
           #  arguments.delete(k)
-          #end
+          # end
         end
-        #result = arguments.select { |k,v| COMMON_QUERY_PARAMS.includes?(k) || params.includes?(k) }
+        # result = arguments.select { |k,v| COMMON_QUERY_PARAMS.includes?(k) || params.includes?(k) }
         # TODO
-        #result = Hash[result] unless result.is_a?(Hash) # Normalize Ruby 1.8 and Ruby 1.9 Hash#select behaviour
-        #result = result.map { |k,v| v.is_a?(Array) ? Hash.new(k, __listify(v, options)) : Hash.new(k,v)  }] # Listify Arrays
-        #result
-        #puts "THIS IS WHAT EXTRACT PARAMS LEFT ME #{arguments}, removing #{exclude}"
+        # result = Hash[result] unless result.is_a?(Hash) # Normalize Ruby 1.8 and Ruby 1.9 Hash#select behaviour
+        # result = result.map { |k,v| v.is_a?(Array) ? Hash.new(k, __listify(v, options)) : Hash.new(k,v)  }] # Listify Arrays
+        # result
+        # puts "THIS IS WHAT EXTRACT PARAMS LEFT ME #{arguments}, removing #{exclude}"
         arguments
-        #result
+        # result
       end
 
       # Extracts the valid parts of the URL from the arguments
@@ -222,11 +217,11 @@ module Elasticsearch
       #
       # @api private
       #
-      def __extract_parts(arguments, valid_parts=[] of String)
-        parts = Hash[arguments.select { |k,v| valid_parts.includes?(k) }]
-        parts = parts.reduce([] of String) { |sum, item| k, v = item; v.is_a?(TrueClass) ? sum << k.to_s : sum << v  }
+      def __extract_parts(arguments, valid_parts = [] of String)
+        parts = Hash[arguments.select { |k, v| valid_parts.includes?(k) }]
+        parts = parts.reduce([] of String) { |sum, item| k, v = item; v.is_a?(TrueClass) ? sum << k.to_s : sum << v }
 
-        arguments.delete_if { |k,v| valid_parts.includes? k }
+        arguments.delete_if { |k, v| valid_parts.includes? k }
         return parts
       end
 
@@ -247,25 +242,25 @@ module Elasticsearch
         end
       end
 
-      private def __report_unsupported_parameters(arguments, params=[] of String)
+      private def __report_unsupported_parameters(arguments, params = [] of String)
         messages = [] of String
-        unsupported_params = params.select {|d| d.is_a?(Hash) ? arguments.include?(d.keys.first) : arguments.include?(d) }
+        unsupported_params = params.select { |d| d.is_a?(Hash) ? arguments.include?(d.keys.first) : arguments.include?(d) }
 
         unsupported_params.each do |param|
           name = case param
-          when Symbol
-            param
-          when Hash
-            param.keys.first
-          else
-            raise ArgumentError, "The param must be a Symbol or a Hash"
-          end
+                 when Symbol
+                   param
+                 when Hash
+                   param.keys.first
+                 else
+                   raise ArgumentError, "The param must be a Symbol or a Hash"
+                 end
 
           explanation = if param.is_a?(Hash)
-            ". #{param.values.first[:explanation]}."
-          else
-            ". This parameter is not supported in the version you're using: #{Elasticsearch::API::VERSION}, and will be removed in the next release."
-          end
+                          ". #{param.values.first[:explanation]}."
+                        else
+                          ". This parameter is not supported in the version you're using: #{Elasticsearch::API::VERSION}, and will be removed in the next release."
+                        end
 
           message = "[!] You are using unsupported parameter [:#{name}]"
 

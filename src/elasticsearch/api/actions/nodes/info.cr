@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Nodes
       module Actions
-
         # Returns information about nodes in the cluster (cluster settings, JVM version, etc).
         #
         # Use the `all` option to return all available settings, or limit the information returned
@@ -40,8 +39,7 @@ module Elasticsearch
         #
         # @see http://elasticsearch.org/guide/reference/api/admin-cluster-nodes-info/
         #
-        def info(arguments={} of Symbol => String)
-
+        def info(arguments = {} of Symbol => String)
           valid_parts = [
             :_all,
             :http,
@@ -53,9 +51,10 @@ module Elasticsearch
             :settings,
             :thread_pool,
             :transport,
-            :timeout ]
+            :timeout,
+          ]
 
-          valid_params = [ :flat_settings, :timeout, :metric ] + valid_parts
+          valid_params = [:flat_settings, :timeout, :metric] + valid_parts
 
           method = "GET"
 
@@ -71,10 +70,10 @@ module Elasticsearch
             metric = ""
           end
 
-          path   = Utils.__pathify "_nodes", Utils.__listify(node_id), Utils.__listify(metric)
+          path = Utils.__pathify "_nodes", Utils.__listify(node_id), Utils.__listify(metric)
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

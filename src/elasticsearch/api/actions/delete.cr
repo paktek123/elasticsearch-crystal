@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Delete a single document.
       #
       # @example Delete a document
@@ -28,7 +27,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/delete/
       #
-      def delete(arguments={} of Symbol => String)
+      def delete(arguments = {} of Symbol => String)
         if !arguments.has_key?(:index) || !arguments.has_key?(:type) || !arguments.has_key?(:id)
           raise ArgumentError.new("Required argument 'index' or 'type' or 'id' missing")
         end
@@ -41,15 +40,16 @@ module Elasticsearch
           :routing,
           :timeout,
           :version,
-          :version_type ]
+          :version_type,
+        ]
 
         method = "DELETE"
-        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
-                                 Utils.__escape(arguments[:type].as(String)),
-                                 Utils.__escape(arguments[:id].as(String))
+        path = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+          Utils.__escape(arguments[:type].as(String)),
+          Utils.__escape(arguments[:id].as(String))
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = nil
+        body = nil
 
         perform_request(method, path, params, body).body
       end

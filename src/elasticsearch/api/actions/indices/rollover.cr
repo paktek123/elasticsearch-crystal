@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # The rollover index API rolls an alias over to a new index when the existing index
         # is considered to be too large or too old
         #
@@ -15,7 +14,7 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html
         #
-        def rollover(arguments={} of Symbol => String)
+        def rollover(arguments = {} of Symbol => String)
           if !arguments.has_key?(:alias) || !arguments.has_key?(:body)
             raise ArgumentError.new("Required argument 'alias' or 'body' missing")
           end
@@ -23,7 +22,8 @@ module Elasticsearch
           valid_params = [
             :wait_for_active_shards,
             :timeout,
-            :master_timeout ]
+            :master_timeout,
+          ]
 
           arguments = arguments.clone
 
@@ -31,9 +31,9 @@ module Elasticsearch
           target = arguments.delete(:new_index) || ""
 
           method = "POST"
-          path   = Utils.__pathify source.as(String), "_rollover", target
+          path = Utils.__pathify source.as(String), "_rollover", target
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body]
+          body = arguments[:body]
 
           perform_request(method, path, params, body).body
         end

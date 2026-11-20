@@ -16,7 +16,7 @@ module Elasticsearch
           subject.indices.create({:index => "testind"})
           subject.indices.put_alias({:index => "testind", :name => "testali"})
           subject.indices.get_alias({:index => "testind", :name => "testali"})
-          subject.indices.delete_alias({:index => "testind", :name => "testali"}) 
+          subject.indices.delete_alias({:index => "testind", :name => "testali"})
         end
       end
     end

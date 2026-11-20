@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Return information about shard recovery for one or more indices
         #
         # @example Get recovery information for a single index
@@ -24,15 +23,16 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/indices-recovery.html
         #
-        def recovery(arguments={} of Symbol => String)
+        def recovery(arguments = {} of Symbol => String)
           valid_params = [
             :detailed,
             :active_only,
-            :human ]
+            :human,
+          ]
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_recovery"
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_recovery"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

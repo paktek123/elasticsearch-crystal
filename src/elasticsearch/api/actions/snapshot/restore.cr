@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Snapshot
       module Actions
-
         # Restore the state from a snapshot
         #
         # @example Restore from the `snapshot-1` snapshot
@@ -28,20 +27,21 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html
         #
-        def restore(arguments={} of Symbol => String)
+        def restore(arguments = {} of Symbol => String)
           if !arguments.has_key?(:repository) || !arguments.has_key?(:snapshot)
             raise ArgumentError.new("Required argument 'snapshot' or 'repository' missing")
           end
 
           valid_params = [
             :master_timeout,
-            :wait_for_completion ]
+            :wait_for_completion,
+          ]
 
           repository = arguments.delete(:repository)
-          snapshot   = arguments.delete(:snapshot)
+          snapshot = arguments.delete(:snapshot)
 
           method = "POST"
-          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository.as(String)), Utils.__escape(snapshot.as(String)), "_restore" )
+          path = Utils.__pathify("_snapshot", Utils.__escape(repository.as(String)), Utils.__escape(snapshot.as(String)), "_restore")
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           if arguments.has_key? :body

@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Get information about a specific alias.
         #
         # @example Return all indices an alias points to
@@ -29,13 +28,13 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-aliases/
         #
-        def get_alias(arguments={} of Symbol => String)
+        def get_alias(arguments = {} of Symbol => String)
           valid_params = [
             :ignore_indices,
             :ignore_unavailable,
             :allow_no_indices,
             :expand_wildcards,
-            :local
+            :local,
           ]
 
           if !arguments.has_key? :name
@@ -43,10 +42,10 @@ module Elasticsearch
           end
 
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index]), "_alias", Utils.__escape(arguments[:name])
+          path = Utils.__pathify Utils.__listify(arguments[:index]), "_alias", Utils.__escape(arguments[:name])
 
           params = Utils.__validate_and_extract_params arguments, valid_params, [:name]
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

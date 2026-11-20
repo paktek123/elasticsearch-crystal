@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Display thread pool statistics across nodes (use the `help` parameter to display a list
         # of avaialable thread pools)
         #
@@ -38,7 +37,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-thread-pool.html
         #
-        def thread_pool(arguments={} of Symbol => String)
+        def thread_pool(arguments = {} of Symbol => String)
           valid_params = [
             :full_id,
             :size,
@@ -48,14 +47,15 @@ module Elasticsearch
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
 
           method = "GET"
-          path   = "_cat/thread_pool"
+          path = "_cat/thread_pool"
           arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key?(:h)
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

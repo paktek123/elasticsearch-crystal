@@ -17,11 +17,11 @@ module Elasticsearch
           subject.indices.put_alias({:index => "testind", :name => "testali"})
           subject.cat.aliases.as(String).should match /testali/
           subject.indices.update_aliases({:body => {"actions" => [
-                                                      {"remove" => {"index" => "testind", "alias" => "testali"}},
-                                                      {"add" => {"index" => "testind", "alias" => "testali2"}},
-                                                    ]}})
+            {"remove" => {"index" => "testind", "alias" => "testali"}},
+            {"add" => {"index" => "testind", "alias" => "testali2"}},
+          ]}})
           subject.indices.delete_alias({:index => "testind", :name => "testali2"})
-          (subject.cat.aliases.as(String).empty?).should be_true 
+          (subject.cat.aliases.as(String).empty?).should be_true
         end
       end
     end

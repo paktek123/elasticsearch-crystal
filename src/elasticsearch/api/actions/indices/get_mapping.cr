@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Return the mapping definitions for all indices, or specific indices/types.
         #
         # @example Get all mappings in the cluster
@@ -33,13 +32,13 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-get-mapping.html
         #
-        def get_mapping(arguments={} of Symbol => String)
+        def get_mapping(arguments = {} of Symbol => String)
           valid_params = [
             :ignore_indices,
             :ignore_unavailable,
             :allow_no_indices,
             :expand_wildcards,
-            :local
+            :local,
           ]
 
           if !arguments.has_key? :type
@@ -47,9 +46,9 @@ module Elasticsearch
           end
 
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
-                                   "_mapping",
-                                   Utils.__listify(arguments[:type].as(String))
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
+            "_mapping",
+            Utils.__listify(arguments[:type].as(String))
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
 

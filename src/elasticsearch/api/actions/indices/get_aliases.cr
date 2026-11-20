@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Get a list of all aliases, or aliases for a specific index.
         #
         # @example Get a list of all aliases
@@ -17,14 +16,14 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/indices-aliases.html
         #
-        def get_aliases(arguments={} of Symbol => String)
-          valid_params = [ :timeout, :local ]
+        def get_aliases(arguments = {} of Symbol => String)
+          valid_params = [:timeout, :local]
 
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_aliases", Utils.__listify(arguments[:name].as(String))
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)), "_aliases", Utils.__listify(arguments[:name].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

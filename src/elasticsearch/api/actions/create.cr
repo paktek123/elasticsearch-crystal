@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Create a document.
       #
       # Enforce the _create_ operation when indexing a document --
@@ -26,7 +25,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/index_/
       #
-      def create(arguments={} of Symbol => String)
+      def create(arguments = {} of Symbol => String)
         index arguments
       end
     end

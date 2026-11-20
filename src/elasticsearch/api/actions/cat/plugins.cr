@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Return information about installed plugins
         #
         # @option arguments [Boolean] :local Return local information, do not retrieve the state from master node
@@ -15,18 +14,19 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-plugins.html
         #
-        def plugins(arguments={} of Symbol => String)
+        def plugins(arguments = {} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
           method = "GET"
-          path   = "_cat/plugins"
+          path = "_cat/plugins"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

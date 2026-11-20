@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Get a single index template.
         #
         # @example Get all templates
@@ -23,11 +22,11 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-templates/
         #
-        def get_template(arguments={} of Symbol => String)
-          valid_params = [ :flat_settings, :local, :master_timeout ]
+        def get_template(arguments = {} of Symbol => String)
+          valid_params = [:flat_settings, :local, :master_timeout]
 
           method = "GET"
-          path   = Utils.__pathify "_template", Utils.__escape(arguments[:name].as(String))
+          path = Utils.__pathify "_template", Utils.__escape(arguments[:name].as(String))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
 
@@ -36,7 +35,7 @@ module Elasticsearch
           else
             body = nil
           end
-          
+
           perform_request(method, path, params, body).body
         end
       end

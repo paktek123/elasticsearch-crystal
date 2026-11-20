@@ -3,7 +3,6 @@ require "html"
 module Elasticsearch
   module API
     module Actions
-
       # Return documents matching a query, as well as aggregations (facets), highlighted snippets, suggestions, etc.
       #
       # The search API is used to query one or more indices either using simple
@@ -124,7 +123,7 @@ module Elasticsearch
       # @see http://www.elasticsearch.org/guide/reference/api/search/
       # @see http://www.elasticsearch.org/guide/reference/api/search/request-body/
       #
-      def search(arguments={} of Symbol => String)
+      def search(arguments = {} of Symbol => String)
         arguments[:index] = "_all" if !(arguments.has_key?(:index))
 
         valid_params = [
@@ -167,7 +166,8 @@ module Elasticsearch
           :timeout,
           :typed_keys,
           :version,
-          :batched_reduce_size ]
+          :batched_reduce_size,
+        ]
 
         method = "GET"
 
@@ -193,15 +193,15 @@ module Elasticsearch
           fielddata_fields = ""
         end
 
-        path   = Utils.__pathify( Utils.__listify(arguments[:index].as(String)), "_search", Utils.__listify(arguments[:q].as(String)))
-        
+        path = Utils.__pathify(Utils.__listify(arguments[:index].as(String)), "_search", Utils.__listify(arguments[:q].as(String)))
+
         params = Utils.__validate_and_extract_params arguments, valid_params
 
         params[:fields] = Utils.__listify(fields.as(String), {:escape => false})
         params[:fielddata_fields] = Utils.__listify(fielddata_fields.as(String), {:escape => false})
 
         # FIX: Unescape the `filter_path` parameter due to __listify default behavior. Investigate.
-        params[:filter_path] =  HTML.unescape(params[:filter_path].as(String)) if params.has_key?(:filter_path)
+        params[:filter_path] = HTML.unescape(params[:filter_path].as(String)) if params.has_key?(:filter_path)
 
         perform_request(method, path, params, body).body
       end

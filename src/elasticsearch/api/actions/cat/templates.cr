@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Returns information about existing templates
         #
         # @option arguments [String] :name A pattern that returned template names must match
@@ -16,7 +15,7 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-templates.html
         #
-        def templates(arguments={} of Symbol => String)
+        def templates(arguments = {} of Symbol => String)
           valid_params = [
             :name,
             :format,
@@ -25,11 +24,12 @@ module Elasticsearch
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
           method = "GET"
-          path   = "_cat/templates"
+          path = "_cat/templates"
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

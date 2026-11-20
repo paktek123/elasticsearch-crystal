@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Snapshot
       module Actions
-
         # Return information about a running snapshot
         #
         # @example Return information about all currently running snapshots
@@ -21,21 +20,22 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html#_snapshot_status
         #
-        def status(arguments={} of Symbol => String)
+        def status(arguments = {} of Symbol => String)
           valid_params = [
             :ignore_unavailable,
-            :master_timeout ]
+            :master_timeout,
+          ]
 
           repository = arguments.delete(:repository)
-          snapshot   = arguments.delete(:snapshot)
+          snapshot = arguments.delete(:snapshot)
           ignore = arguments.delete(:ignore) || ""
 
           method = "GET"
 
-          path   = Utils.__pathify( "_snapshot", Utils.__escape(repository.as(String)), Utils.__escape(snapshot.as(String)), "_status")
+          path = Utils.__pathify("_snapshot", Utils.__escape(repository.as(String)), Utils.__escape(snapshot.as(String)), "_status")
           arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Update a document without sending the whole document in the request ("partial update").
       #
       # Send either a partial document (`doc` ) which will be deeply merged into an existing document,
@@ -65,7 +64,7 @@ module Elasticsearch
       #
       # @see http://elasticsearch.org/guide/reference/api/update/
       #
-      def update(arguments={} of Symbol => String)
+      def update(arguments = {} of Symbol => String)
         if !arguments.has_key?(:index) || !arguments.has_key?(:type) || !arguments.has_key?(:id)
           raise ArgumentError.new("Required argument 'index' or 'type' or 'id' missing")
         end
@@ -88,19 +87,19 @@ module Elasticsearch
           :timestamp,
           :ttl,
           :version,
-          :version_type ]
+          :version_type,
+        ]
 
         method = "POST"
-        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
-                                 Utils.__escape(arguments[:type].as(String)),
-                                 Utils.__escape(arguments[:id].as(String)),
-                                 "_update"
+        path = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+          Utils.__escape(arguments[:type].as(String)),
+          Utils.__escape(arguments[:id].as(String)),
+          "_update"
 
         params = Utils.__validate_and_extract_params arguments, valid_params
-        body   = arguments[:body]
+        body = arguments[:body]
 
         perform_request(method, path, params, body).body
-        
       end
     end
   end

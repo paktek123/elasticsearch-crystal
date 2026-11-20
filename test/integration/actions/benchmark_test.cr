@@ -9,14 +9,14 @@ module Elasticsearch
         subject = Elasticsearch::Test::Client.new({:host => "localhost", :port => 9250})
 
         it "Get benchmark on query" do
-          subject.benchmark({:body => {"name" => "test_benchmark", 
+          subject.benchmark({:body => {"name" => "test_benchmark",
                                        "competitors" => [
-                                          {"name" => "query_1", 
+                                         {"name"     => "query_1",
                                           "requests" => [
-                                            {"query" => {"match" => {"_all" => "a*"}}}
-                                          ]}]
-                                      }
-                            })
+                                            {"query" => {"match" => {"_all" => "a*"}}},
+                                          ]},
+                                       ],
+          }})
         end
       end
     end

@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Snapshot
       module Actions
-
         # Delete a specific repository or repositories
         #
         # @example Delete the `my-backups` repository
@@ -16,23 +15,24 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html
         #
-        def delete_repository(arguments={} of Symbol => String)
+        def delete_repository(arguments = {} of Symbol => String)
           if !arguments.has_key?(:repository)
             raise ArgumentError.new("Required argument 'repository' missing")
           end
 
           valid_params = [
             :master_timeout,
-            :timeout ]
+            :timeout,
+          ]
 
           repository = arguments.delete(:repository) || ""
           ignore = arguments.delete(:ignore) || ""
 
           method = "DELETE"
-          path   = Utils.__pathify( "_snapshot", Utils.__listify(repository.as(String)) )
+          path = Utils.__pathify("_snapshot", Utils.__listify(repository.as(String)))
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           if ignore.includes?("404")
             Utils.__rescue_from_not_found { perform_request(method, path, params, body).body }

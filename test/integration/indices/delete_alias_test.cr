@@ -17,7 +17,7 @@ module Elasticsearch
           subject.indices.put_alias({:index => "testind", :name => "testali"})
           subject.cat.aliases.as(String).should match /testali/
           subject.indices.delete_alias({:index => "testind", :name => "testali"})
-          (subject.cat.aliases.as(String).empty?).should be_true 
+          (subject.cat.aliases.as(String).empty?).should be_true
         end
       end
     end

@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cluster
       module Actions
-
         # Returns information about cluster "health".
         #
         # @example Get the cluster health information
@@ -33,8 +32,8 @@ module Elasticsearch
         #
         # @see http://elasticsearch.org/guide/reference/api/admin-cluster-health/
         #
-        def health(arguments={} of Symbol => String)
-          index     = arguments.delete(:index) || ""
+        def health(arguments = {} of Symbol => String)
+          index = arguments.delete(:index) || ""
 
           valid_params = [
             :level,
@@ -46,10 +45,11 @@ module Elasticsearch
             :wait_for_relocating_shards,
             :wait_for_no_relocating_shards,
             :wait_for_status,
-            :wait_for_events ]
+            :wait_for_events,
+          ]
 
           method = "GET"
-          path   = Utils.__pathify "_cluster/health", Utils.__listify(index.as(String))
+          path = Utils.__pathify "_cluster/health", Utils.__listify(index.as(String))
           arguments = Utils.__sort_booleans(arguments)
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil

@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Tasks
       module Actions
-
         # Cancel a specific task
         #
         # @option arguments [Number] :task_id Cancel the task with specified id
@@ -17,21 +16,22 @@ module Elasticsearch
         #
         # @see http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks-cancel.html
         #
-        def cancel(arguments={} of Symbol => String)
+        def cancel(arguments = {} of Symbol => String)
           valid_params = [
             :node_id,
             :actions,
             :parent_node,
-            :parent_task ]
+            :parent_task,
+          ]
 
           arguments = arguments.clone
 
           task_id = arguments.delete(:task_id) || ""
 
           method = "POST"
-          path   = Utils.__pathify( "_tasks", Utils.__escape(task_id.as(String)), "_cancel" )
+          path = Utils.__pathify("_tasks", Utils.__escape(task_id.as(String)), "_cancel")
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = nil
+          body = nil
 
           perform_request(method, path, params, body).body
         end

@@ -1,7 +1,6 @@
 module Elasticsearch
   module API
     module Actions
-
       # Return information and statistics about terms in the fields of a particular document
       #
       # @example Get statistics for an indexed document
@@ -57,7 +56,7 @@ module Elasticsearch
       #
       # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/docs-termvectors.html
       #
-      def termvectors(arguments={} of Symbol => String)
+      def termvectors(arguments = {} of Symbol => String)
         if !arguments.has_key?(:index) || !arguments.has_key?(:type)
           raise ArgumentError.new("Required argument 'index' or 'type' missing")
         end
@@ -72,15 +71,16 @@ module Elasticsearch
           :preference,
           :realtime,
           :routing,
-          :parent ]
+          :parent,
+        ]
 
         method = "GET"
         endpoint = arguments.delete(:endpoint) || "_termvectors"
 
-        path   = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
-                                 Utils.__escape(arguments[:type].as(String)),
-                                 arguments[:id],
-                                 endpoint
+        path = Utils.__pathify Utils.__escape(arguments[:index].as(String)),
+          Utils.__escape(arguments[:type].as(String)),
+          arguments[:id],
+          endpoint
 
         params = Utils.__validate_and_extract_params arguments, valid_params
         if arguments.has_key? :body
@@ -94,7 +94,7 @@ module Elasticsearch
 
       # @deprecated Use the plural version, {#termvectors}
       #
-      def termvector(arguments={} of Symbol => String)
+      def termvector(arguments = {} of Symbol => String)
         termvectors(arguments.merge({:endpoint => "_termvector"}))
       end
     end

@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Validate a query
         #
         # @example Validate a simple query string query
@@ -13,8 +12,8 @@ module Elasticsearch
         #
         #     client.indices.validate_query index: 'myindex', q: '[[[ BOOM! ]]]', explain: true
         #
-        # @example Validate a DSL query (with explanation and rewrite). With rewrite set to true, the 
-        #                                explanation is more detailed showing the actual Lucene query that will 
+        # @example Validate a DSL query (with explanation and rewrite). With rewrite set to true, the
+        #                                explanation is more detailed showing the actual Lucene query that will
         #                                be executed.
         #
         #     client.indices.validate_query index: 'myindex',
@@ -65,7 +64,7 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/validate/
         #
-        def validate_query(arguments={} of Symbol => String)
+        def validate_query(arguments = {} of Symbol => String)
           valid_params = [
             :rewrite,
             :explain,
@@ -79,7 +78,8 @@ module Elasticsearch
             :default_operator,
             :df,
             :lenient,
-            :lowercase_expanded_terms ]
+            :lowercase_expanded_terms,
+          ]
 
           if arguments.has_key? :body
             arg_body = arguments.delete(:body)
@@ -90,12 +90,12 @@ module Elasticsearch
           type = arguments.delete(:type) || ""
 
           method = "GET"
-          path   = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
-                                   Utils.__listify(type),
-                                   "_validate/query"
+          path = Utils.__pathify Utils.__listify(arguments[:index].as(String)),
+            Utils.__listify(type),
+            "_validate/query"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arg_body
+          body = arg_body
 
           perform_request(method, path, params, body).body
         end

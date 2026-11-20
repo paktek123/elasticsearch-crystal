@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Cat
       module Actions
-
         # Returns information about aliases, including associated routing values and filters.
         #
         # @example Display all aliases in the cluster
@@ -45,25 +44,26 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/cat-aliases.html
         #
-        def aliases(arguments={} of Symbol => String)
+        def aliases(arguments = {} of Symbol => String)
           valid_params = [
             :local,
             :master_timeout,
             :h,
             :help,
             :v,
-            :s ]
+            :s,
+          ]
 
           name = arguments.delete(:name) || ""
 
           method = "GET"
-          path   = Utils.__pathify "_cat/aliases", Utils.__listify(name.as(String))
+          path = Utils.__pathify "_cat/aliases", Utils.__listify(name.as(String))
           arguments = Utils.__sort_booleans(arguments)
 
           params = Utils.__validate_and_extract_params arguments, valid_params
           params[:h] = Utils.__listify(params[:h].as(String)) if params.has_key? :h
-          
-          body   = nil
+
+          body = nil
           perform_request(method, path, params, body).body
         end
       end

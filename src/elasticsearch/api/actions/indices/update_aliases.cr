@@ -2,7 +2,6 @@ module Elasticsearch
   module API
     module Indices
       module Actions
-
         # Perform multiple operation on index aliases in a single request.
         #
         # Pass the `actions` (add, remove) in the `body` argument.
@@ -30,17 +29,17 @@ module Elasticsearch
         #
         # @see http://www.elasticsearch.org/guide/reference/api/admin-indices-aliases/
         #
-        def update_aliases(arguments={} of Symbol => String)
+        def update_aliases(arguments = {} of Symbol => String)
           if !arguments.has_key?(:body)
             raise ArgumentError.new("Required argument 'body' missing")
           end
-          valid_params = [ :timeout ]
+          valid_params = [:timeout]
 
           method = "POST"
-          path   = "_aliases"
+          path = "_aliases"
 
           params = Utils.__validate_and_extract_params arguments, valid_params
-          body   = arguments[:body]
+          body = arguments[:body]
 
           perform_request(method, path, params, body).body
         end
