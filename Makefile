@@ -1,5 +1,9 @@
 install:
 	shards install
+unit-test:
+	crystal spec test/unit/*
+run-secure-test:
+	crystal spec test/integration/secured/*
 run-test:
 	crystal spec test/integration/actions/*
 	crystal spec test/integration/cat/*

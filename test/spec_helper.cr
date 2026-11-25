@@ -6,7 +6,7 @@ require "yaml"
 module Elasticsearch
   module Test
     class Client < Elasticsearch::API::Client
-      def initialize(@settings : Hash(Symbol, Int32 | String))
+      def initialize(settings : Hash(Symbol, _))
         super
       end
     end
