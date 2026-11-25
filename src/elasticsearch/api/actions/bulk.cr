@@ -8,34 +8,27 @@ module Elasticsearch
       # or the conveniency "combined" format where data is passed along with the header
       # in a single item in a custom `:data` key.
       #
+      # The body is always sent as NDJSON (`Content-Type: application/x-ndjson`): each action
+      # and source is JSON-encoded onto its own line, and the body ends with a newline.
+      # A pre-serialised NDJSON `String` body is sent unchanged.
+      #
       # @example Perform three operations in a single request, passing actions and data as an array of hashes
       #
-     #
-      # @example Perform three operations in a single request, passing data in the `:data` option
+      #     client.bulk({:index => "myindex", :body => [
+      #       { "index"  => { "_id" => "1" } },
+      #       { "title" => "foo" },
+      #       { "update" => { "_id" => "2" } },
+      #       { "doc" => { "title" => "bar" } },
+      #       { "delete" => { "_id" => "3" } },
+      #     ]})
       #
-      #     client.bulk body: [
-      #       { index:  { _index: 'myindex', _type: 'mytype', _id: 1, data: { title: 'foo' } } },
-      #       { update: { _index: 'myindex', _type: 'mytype', _id: 2, data: { doc: { title: 'foo' } } } },
-      #       { delete: { _index: 'myindex', _type: 'mytype', _id: 3  } }
-      #     ]
+      # @example Perform the same operations, passing data in the `data` key of the action
       #
-      # @example Perform a script-based bulk update, passing scripts in the `:data` option
-      #
-      #     client.bulk body: [
-      #       { update: { _index: 'myindex', _type: 'mytype', _id: 1,
-      #                  data: {
-      #                   script: "ctx._source.counter += value",
-      #                   lang: 'js',
-      #                   params: { value: 1 }, upsert: { counter: 0 } }
-      #                 }},
-      #       { update: { _index: 'myindex', _type: 'mytype', _id: 2,
-      #                  data: {
-      #                   script: "ctx._source.counter += value",
-      #                   lang: 'js',
-      #                   params: { value: 42 }, upsert: { counter: 0 } }
-      #                  }}
-      #
-      #     ]
+      #     client.bulk({:index => "myindex", :body => [
+      #       { "index"  => { "_id" => "1", "data" => { "title" => "foo" } } },
+      #       { "update" => { "_id" => "2", "data" => { "doc" => { "title" => "bar" } } } },
+      #       { "delete" => { "_id" => "3" } },
+      #     ]})
       #
       # @option arguments [String] :index Default index for items which don't provide one
       # @option arguments [String] :type Default document type for items which don't provide one
@@ -79,7 +72,7 @@ module Elasticsearch
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]
 
-        perform_request(method, path, params, body).body
+        perform_request(method, path, params, Utils.__bulkify(body), ndjson: true).body
       end
     end
   end

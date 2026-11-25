@@ -51,7 +51,9 @@ module Elasticsearch
         def initialize(@settings : Hash(Symbol, String | Int32)) 
         end
 
-        def perform_request(method, path, params={} of String => String, body={} of String => String | Nil) 
+        # `ndjson: true` sends `body` (a String) unchanged, as `application/x-ndjson`,
+        # instead of serialising it with `to_json`. `headers` are added per request.
+        def perform_request(method, path, params={} of String => String, body={} of String => String | Nil, headers : HTTP::Headers? = nil, ndjson : Bool = false)
 
           # normalize params to string
           new_params = {} of String => String
@@ -65,21 +67,27 @@ module Elasticsearch
           
           final_params = HTTP::Params.encode(new_params)
 
-          if !body.nil?
+          if ndjson
+            post_data = body.to_s
+          elsif !body.nil?
             post_data = body.to_json
           else
             post_data = nil
           end
-           
+
+          request_headers = HTTP::Headers.new
+          request_headers["Content-Type"] = "application/x-ndjson" if ndjson
+          request_headers.merge!(headers) if headers
+
           if method == "GET"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}?#{final_params}"
-            response = HTTP::Client.get(endpoint, body: post_data, headers: HTTP::Headers{"Content-Type" => "application/json"})
+            response = HTTP::Client.get(endpoint, body: post_data, headers: HTTP::Headers{"Content-Type" => "application/json"}.merge!(request_headers))
           elsif method == "POST"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
-            response = HTTP::Client.post(url: endpoint, body: post_data)
+            response = HTTP::Client.post(url: endpoint, headers: request_headers, body: post_data)
           elsif method == "PUT"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
-            response = HTTP::Client.put(url: endpoint, body: post_data)
+            response = HTTP::Client.put(url: endpoint, headers: request_headers, body: post_data)
           elsif method == "DELETE"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}?#{final_params}"
             response = HTTP::Client.delete(url: endpoint)

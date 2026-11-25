@@ -88,53 +88,58 @@ module Elasticsearch
           squeeze('/')
       end
 
-      # Convert an array of payloads into Elasticsearch `header\ndata` format
+      BULK_OPERATIONS = %w(index create delete update)
+
+      # Convert a bulk payload into the newline-delimited JSON (NDJSON) format
+      # expected by the `_bulk` endpoint: one JSON document per line, terminated by "\n".
       #
-      # Supports various different formats of the payload: Array of Strings, Header/Data pairs,
-      # or the conveniency "combined" format where data is passed along with the header
-      # in a single item.
+      # Supports three input shapes:
+      #
+      # * a pre-serialised `String`, sent unchanged (a trailing newline is appended if missing)
+      # * an `Array` of action and source items; each item is JSON-encoded onto its own line
+      #   (items that are already `String`s are used as-is)
+      # * the "combined" format, where the source is passed along with the action
+      #   in a `data` key, and is split onto its own line
       #
       #     Elasticsearch::API::Utils.__bulkify [
-      #       { :index =>  { :_index => 'myindexA', :_type => 'mytype', :_id => '1', :data => { :title => 'Test' } } },
-      #       { :update => { :_index => 'myindexB', :_type => 'mytype', :_id => '2', :data => { :doc => { :title => 'Update' } } } }
+      #       { "index" =>  { "_index" => "myindexA", "_id" => "1", "data" => { "title" => "Test" } } },
+      #       { "update" => { "_index" => "myindexB", "_id" => "2", "data" => { "doc" => { "title" => "Update" } } } },
       #     ]
       #
-      #     # => {"index":{"_index":"myindexA","_type":"mytype","_id":"1"}}
+      #     # => {"index":{"_index":"myindexA","_id":"1"}}
       #     # => {"title":"Test"}
-      #     # => {"update":{"_index":"myindexB","_type":"mytype","_id":"2"}}
+      #     # => {"update":{"_index":"myindexB","_id":"2"}}
       #     # => {"doc":{"title":"Update"}}
       #
-      def __bulkify(payload)
-        operations = %w[index create delete update]
+      def __bulkify(payload : String) : String
+        return payload if payload.empty? || payload.ends_with?('\n')
+        payload + "\n"
+      end
 
-        case
+      def __bulkify(payload : Array) : String
+        lines = [] of String
 
-        # Hashes with `:data`
-        when payload.any? { |d| d.is_a?(Hash) && d.values.first.is_a?(Hash) && operations.includes?(d.keys.first.to_s) && (d.values.first[:data] || d.values.first["data"]) }
-          payload = payload.
-            inject([] of String) do |sum, item|
-              operation, meta = item.to_a.first
-              meta            = meta.clone
-              data            = meta.delete(:data) || meta.delete("data")
+        payload.each do |item|
+          if item.is_a?(String)
+            lines << item.chomp
+            next
+          end
 
-              sum << { operation => meta }
-              sum << data if data
-              sum
-            end.
-            map { |item| Elasticsearch::API.serializer.dump(item) }
-          payload << "" unless payload.empty?
+          any = JSON.parse(item.to_json)
+          operation = any.as_h?.try(&.first?)
 
-        # Array of strings
-        when payload.all? { |d| d.is_a? String }
-          payload << ""
-
-        # Header/Data pairs
-        else
-          payload = payload.map { |item| Elasticsearch::API.serializer.dump(item) }
-          payload << ""
+          if operation && BULK_OPERATIONS.includes?(operation[0]) &&
+             (meta = operation[1].as_h?) && meta.has_key?("data")
+            meta = meta.dup
+            data = meta.delete("data")
+            lines << {operation[0] => JSON::Any.new(meta)}.to_json
+            lines << data.to_json if data && !data.raw.nil?
+          else
+            lines << any.to_json
+          end
         end
 
-        payload = payload.join("\n")
+        lines.empty? ? "" : lines.join("\n") + "\n"
       end
 
       # Validates the argument Hash against common and valid API parameters
