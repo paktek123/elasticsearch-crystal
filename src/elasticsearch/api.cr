@@ -23,7 +23,8 @@ module Elasticsearch
 
       property :settings
 
-      def initialize(@settings : Hash(Symbol, String | Int32))
+      def initialize(settings : Hash(Symbol, _))
+        super
       end
 
       # The serializer class

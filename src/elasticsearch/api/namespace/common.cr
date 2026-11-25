@@ -1,5 +1,6 @@
 require "http/client"
 require "json"
+require "./config"
 
 module Elasticsearch
   module API
@@ -48,7 +49,25 @@ module Elasticsearch
       end
 
       class Client
-        def initialize(@settings : Hash(Symbol, String | Int32)) 
+        @settings : Settings
+        @config : Config?
+
+        def initialize(settings : Hash(Symbol, _))
+          @settings = Config.normalize(settings)
+        end
+
+        # Connection configuration derived from the settings
+        def config : Config
+          @config ||= Config.new(@settings)
+        end
+
+        # Never print the settings hash, it may contain credentials
+        def inspect(io : IO) : Nil
+          io << "#<" << self.class.name << " " << config.base_url << ">"
+        end
+
+        def to_s(io : IO) : Nil
+          inspect(io)
         end
 
         def perform_request(method, path, params={} of String => String, body={} of String => String | Nil) 
@@ -71,24 +90,24 @@ module Elasticsearch
             post_data = nil
           end
            
-          if method == "GET"
-            endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}?#{final_params}"
-            response = HTTP::Client.get(endpoint, body: post_data, headers: HTTP::Headers{"Content-Type" => "application/json"})
-          elsif method == "POST"
-            endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
-            response = HTTP::Client.post(url: endpoint, body: post_data)
-          elsif method == "PUT"
-            endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
-            response = HTTP::Client.put(url: endpoint, body: post_data)
-          elsif method == "DELETE"
-            endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}?#{final_params}"
-            response = HTTP::Client.delete(url: endpoint)
-          elsif method == "HEAD"
-            endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
-            response = HTTP::Client.head(url: endpoint)
+          # GET and DELETE carry the params in the query string
+          target = "/#{path}"
+          target += "?#{final_params}" if method == "GET" || method == "DELETE"
+
+          headers = HTTP::Headers{"Content-Type" => "application/json"}
+          if auth = config.authorization_header
+            headers["Authorization"] = auth
           end
 
-          result = response.as(HTTP::Client::Response)
+          # Only GET, POST and PUT send a body
+          request_body = (method == "GET" || method == "POST" || method == "PUT") ? post_data : nil
+
+          http = HTTP::Client.new(config.host, config.port, tls: config.tls_context)
+          begin
+            result = http.exec(method, target, headers: headers, body: request_body)
+          ensure
+            http.close
+          end
          
           if result.headers["Content-Type"].includes?("application/json") && method != "HEAD"
             final_response = JsonResponse.new result.status_code, JSON.parse(result.body), result.headers
