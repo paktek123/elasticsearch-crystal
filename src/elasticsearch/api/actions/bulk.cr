@@ -79,7 +79,7 @@ module Elasticsearch
         params = Utils.__validate_and_extract_params arguments, valid_params
         body   = arguments[:body]
 
-        perform_request(method, path, params, body).body
+        perform_request(method, path, params, body, ndjson: true).body
       end
     end
   end
