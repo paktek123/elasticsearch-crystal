@@ -29,6 +29,23 @@ client.cat.indices
 # For getting back JSON 
 
 client.cat.indices({:format => "json"}).as(JSON::Any)
+
+# Bulk requests are sent as NDJSON (one JSON document per line).
+# Pass action and source lines as an array...
+client.bulk({:index => "test_index", :body => [
+  {"index" => {"_id" => "1"}},
+  {"title" => "foo"},
+  {"delete" => {"_id" => "2"}},
+]})
+
+# ...or put the source in a `data` key of the action...
+client.bulk({:index => "test_index", :body => [
+  {"index" => {"_id" => "1", "data" => {"title" => "foo"}}},
+  {"delete" => {"_id" => "2"}},
+]})
+
+# ...or pass a pre-built NDJSON string, which is sent unchanged.
+client.bulk({:index => "test_index", :body => %({"index":{"_id":"1"}}\n{"title":"foo"}\n)})
 ```
 
 For more example see under the `test` folder
