@@ -31,6 +31,31 @@ client.cat.indices
 client.cat.indices({:format => "json"}).as(JSON::Any)
 ```
 
+### Scrolling
+
+```
+# start a scrolling search, then keep fetching pages until no hits are returned
+response = client.search({:index => "test_index", :scroll => "1m", :size => "100"}).as(JSON::Any)
+scroll_id = response["_scroll_id"].as_s
+hits = response["hits"]["hits"].as_a
+
+until hits.empty?
+  # ... process hits ...
+  # scroll_id and scroll are sent in the request body (POST /_search/scroll)
+  response = client.scroll({:scroll_id => scroll_id, :scroll => "1m"}).as(JSON::Any)
+  scroll_id = response["_scroll_id"].as_s
+  hits = response["hits"]["hits"].as_a
+end
+
+# release the scroll context (body form, preferred since Elasticsearch 7.0)
+client.clear_scroll({:body => {"scroll_id" => [scroll_id]}})
+
+# or clear every open scroll context
+client.clear_scroll({:scroll_id => "_all"})
+```
+
+`client.scroll` also accepts `:rest_total_hits_as_int => "true"`.
+
 For more example see under the `test` folder
 
 ## Roadmap

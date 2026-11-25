@@ -76,13 +76,17 @@ module Elasticsearch
             response = HTTP::Client.get(endpoint, body: post_data, headers: HTTP::Headers{"Content-Type" => "application/json"})
           elsif method == "POST"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
-            response = HTTP::Client.post(url: endpoint, body: post_data)
+            endpoint += "?#{final_params}" if !final_params.empty?
+            response = HTTP::Client.post(url: endpoint, body: post_data, headers: HTTP::Headers{"Content-Type" => "application/json"})
           elsif method == "PUT"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
-            response = HTTP::Client.put(url: endpoint, body: post_data)
+            response = HTTP::Client.put(url: endpoint, body: post_data, headers: HTTP::Headers{"Content-Type" => "application/json"})
           elsif method == "DELETE"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}?#{final_params}"
-            response = HTTP::Client.delete(url: endpoint)
+            # Only forward a body on DELETE when there is one (an empty `{}` is dropped,
+            # so existing DELETE actions keep sending body-less requests).
+            delete_body = (post_data.nil? || post_data == "{}") ? nil : post_data
+            response = HTTP::Client.delete(url: endpoint, body: delete_body, headers: HTTP::Headers{"Content-Type" => "application/json"})
           elsif method == "HEAD"
             endpoint = "http://#{@settings[:host]}:#{@settings[:port]}/#{path}"
             response = HTTP::Client.head(url: endpoint)
