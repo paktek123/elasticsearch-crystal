@@ -33,6 +33,22 @@ client.cat.indices({:format => "json"}).as(JSON::Any)
 
 For more example see under the `test` folder
 
+## Elasticsearch 8.x / 9.x compatibility mode
+
+Set `:compatibility_version` to the major version of your server to send versioned media types
+(`application/vnd.elasticsearch+json; compatible-with=8`) in the `Accept` header, and in `Content-Type` for requests with
+a body (GET, POST, PUT). `bulk` uses `application/vnd.elasticsearch+x-ndjson; compatible-with=N`. Responses with
+`application/vnd.elasticsearch+json` are parsed as JSON.
+
+```
+client = Elasticsearch::API::Client.new({:host => "localhost", :port => 9200, :compatibility_version => 8})
+```
+
+When `:compatibility_version` is set, the first successful response must carry `X-Elastic-Product: Elasticsearch`,
+otherwise `Elasticsearch::UnsupportedProductError` is raised. Pass `:verify_product => 0` to disable this check, or
+`:verify_product => 1` to enable it without compatibility mode (needs Elasticsearch 7.14+). Without these settings,
+behaviour is unchanged.
+
 ## Roadmap
 
 Right now this although covers most of the Elasticsearch API, still lacks certain functionality. The next features will be driven by community demand.
