@@ -18,12 +18,8 @@ module Elasticsearch
 
         begin
           perform_request(method, path, params, body).status == 200 ? true : false
-        rescue e : Exception
-          if e.class.to_s =~ /NotFound|ConnectionFailed/ || e.message =~ /Not\s*Found|404|ConnectionFailed/i
-            false
-          else
-            raise e
-          end
+        rescue Elasticsearch::NotFoundError | Elasticsearch::ConnectionError
+          false
         end
       end
     end
