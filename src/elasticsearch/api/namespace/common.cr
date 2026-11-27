@@ -1,5 +1,6 @@
 require "http/client"
 require "json"
+require "../../errors"
 
 module Elasticsearch
   module API
@@ -55,7 +56,13 @@ module Elasticsearch
 
           # normalize params to string
           new_params = {} of String => String
+          ignore = [] of Int32
           params.each do |k,v|
+            # client side option, never sent to Elasticsearch
+            if k.to_s == "ignore"
+              ignore = parse_ignore(v)
+              next
+            end
             if !!v == v
               new_params[k.to_s] = ""
             else
@@ -96,8 +103,51 @@ module Elasticsearch
             final_response = Response.new result.status_code, result.body.as(String), result.headers
           end
           
+          raise_on_error(final_response, ignore)
+
           final_response
-          
+        rescue e : IO::TimeoutError
+          raise Elasticsearch::ConnectionTimeout.new(e.message, e)
+        rescue e : IO::Error
+          raise Elasticsearch::ConnectionError.new(e.message, e)
+        end
+
+        # Raises a typed Elasticsearch::ApiError for 4xx/5xx responses,
+        # unless the status is listed in `ignore`.
+        def raise_on_error(response, ignore = [] of Int32)
+          status = response.status
+          return if status < 400 || ignore.includes?(status)
+
+          body = response.body
+          error_type = nil
+          reason = nil
+          if body.is_a?(JSON::Any) && (error = body["error"]?)
+            if error.as_h?
+              error_type = error["type"]?.try &.as_s?
+              reason = error["reason"]?.try &.as_s?
+            else
+              reason = error.as_s?
+            end
+          end
+
+          case status
+          when 400 then raise Elasticsearch::BadRequestError.new(status, body, error_type, reason)
+          when 401 then raise Elasticsearch::AuthenticationError.new(status, body, error_type, reason)
+          when 403 then raise Elasticsearch::AuthorizationError.new(status, body, error_type, reason)
+          when 404 then raise Elasticsearch::NotFoundError.new(status, body, error_type, reason)
+          when 409 then raise Elasticsearch::ConflictError.new(status, body, error_type, reason)
+          else          raise Elasticsearch::ApiError.new(status, body, error_type, reason)
+          end
+        end
+
+        # Normalizes the `ignore` option (404, "404", [404, 409]) to a list of statuses.
+        def parse_ignore(value) : Array(Int32)
+          case value
+          when Int      then [value.to_i]
+          when String   then value.split(',').compact_map(&.strip.to_i?)
+          when Array    then value.flat_map { |v| parse_ignore(v) }
+          else               [] of Int32
+          end
         end
       end
     end

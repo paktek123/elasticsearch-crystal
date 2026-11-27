@@ -40,10 +40,11 @@ module Elasticsearch
           params = Utils.__validate_and_extract_params arguments, valid_params
           body = nil
 
-          if perform_request(method, path, params, body).status == 200
-            return true
+          begin
+            perform_request(method, path, params, body).status == 200
+          rescue Elasticsearch::NotFoundError
+            false
           end
-          false
           
         end
       end
