@@ -29,6 +29,12 @@ client.cat.indices
 # For getting back JSON 
 
 client.cat.indices({:format => "json"}).as(JSON::Any)
+
+# resize and block APIs (split/clone need the source index to be write-blocked)
+client.indices.add_block({:index => "test_index", :block => "write"})
+client.indices.split({:index => "test_index", :target => "test_split", :body => {"settings" => {"index.number_of_shards" => 2}}})
+client.indices.clone({:index => "test_index", :target => "test_clone"})
+client.indices.resolve_index({:name => "test_*"})
 ```
 
 For more example see under the `test` folder
